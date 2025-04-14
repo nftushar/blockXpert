@@ -1,0 +1,8 @@
+{
+    "apiVersion": 2,
+    "name": "gutenberg-blocks/block-two",
+    "title": "Block Two",
+    "category": "custom-blocks",
+    "icon": "admin-site",
+    "editorScript": "file:../../build/index.js"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "gutenberg-blocks",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "wp-scripts start",
+        "build": "wp-scripts build"
+    },
+    "devDependencies": {
+        "@wordpress/scripts": "^24.0.0"
+    }
+}
