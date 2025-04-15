@@ -1,6 +1,8 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import Edit from './edit';
+import 'style-loader!./style.css';
+
 
 registerBlockType('gutenberg-blocks/block-two', {
     title: __('Block Two', 'gutenberg-blocks'),

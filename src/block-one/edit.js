@@ -4,8 +4,8 @@ import { __ } from '@wordpress/i18n';
 export default function Edit() {
     return (
         <div {...useBlockProps()}>
-            <h2>{__('xxxxxxxxxxBlock One', 'gutenberg-blocks')}</h2>
-            <p>{__('This is the first example block.', 'gutenberg-blocks')}</p>
+            <h2>{__('Block One', 'gutenberg-blocks')}</h2>
+            <p>{__('xxxxxxxxxxx This is the second example block.', 'gutenberg-blocks')}</p>
         </div>
     );
 }

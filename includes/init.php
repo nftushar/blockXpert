@@ -7,18 +7,85 @@ class Gutenberg_Blocks_Init
         add_filter('block_categories_all', [$this, 'add_block_category']);
         add_action('admin_menu', [$this, 'add_admin_page']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_assets']);
     }
 
-    public function register_blocks()
+    public function enqueue_frontend_assets()
     {
-        $active_blocks = get_option('gutenberg_blocks_active', $this->get_default_blocks());
+        $active_blocks = get_option('gutenberg_blocks_active', []);
 
-        foreach ($this->discover_blocks() as $block_slug) {
-            if (in_array($block_slug, $active_blocks)) {
-                register_block_type(GB_PATH . "blocks/{$block_slug}");
+        foreach ($active_blocks as $block_slug) {
+            $style_path = GB_PATH . "src/{$block_slug}/style.css";
+            error_log("Checking for style_path: {$style_path}");
+            error_log("Frontend URL style_path: " . GB_URL . "src/{$block_slug}/style.css");
+
+            // Check if the style exists
+            error_log("Checking for: " . realpath($style_path));
+            if (file_exists($style_path)) {
+                wp_enqueue_style(
+                    "gutenberg-blocks-{$block_slug}",
+                    GB_URL . "src/{$block_slug}/style.css",
+                    [],
+                    filemtime($style_path)
+                );
+            } else {
+                error_log("Missing frontend style for block: {$block_slug}, Path: " . realpath($style_path));
             }
         }
     }
+
+
+
+    public function register_blocks()
+    {
+        $active_blocks = get_option('gutenberg_blocks_active', []);
+        foreach ($this->discover_blocks() as $block_slug) {
+            if (in_array($block_slug, $active_blocks)) {
+                $this->register_single_block($block_slug);
+            }
+        }
+    }
+
+    private function register_single_block($block_slug)
+    {
+        $block_path = GB_PATH . "blocks/{$block_slug}";
+
+        // Use either automatic registration OR render_callback, not both
+        $args = [
+            'render_callback' => [$this, 'render_block_frontend']
+        ];
+
+        $result = register_block_type($block_path, $args);
+
+        if (false === $result) {
+            error_log("Failed to register block: {$block_slug}");
+        }
+    }
+
+
+
+    public function render_block_frontend($attributes, $content, $block)
+    {
+        // Get the block name safely from the $block object
+        $block_name = str_replace('gutenberg-blocks/', '', $block->name ?? '');
+
+        // Check if frontend.php exists
+        $frontend_file = GB_PATH . "blocks/{$block_name}/frontend.php";
+
+        if (!file_exists($frontend_file)) {
+            error_log("Frontend file not found for block: $block_name");
+            return '<div style="color: red;">Missing frontend.php for block: ' . esc_html($block_name) . '</div>';
+        }
+
+        // Optional: Make attributes available inside included file
+        $block_attributes = $attributes;
+
+        ob_start();
+        include $frontend_file;
+        return ob_get_clean();
+    }
+
+
 
     private function discover_blocks()
     {
@@ -36,7 +103,7 @@ class Gutenberg_Blocks_Init
 
     private function get_default_blocks()
     {
-        return ['block-one', 'block-two', 'block-three'];
+        return []; // Return empty array to disable all by default
     }
 
     public function add_block_category($categories)
@@ -97,11 +164,12 @@ class Gutenberg_Blocks_Init
                     </div>
 
                     <div class="block-grid">
-                        <?php foreach ($blocks as $slug => $block) : ?>
+                        <?php
+                        foreach ($blocks as $slug => $block) : ?>
                             <div class="block-card">
                                 <div class="block-toggle">
                                     <label class="toggle-switch">
-                                        <input type="checkbox" ...>
+                                        <input type="checkbox" name="gutenberg_blocks_active[]" value="<?php echo esc_attr($slug); ?>" <?php checked(in_array($slug, $active_blocks)); ?>>
                                         <span class="slider"></span>
                                     </label>
 
@@ -163,5 +231,4 @@ class Gutenberg_Blocks_Init
     }
 }
 
-error_log('Enqueuing admin.css from: ' . GB_URL . 'includes/assets/css/admin.css');
 new Gutenberg_Blocks_Init();
