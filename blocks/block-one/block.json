@@ -2,7 +2,12 @@
   "apiVersion": 2,
   "name": "gutenberg-blocks/block-one",
   "title": "Block One",
+  "description": "First example block",
   "category": "custom-blocks",
-  "icon": "smiley",
-  "editorScript": "file:../../build/index.js"
+  "icon": "admin-site",
+  "keywords": ["example", "block"],
+  "version": "1.0.0",
+  "editorScript": "file:../../build/block-one/index.js",
+  "style": "file:../../build/block-one/style.css",
+  "editorStyle": "file:../../build/block-one/editor.css"
 }
