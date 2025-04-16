@@ -7,6 +7,7 @@ class Gutenberg_Blocks_Init
         add_filter('block_categories_all', [$this, 'add_block_category']);
         add_action('admin_menu', [$this, 'add_admin_page']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
+        add_action('enqueue_block_editor_assets', [$this, 'gutenberg_block_assets']); 
     }
 
     public function register_blocks()
@@ -59,6 +60,18 @@ class Gutenberg_Blocks_Init
             60
         );
     }
+
+    function gutenberg_block_assets() {
+        wp_enqueue_script(
+            'gutenberg-blocks-js', // Handle
+            plugins_url('src/index.js', __FILE__), // Path to your block's JS file
+            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n'), // Dependencies
+            filemtime(plugin_dir_path(__FILE__) . 'src/index.js'), // Cache busting
+            true // Load in the footer
+        );
+    }
+
+
 
     public function render_admin_page()
     {
