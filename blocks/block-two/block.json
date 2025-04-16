@@ -2,8 +2,7 @@
     "apiVersion": 2,
     "name": "gutenberg-blocks/block-two",
     "title": "Block Two",
-    "category": "widgets",
-    "editorScript": "file:../../build/block-two/index.js",
-    "style": "file:../../build/block-two/style.css"
-  }
-  
+    "category": "custom-blocks",
+    "icon": "admin-site",
+    "editorScript": "file:../../build/index.js"
+}

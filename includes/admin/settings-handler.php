@@ -14,26 +14,34 @@ class Gutenberg_Blocks_Settings
             [
                 'type' => 'array',
                 'sanitize_callback' => [self::class, 'sanitize_blocks'],
-                'default' => []
+                'default' => self::get_default_blocks()
             ]
         );
     }
 
     public static function sanitize_blocks($input)
     {
-        if (!is_array($input)) return [];
+        if (!is_array($input)) {
+            return [];
+        }
 
-        $valid_blocks = array_filter(
-            scandir(GB_PATH . 'blocks/'),
-            function ($item) {
-                return $item !== '.' &&
-                    $item !== '..' &&
-                    is_dir(GB_PATH . 'blocks/' . $item);
+        $valid_blocks = [];
+        $blocks_dir = GB_PATH . 'blocks/';
+
+        foreach (scandir($blocks_dir) as $item) {
+            if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . $item)) {
+                $valid_blocks[] = $item;
             }
-        );
+        }
 
         return array_intersect($input, $valid_blocks);
     }
+
+    public static function get_default_blocks()
+    {
+        return ['block-one', 'block-two', 'block-three'];
+    }
 }
 
+// Initialize the settings class
 Gutenberg_Blocks_Settings::init();

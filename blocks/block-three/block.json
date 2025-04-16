@@ -1,9 +1,12 @@
 {
     "apiVersion": 2,
     "name": "gutenberg-blocks/block-three",
-    "title": "Block three",
-    "category": "widgets",
+    "title": "Block Three",
+    "category": "custom-blocks",
+    "icon": "admin-site",
+    "keywords": ["example", "block"],
+    "version": "1.0.0",
     "editorScript": "file:../../build/block-three/index.js",
-    "style": "file:../../build/block-three/style.css"
-  }
-  
+    "style": "file:../../build/block-three/style.css",
+    "editorStyle": "file:../../build/block-three/editor.css"
+}
