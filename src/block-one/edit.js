@@ -10,7 +10,7 @@ export default function Edit({ attributes, setAttributes }) {
 
     return (
         <div {...useBlockProps()}>
-            <h2>{__('AAAAAAAAAAABlock One', 'gutenberg-blocks')}</h2>
+            <h2>{__('x Block One', 'gutenberg-blocks')}</h2>
             <p>{__('This is the first example block.', 'gutenberg-blocks')}</p>
             <TextControl
                 label={__('Content', 'gutenberg-blocks')}

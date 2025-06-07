@@ -8,7 +8,7 @@
         if (!attributes.content) {
             return (
                 <div>
-                    <h2>{__('1 Block One', 'gutenberg-blocks')}</h2>
+                    <h2>{__('1 Block Two', 'gutenberg-blocks')}</h2>
                     <p>{__('This is the first example block.', 'gutenberg-blocks')}</p>
                     <p>{__('No content entered.', 'gutenberg-blocks')}</p> {/* Fallback message */}
                 </div>
@@ -17,7 +17,7 @@
     
         return (
             <div>
-                <h2>{__('Block One', 'gutenberg-blocks')}</h2>
+                <h2>{__('Block Two', 'gutenberg-blocks')}</h2>
                 <p>{__('This is the first example block.', 'gutenberg-blocks')}</p>
                 <p>{attributes.content}</p> {/* Display the content on the front-end */}
             </div>

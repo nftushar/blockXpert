@@ -178,6 +178,5 @@ class Gutenberg_Blocks_Init
         }
     }
 }
-
-error_log('Enqueuing admin.css from: ' . GB_URL . 'includes/assets/css/admin.css');
+ 
 new Gutenberg_Blocks_Init();
