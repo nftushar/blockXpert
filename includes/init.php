@@ -7,33 +7,48 @@ class Gutenberg_Blocks_Init
         add_filter('block_categories_all', [$this, 'add_block_category']);
         add_action('admin_menu', [$this, 'add_admin_page']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
-        add_action('enqueue_block_editor_assets', [$this, 'gutenberg_block_assets']); 
+        add_action('enqueue_block_editor_assets', [$this, 'gutenberg_block_assets']);
     }
+
 
     public function register_blocks()
     {
-        $active_blocks = get_option('gutenberg_blocks_active', $this->get_default_blocks());
+        $blocks = ['block-one', 'block-two', 'block-three'];
 
-        foreach ($this->discover_blocks() as $block_slug) {
-            if (in_array($block_slug, $active_blocks)) {
-                register_block_type(GB_PATH . "blocks/{$block_slug}");
+        foreach ($blocks as $block) {
+            $block_json = plugin_dir_path(__DIR__) . 'blocks/' . $block . '/block.json';
+            if (file_exists($block_json)) {
+                register_block_type($block_json);
+                error_log("✅ Registered block: $block");
+            } else {
+                error_log("❌ Could not register block: $block");
             }
         }
     }
 
-    private function discover_blocks()
+
+
+    private function discover_blocks(): array
     {
-        $blocks = [];
-        $blocks_dir = GB_PATH . 'blocks/';
+        $blocks_dir = plugin_dir_path(__DIR__) . 'blocks/';
+        $block_folders = [];
 
-        foreach (scandir($blocks_dir) as $item) {
-            if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . $item)) {
-                $blocks[] = $item;
+        if (is_dir($blocks_dir)) {
+            $contents = scandir($blocks_dir);
+            foreach ($contents as $item) {
+                if ($item === '.' || $item === '..') {
+                    continue;
+                }
+
+                if (is_dir($blocks_dir . $item) && file_exists($blocks_dir . $item . '/block.json')) {
+                    $block_folders[] = $item;
+                }
             }
         }
 
-        return $blocks;
+        return $block_folders;
     }
+
 
     private function get_default_blocks()
     {
@@ -61,7 +76,8 @@ class Gutenberg_Blocks_Init
         );
     }
 
-    function gutenberg_block_assets() {
+    function gutenberg_block_assets()
+    {
         wp_enqueue_script(
             'gutenberg-blocks-js', // Handle
             plugins_url('src/index.js', __FILE__), // Path to your block's JS file
@@ -178,5 +194,5 @@ class Gutenberg_Blocks_Init
         }
     }
 }
- 
+
 new Gutenberg_Blocks_Init();

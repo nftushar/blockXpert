@@ -4,9 +4,12 @@
     "title": "Block Three",
     "category": "custom-blocks",
     "icon": "admin-site",
-    "keywords": ["example", "block"],
+    "keywords": [
+        "example",
+        "block"
+    ],
     "version": "1.0.0",
     "editorScript": "file:../../build/block-three/index.js",
-    "style": "file:../../build/block-three/style.css",
-    "editorStyle": "file:../../build/block-three/editor.css"
+    "editorStyle": "file:../../build/block-three/index.css",
+    "style": "file:../../build/block-three/style-index.css"
 }
