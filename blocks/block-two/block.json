@@ -1,15 +1,17 @@
 {
-    "apiVersion": 2,
-    "name": "gutenberg-blocks/block-two",
-    "title": "Block two",
-    "category": "custom-blocks",
-    "icon": "admin-site",
-    "keywords": [
-        "example",
-        "block"
-    ],
-    "version": "1.0.0",
-    "editorScript": "file:../../build/block-two/index.js",
-    "editorStyle": "file:../../build/block-two/index.css",
-    "style": "file:../../build/block-two/style-index.css"
+  "apiVersion": 2,
+  "name": "gutenberg-blocks/block-two",
+  "title": "Block Two",
+  "category": "custom-blocks",
+  "icon": "admin-site",
+  "editorScript": "file:../../build/block-two/index.js",
+  "editorStyle": "file:../../build/block-two/index.css",
+  "style": "file:../../build/block-two/style-index.css",
+  "attributes": {
+    "content": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "render": "gutenberg_blocks_render_block_two"
 }

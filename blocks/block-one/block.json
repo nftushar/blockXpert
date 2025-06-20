@@ -1,10 +1,17 @@
-  {
-    "apiVersion": 2,
-    "name": "gutenberg-blocks/block-one",
-    "title": "Block One",
-    "category": "common",
-    "icon": "admin-site",
-    "editorScript": "file:../../build/block-one/index.js",
-    "editorStyle": "file:../../build/block-one/index.css",
-    "style": "file:../../build/block-one/style-index.css"
-  }
+{
+  "apiVersion": 2,
+  "name": "gutenberg-blocks/block-one",
+  "title": "Block One",
+  "category": "custom-blocks",
+  "icon": "admin-site",
+  "editorScript": "file:../../build/block-one/index.js",
+  "editorStyle": "file:../../build/block-one/index.css",
+  "style": "file:../../build/block-one/style-index.css",
+  "attributes": {
+    "content": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "render": "gutenberg_blocks_render_block_one"
+}

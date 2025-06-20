@@ -1,24 +1,16 @@
-// Edit.js
 import { useBlockProps } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
 import { TextControl } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 export default function Edit({ attributes, setAttributes }) {
-    const handleChange = (event) => {
-        setAttributes({ content: event.target.value }); // Update content attribute
-    };
-
     return (
         <div {...useBlockProps()}>
-            <h2>{__('x Block One', 'gutenberg-blocks')}</h2>
-            <p>{__('This is the first example block.', 'gutenberg-blocks')}</p>
             <TextControl
-                label={__('Content', 'gutenberg-blocks')}
+                label={__('Content', 'gblocks')}
                 value={attributes.content}
-                onChange={handleChange} // Update content as user types
-                placeholder={__('Enter some content...', 'gutenberg-blocks')}
+                onChange={(content) => setAttributes({ content })}
+                placeholder={__('Enter your content...', 'gblocks')}
             />
-
         </div>
     );
 }

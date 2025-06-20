@@ -1,11 +1,16 @@
 import { useBlockProps } from '@wordpress/block-editor';
+import { TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
-export default function Edit() {
+export default function Edit({ attributes, setAttributes }) {
     return (
         <div {...useBlockProps()}>
-            <h2>{__('Block two', 'gutenberg-blocks')}</h2>
-            <p>{__('xxxxxxxxxxx This is the second example block.', 'gutenberg-blocks')}</p>
+            <TextControl
+                label={__('Content', 'gutenberg-blocks')}
+                value={attributes.content}
+                onChange={(content) => setAttributes({ content })}
+                placeholder={__('Enter your content...', 'gutenberg-blocks')}
+            />
         </div>
     );
 }
