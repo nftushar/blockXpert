@@ -10,7 +10,6 @@ class Gutenberg_Blocks_Init
         add_action('enqueue_block_editor_assets', [$this, 'gutenberg_block_assets']);
     }
 
-
     public function register_blocks()
     {
         // Get saved active blocks, or fallback to defaults if no option saved yet
@@ -26,31 +25,6 @@ class Gutenberg_Blocks_Init
             }
         }
     }
-
-
-
-
-    private function discover_blocks(): array
-    {
-        $blocks_dir = plugin_dir_path(__DIR__) . 'blocks/';
-        $block_folders = [];
-
-        if (is_dir($blocks_dir)) {
-            $contents = scandir($blocks_dir);
-            foreach ($contents as $item) {
-                if ($item === '.' || $item === '..') {
-                    continue;
-                }
-
-                if (is_dir($blocks_dir . $item) && file_exists($blocks_dir . $item . '/block.json')) {
-                    $block_folders[] = $item;
-                }
-            }
-        }
-
-        return $block_folders;
-    }
-
 
     private function get_default_blocks()
     {
@@ -78,18 +52,16 @@ class Gutenberg_Blocks_Init
         );
     }
 
-    function gutenberg_block_assets()
+    public function gutenberg_block_assets()
     {
         wp_enqueue_script(
             'gutenberg-blocks-js',
             plugins_url('src/index.js', __FILE__),
             array('wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n'),
             filemtime(plugin_dir_path(__FILE__) . 'src/index.js'),
-            true // Load in the footer
+            true
         );
     }
-
-
 
     public function render_admin_page()
     {
@@ -107,7 +79,6 @@ class Gutenberg_Blocks_Init
                 <form method="post" action="options.php">
                     <?php
                     settings_fields('gutenberg_blocks_settings');
-                    // Removed do_settings_sections — not needed as we have no sections.
                     ?>
 
                     <div class="blocks-sub-header">
@@ -126,19 +97,22 @@ class Gutenberg_Blocks_Init
                                 placeholder="<?php esc_attr_e('Search…', 'gblocks'); ?>"
                                 aria-label="<?php esc_attr_e('Search Blocks', 'gblocks'); ?>"
                                 value="">
+                            <button type="button" id="clear-search" class="button">×</button>
                         </div>
                     </div>
 
                     <div class="block-grid">
-                        <?php foreach ($blocks as $slug => $block) : ?>
-                            <div class="block-card">
+                        <?php foreach ($blocks as $slug => $block) :
+                            $is_active = in_array($slug, $active_blocks);
+                            $status_class = $is_active ? 'block-active' : 'block-inactive';
+                        ?>
+                            <div class="block-card <?php echo esc_attr($status_class); ?>" data-slug="<?php echo esc_attr($slug); ?>">
                                 <div class="block-toggle">
                                     <label class="toggle-switch">
                                         <input type="checkbox" name="gutenberg_blocks_active[]" value="<?php echo esc_attr($slug); ?>"
-                                            <?php checked(in_array($slug, $active_blocks)); ?>>
+                                            <?php checked($is_active); ?>>
                                         <span class="slider"></span>
                                     </label>
-
                                     <div class="block-info">
                                         <span class="dashicons dashicons-<?php echo esc_attr($block['icon']); ?>"></span>
                                         <h3><?php echo esc_html($block['title']); ?></h3>
@@ -154,13 +128,132 @@ class Gutenberg_Blocks_Init
             </div>
 
             <?php
-
-            // ✅ Debug: show saved DB value
+            // Debug saved value
             $saved_blocks = get_option('gutenberg_blocks_active', []);
             echo '<div class="notice notice-success"><p><strong>Saved option value:</strong></p><pre>';
             print_r($saved_blocks);
             echo '</pre></div>';
             ?>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const tabs = document.querySelectorAll('.tabs .tab');
+                    const cards = document.querySelectorAll('.block-card');
+                    const searchInput = document.getElementById('search');
+                    const clearSearchBtn = document.getElementById('clear-search');
+
+                    let currentTab = 'all';
+
+                    function filterBlocks() {
+                        const searchTerm = searchInput.value.toLowerCase();
+                        cards.forEach(card => {
+                            const isActive = card.classList.contains('block-active');
+                            const isInactive = card.classList.contains('block-inactive');
+                            const title = card.querySelector('h3').textContent.toLowerCase();
+                            const desc = card.querySelector('p.description').textContent.toLowerCase();
+
+                            let show = true;
+
+                            if (currentTab === 'active' && !isActive) show = false;
+                            if (currentTab === 'inactive' && !isInactive) show = false;
+
+                            if (searchTerm && !(title.includes(searchTerm) || desc.includes(searchTerm))) {
+                                show = false;
+                            }
+
+                            card.style.display = show ? 'block' : 'none';
+                        });
+                    }
+
+                    tabs.forEach(tab => {
+                        tab.addEventListener('click', () => {
+                            tabs.forEach(t => {
+                                t.classList.remove('is-active');
+                                t.setAttribute('aria-selected', 'false');
+                            });
+                            tab.classList.add('is-active');
+                            tab.setAttribute('aria-selected', 'true');
+
+                            currentTab = tab.textContent.trim().toLowerCase();
+                            filterBlocks();
+                        });
+                    });
+
+                    searchInput.addEventListener('input', () => {
+                        clearSearchBtn.style.display = searchInput.value.length > 0 ? 'inline' : 'none';
+                        filterBlocks();
+                    });
+
+                    clearSearchBtn.addEventListener('click', () => {
+                        searchInput.value = '';
+                        clearSearchBtn.style.display = 'none';
+                        filterBlocks();
+                    });
+
+                    clearSearchBtn.style.display = 'none';
+                });
+            </script>
+
+            <style>
+                .block-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                    gap: 16px;
+                }
+
+                .block-card {
+                    border: 1px solid #ddd;
+                    padding: 12px;
+                    background: #fff;
+                    border-radius: 6px;
+                    transition: all 0.2s ease;
+                }
+
+                .block-card[style*="display: none"] {
+                    opacity: 0;
+                }
+
+                .tabs .tab {
+                    display: inline-block;
+                    padding: 6px 12px;
+                    margin-right: 8px;
+                    cursor: pointer;
+                    border-bottom: 2px solid transparent;
+                }
+
+                .tabs .tab.is-active {
+                    border-bottom-color: #0073aa;
+                    font-weight: bold;
+                }
+
+                .search-container {
+                    margin-top: 10px;
+                    position: relative;
+                }
+
+                .search-input {
+                    padding-left: 24px;
+                    padding-right: 24px;
+                    width: 200px;
+                }
+
+                .search-icon {
+                    position: absolute;
+                    top: 50%;
+                    left: 6px;
+                    transform: translateY(-50%);
+                }
+
+                #clear-search {
+                    position: absolute;
+                    right: 6px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    padding: 0 6px;
+                    font-size: 14px;
+                    line-height: 1;
+                }
+            </style>
         </div>
 <?php
     }
