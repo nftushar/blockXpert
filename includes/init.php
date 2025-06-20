@@ -13,18 +13,20 @@ class Gutenberg_Blocks_Init
 
     public function register_blocks()
     {
-        $blocks = ['block-one', 'block-two', 'block-three'];
+        // Get saved active blocks, or fallback to defaults if no option saved yet
+        $active_blocks = get_option('gutenberg_blocks_active', $this->get_default_blocks());
 
-        foreach ($blocks as $block) {
+        foreach ($active_blocks as $block) {
             $block_json = plugin_dir_path(__DIR__) . 'blocks/' . $block . '/block.json';
             if (file_exists($block_json)) {
                 register_block_type($block_json);
-                error_log("✅ Registered block: $block");
+                error_log("✅ Registered active block: $block");
             } else {
-                error_log("❌ Could not register block: $block");
+                error_log("❌ Could not register block (missing block.json): $block");
             }
         }
     }
+
 
 
 
@@ -79,10 +81,10 @@ class Gutenberg_Blocks_Init
     function gutenberg_block_assets()
     {
         wp_enqueue_script(
-            'gutenberg-blocks-js', // Handle
-            plugins_url('src/index.js', __FILE__), // Path to your block's JS file
-            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n'), // Dependencies
-            filemtime(plugin_dir_path(__FILE__) . 'src/index.js'), // Cache busting
+            'gutenberg-blocks-js',
+            plugins_url('src/index.js', __FILE__),
+            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n'),
+            filemtime(plugin_dir_path(__FILE__) . 'src/index.js'),
             true // Load in the footer
         );
     }
@@ -91,10 +93,12 @@ class Gutenberg_Blocks_Init
 
     public function render_admin_page()
     {
-        if (!current_user_can('manage_options')) return;
+        if (!current_user_can('manage_options')) {
+            return;
+        }
 
         $blocks = $this->get_block_metadata();
-        $active_blocks = get_option('gutenberg_blocks_active', $this->get_default_blocks());
+        $active_blocks = get_option('gutenberg_blocks_active', Gutenberg_Blocks_Settings::get_default_blocks());
 ?>
         <div class="wrap gutenberg-blocks-settings">
             <h1><?php esc_html_e('Gutenberg Blocks Settings', 'gblocks'); ?></h1>
@@ -103,7 +107,7 @@ class Gutenberg_Blocks_Init
                 <form method="post" action="options.php">
                     <?php
                     settings_fields('gutenberg_blocks_settings');
-                    do_settings_sections('gutenberg_blocks_settings');
+                    // Removed do_settings_sections — not needed as we have no sections.
                     ?>
 
                     <div class="blocks-sub-header">
@@ -132,8 +136,6 @@ class Gutenberg_Blocks_Init
                                     <label class="toggle-switch">
                                         <input type="checkbox" name="gutenberg_blocks_active[]" value="<?php echo esc_attr($slug); ?>"
                                             <?php checked(in_array($slug, $active_blocks)); ?>>
-
-
                                         <span class="slider"></span>
                                     </label>
 
@@ -142,8 +144,6 @@ class Gutenberg_Blocks_Init
                                         <h3><?php echo esc_html($block['title']); ?></h3>
                                     </div>
                                 </div>
-
-
                                 <p class="description"><?php echo esc_html($block['description']); ?></p>
                             </div>
                         <?php endforeach; ?>
@@ -152,10 +152,19 @@ class Gutenberg_Blocks_Init
                     <?php submit_button(__('Save Settings', 'gblocks')); ?>
                 </form>
             </div>
-        </div>
 
+            <?php
+
+            // ✅ Debug: show saved DB value
+            $saved_blocks = get_option('gutenberg_blocks_active', []);
+            echo '<div class="notice notice-success"><p><strong>Saved option value:</strong></p><pre>';
+            print_r($saved_blocks);
+            echo '</pre></div>';
+            ?>
+        </div>
 <?php
     }
+
 
     private function get_block_metadata()
     {

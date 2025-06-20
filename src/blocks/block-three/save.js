@@ -8,7 +8,7 @@
         if (!attributes.content) {
             return (
                 <div>
-                    <h2>{__('1 Block Three', 'gutenberg-blocks')}</h2>
+                    <h2>{__('User Block Three', 'gutenberg-blocks')}</h2>
                     <p>{__('This is the first example block.', 'gutenberg-blocks')}</p>
                     <p>{__('No content entered.', 'gutenberg-blocks')}</p> {/* Fallback message */}
                 </div>
