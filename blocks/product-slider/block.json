@@ -1,0 +1,45 @@
+{
+  "apiVersion": 2,
+  "name": "gutenberg-blocks/product-slider",
+  "title": "WooCommerce Product Slider",
+  "category": "custom-blocks",
+  "icon": "slides",
+  "editorScript": "file:../../build/product-slider/index.js",
+  "editorStyle": "file:../../build/product-slider/index.css",
+  "style": "file:../../build/product-slider/style-index.css",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Featured Products"
+    },
+    "productsPerSlide": {
+      "type": "number",
+      "default": 3
+    },
+    "autoPlay": {
+      "type": "boolean",
+      "default": true
+    },
+    "showNavigation": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPagination": {
+      "type": "boolean",
+      "default": true
+    },
+    "category": {
+      "type": "string",
+      "default": ""
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "date"
+    },
+    "order": {
+      "type": "string",
+      "default": "DESC"
+    }
+  },
+  "render": "gutenberg_blocks_render_product_slider"
+} 

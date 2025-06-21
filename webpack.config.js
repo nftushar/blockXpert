@@ -6,7 +6,8 @@ module.exports = {
   entry: {
     'block-one': './src/blocks/block-one/index.js',
     'block-two': './src/blocks/block-two/index.js',
-    'block-three': './src/blocks/block-three/index.js'
+    'block-three': './src/blocks/block-three/index.js',
+    'product-slider': './src/blocks/product-slider/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'build'),
