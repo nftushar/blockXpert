@@ -15,7 +15,6 @@ class Gutenberg_Blocks_Init
         add_filter('block_categories_all', [$this, 'add_block_category']);
         add_action('admin_menu', [$this, 'add_admin_page']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
-        add_action('enqueue_block_editor_assets', [$this, 'gutenberg_block_assets']);
         add_action('admin_init', [$this, 'register_settings']);
     }
 
@@ -496,35 +495,6 @@ error_log("🔍 Checking block: $block at $block_json_path");
             'dashicons-editor-code',
             60
         );
-    }
-
-    /**
-     * Enqueue block editor scripts and styles on block editor pages only
-     */
-    public function gutenberg_block_assets()
-    {
-        // Only load scripts/styles in Gutenberg editor
-        if (!is_admin() || !function_exists('get_current_screen')) {
-            return;
-        }
-
-        $screen = get_current_screen();
-        if (!$screen || $screen->base !== 'post') {
-            return;
-        }
-
-        $script_path = plugin_dir_path(__DIR__) . 'src/index.js';
-        $script_url  = plugins_url('src/index.js', __DIR__);
-
-        if (file_exists($script_path)) {
-            wp_enqueue_script(
-                'gutenberg-blocks-js',
-                $script_url,
-                ['wp-blocks', 'wp-element', 'wp-editor', 'wp-i18n'],
-                filemtime($script_path),
-                true
-            );
-        }
     }
 
     /**

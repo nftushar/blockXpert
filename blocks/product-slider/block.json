@@ -38,7 +38,7 @@
     },
     "order": {
       "type": "string",
-      "default": "DESC"
+      "default": "desc"
     }
   },
   "render": "gutenberg_blocks_render_product_slider"

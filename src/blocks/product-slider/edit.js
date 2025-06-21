@@ -5,15 +5,18 @@ import {
     RangeControl, 
     ToggleControl, 
     SelectControl,
-    __experimentalNumberControl as NumberControl
+    Placeholder
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import { store as blockEditorStore } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 
 export default function Edit({ attributes, setAttributes }) {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     const {
         title,
@@ -26,6 +29,11 @@ export default function Edit({ attributes, setAttributes }) {
         order
     } = attributes;
 
+    const deviceType = useSelect(select => {
+        const { __unstableGetPreviewDeviceType } = select(blockEditorStore);
+        return __unstableGetPreviewDeviceType ? __unstableGetPreviewDeviceType() : 'Desktop';
+    }, []);
+    
     // Fetch WooCommerce categories
     useEffect(() => {
         if (window.wp && window.wp.apiFetch) {
@@ -39,11 +47,12 @@ export default function Edit({ attributes, setAttributes }) {
         }
     }, []);
 
-    // Fetch sample products for preview
+    // Fetch and reset slide on changes
     useEffect(() => {
         if (window.wp && window.wp.apiFetch) {
             setLoading(true);
-            let path = '/wc/v3/products?per_page=6&status=publish';
+            setCurrentSlide(0); // Reset slider position when products reload
+            let path = `/wc/v3/products?per_page=12&status=publish`;
             
             if (category) {
                 path += `&category=${category}`;
@@ -80,9 +89,39 @@ export default function Edit({ attributes, setAttributes }) {
     ];
 
     const orderOptions = [
-        { label: __('Descending', 'gblocks'), value: 'DESC' },
-        { label: __('Ascending', 'gblocks'), value: 'ASC' }
+        { label: __('Descending', 'gblocks'), value: 'desc' },
+        { label: __('Ascending', 'gblocks'), value: 'asc' }
     ];
+
+    const getSlidesPerView = () => {
+        if (deviceType === 'Mobile') return 1;
+        if (deviceType === 'Tablet') return Math.min(2, productsPerSlide);
+        return productsPerSlide;
+    };
+    
+    const slidesPerView = getSlidesPerView();
+    const totalSlides = products.length > 0 ? Math.ceil(products.length / slidesPerView) : 0;
+
+    const goToNext = () => {
+        setCurrentSlide(prev => (prev + 1) % totalSlides);
+    };
+
+    const goToPrev = () => {
+        setCurrentSlide(prev => (prev - 1 + totalSlides) % totalSlides);
+    };
+    
+    const goToSlide = (index) => {
+        setCurrentSlide(index);
+    };
+
+    // Auto-play handler
+    useEffect(() => {
+        if (!autoPlay || totalSlides <= 1) {
+            return;
+        }
+        const interval = setInterval(goToNext, 5000);
+        return () => clearInterval(interval);
+    }, [autoPlay, totalSlides]);
 
     return (
         <div {...useBlockProps()}>
@@ -146,56 +185,187 @@ export default function Edit({ attributes, setAttributes }) {
                 </PanelBody>
             </InspectorControls>
 
-            <div className="product-slider-preview">
+            <div className="product-slider-editor-preview">
                 <h3 className="slider-title">{title || __('WooCommerce Product Slider', 'gblocks')}</h3>
                 
-                {loading ? (
-                    <div className="slider-loading">
-                        <p>{__('Loading products...', 'gblocks')}</p>
-                    </div>
-                ) : (
-                    <div className="slider-container">
-                        <div className="slider-products" style={{ display: 'grid', gridTemplateColumns: `repeat(${productsPerSlide}, 1fr)`, gap: '20px' }}>
-                            {products.map((product) => (
-                                <div key={product.id} className="product-item">
-                                    <div className="product-image">
-                                        {product.images && product.images[0] ? (
-                                            <img 
-                                                src={product.images[0].src} 
-                                                alt={product.name}
-                                                style={{ width: '100%', height: '150px', objectFit: 'cover' }}
-                                            />
-                                        ) : (
-                                            <div style={{ width: '100%', height: '150px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                {__('No Image', 'gblocks')}
+                {loading && (
+                    <Placeholder label={__('Loading Products', 'gblocks')}>
+                        <p>{__('Fetching products for the preview...', 'gblocks')}</p>
+                    </Placeholder>
+                )}
+
+                {!loading && products.length === 0 && (
+                    <Placeholder
+                        icon="woocommerce"
+                        label={__('No Products Found', 'gblocks')}
+                        instructions={__('No products were found. Please check your product visibility, selected category, or try creating new products.', 'gblocks')}
+                    >
+                        <a 
+                            className="components-button is-primary"
+                            href="/wp-admin/post-new.php?post_type=product"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {__('Create New Product', 'gblocks')}
+                        </a>
+                    </Placeholder>
+                )}
+
+                {!loading && products.length > 0 && (
+                     <div className="slider-container-preview">
+                        <div className="slider-wrapper-preview">
+                            <div 
+                                className="slider-track-preview"
+                                style={{
+                                    display: 'flex',
+                                    transition: 'transform 0.5s ease-in-out',
+                                    transform: `translateX(-${currentSlide * 100}%)`,
+                                }}
+                            >
+                                {products.map((product) => (
+                                    <div 
+                                        key={product.id} 
+                                        className="product-item-preview"
+                                        style={{
+                                            flex: `0 0 ${100 / slidesPerView}%`,
+                                            padding: '0 8px',
+                                        }}
+                                    >
+                                        <div className="product-card-preview">
+                                            <div className="product-image-preview">
+                                                {product.images && product.images[0] ? (
+                                                    <img src={product.images[0].src} alt={product.name}/>
+                                                ) : (
+                                                    <div className="product-image-placeholder">
+                                                        <span>{__('No Image', 'gblocks')}</span>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )}
+                                            <div className="product-info-preview">
+                                                <h4 className="product-title-preview">{product.name}</h4>
+                                                <p className="product-price-preview" dangerouslySetInnerHTML={{ __html: product.price_html || product.price }} />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="product-info">
-                                        <h4>{product.name}</h4>
-                                        <p className="price">{product.price}</p>
-                                    </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                         
-                        {showNavigation && (
-                            <div className="slider-navigation">
-                                <button className="nav-prev">‹</button>
-                                <button className="nav-next">›</button>
-                            </div>
+                        {showNavigation && totalSlides > 1 && (
+                            <>
+                                <button className="slider-nav-preview prev" onClick={goToPrev}>‹</button>
+                                <button className="slider-nav-preview next" onClick={goToNext}>›</button>
+                            </>
                         )}
                         
-                        {showPagination && (
-                            <div className="slider-pagination">
-                                <span className="dot active"></span>
-                                <span className="dot"></span>
-                                <span className="dot"></span>
+                        {showPagination && totalSlides > 1 && (
+                            <div className="slider-pagination-preview">
+                                {Array.from({ length: totalSlides }).map((_, index) => (
+                                    <button 
+                                        key={index} 
+                                        className={`dot-preview ${currentSlide === index ? 'active' : ''}`}
+                                        onClick={() => goToSlide(index)}
+                                        aria-label={`${__('Go to slide', 'gblocks')} ${index + 1}`}
+                                    />
+                                ))}
                             </div>
                         )}
                     </div>
                 )}
             </div>
+             <style>{`
+                .product-slider-editor-preview .slider-title {
+                    text-align: center;
+                    font-size: 1.5em;
+                    margin-bottom: 1em;
+                }
+                .slider-container-preview {
+                    position: relative;
+                }
+                .slider-wrapper-preview {
+                    overflow: hidden;
+                }
+                .product-card-preview {
+                    border: 1px solid #e0e0e0;
+                    border-radius: 4px;
+                    overflow: hidden;
+                    background: #fff;
+                }
+                .product-image-preview {
+                    width: 100%;
+                    padding-top: 100%; /* 1:1 Aspect Ratio */
+                    position: relative;
+                    background-color: #f0f0f0;
+                }
+                .product-image-preview img {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .product-image-placeholder {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #999;
+                }
+                .product-info-preview {
+                    padding: 12px;
+                }
+                .product-title-preview {
+                    font-size: 1em;
+                    margin: 0 0 8px 0;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .product-price-preview {
+                    font-size: 0.9em;
+                    font-weight: bold;
+                    color: #2c3e50;
+                    margin: 0;
+                }
+                .slider-nav-preview {
+                    position: absolute;
+                    top: 40%;
+                    transform: translateY(-50%);
+                    background: rgba(255, 255, 255, 0.8);
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                    width: 32px;
+                    height: 32px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10;
+                }
+                .slider-nav-preview.prev { left: -10px; }
+                .slider-nav-preview.next { right: -10px; }
+                .slider-pagination-preview {
+                    text-align: center;
+                    margin-top: 16px;
+                }
+                .dot-preview {
+                    display: inline-block;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    background: #ccc;
+                    margin: 0 4px;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                }
+                .dot-preview.active { background: #333; }
+            `}</style>
         </div>
     );
 } 
