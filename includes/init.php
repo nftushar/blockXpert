@@ -1,13 +1,13 @@
 <?php
-if (!defined('GB_PATH')) {
-    define('GB_PATH', plugin_dir_path(__FILE__));
+if (!defined('BLOCKXPERT_PATH')) {
+    define('BLOCKXPERT_PATH', plugin_dir_path(__FILE__));
 }
 
-if (!defined('GB_URL')) {
-    define('GB_URL', plugin_dir_url(__FILE__));
+if (!defined('BLOCKXPERT_URL')) {
+    define('BLOCKXPERT_URL', plugin_dir_url(__FILE__));
 }
 
-class Gutenberg_Blocks_Init
+class BlockXpert_Init
 {
     public function __construct()
     {
@@ -23,7 +23,7 @@ class Gutenberg_Blocks_Init
      */
     public function register_blocks()
     {
-        $active_blocks = get_option('gutenberg_blocks_active', $this->get_default_blocks());
+        $active_blocks = get_option('blockxpert_active', $this->get_default_blocks());
 
         foreach ($active_blocks as $block) {
             $block_dir = plugin_dir_path(__DIR__) . 'blocks/' . $block;
@@ -51,7 +51,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
      */
     public function register_settings()
     {
-        register_setting('gutenberg_blocks_settings', 'gutenberg_blocks_active', [
+        register_setting('blockxpert_settings', 'blockxpert_active', [
             'type' => 'array',
             'sanitize_callback' => [$this, 'sanitize_active_blocks'],
             'default' => $this->get_default_blocks(),
@@ -89,7 +89,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
         ?>
         <div class="dynamic-block block-one">
             <h2><?php echo esc_html($attributes['content'] ?? 'Default Title for Block One'); ?></h2>
-            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block One.', 'gblocks'); ?></p>
+            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block One.', 'blockxpert'); ?></p>
         </div>
         <?php
         return ob_get_clean();
@@ -104,7 +104,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
         ?>
         <div class="dynamic-block block-two">
             <h2><?php echo esc_html($attributes['content'] ?? 'Default Title for Block Two'); ?></h2>
-            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block Two.', 'gblocks'); ?></p>
+            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block Two.', 'blockxpert'); ?></p>
         </div>
         <?php
         return ob_get_clean();
@@ -119,7 +119,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
         ?>
         <div class="dynamic-block block-three">
             <h2><?php echo esc_html($attributes['content'] ?? 'Default Title for Block Three'); ?></h2>
-            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block Three.', 'gblocks'); ?></p>
+            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block Three.', 'blockxpert'); ?></p>
         </div>
         <?php
         return ob_get_clean();
@@ -132,17 +132,17 @@ error_log("🔍 Checking block: $block at $block_json_path");
     {
         // Check if WooCommerce is active
         if (!class_exists('WooCommerce')) {
-            return '<div class="notice notice-error"><p>' . esc_html__('WooCommerce is required for the Product Slider block.', 'gblocks') . '</p></div>';
+            return '<div class="notice notice-error"><p>' . esc_html__('WooCommerce is required for the Product Slider block.', 'blockxpert') . '</p></div>';
         }
 
-        $title = $attributes['title'] ?? __('Featured Products', 'gblocks');
+        $title = $attributes['title'] ?? __('Featured Products', 'blockxpert');
         $products_per_slide = $attributes['productsPerSlide'] ?? 3;
         $auto_play = $attributes['autoPlay'] ?? true;
         $show_navigation = $attributes['showNavigation'] ?? true;
         $show_pagination = $attributes['showPagination'] ?? true;
         $category = $attributes['category'] ?? '';
         $order_by = $attributes['orderBy'] ?? 'date';
-        $order = $attributes['order'] ?? 'DESC';
+        $order = $attributes['order'] ?? 'desc';
 
         // Build query args
         $args = [
@@ -150,7 +150,14 @@ error_log("🔍 Checking block: $block at $block_json_path");
             'post_status' => 'publish',
             'posts_per_page' => 12,
             'orderby' => $order_by,
-            'order' => $order
+            'order' => $order,
+            'meta_query' => [
+                [
+                    'key' => '_visibility',
+                    'value' => ['catalog', 'visible'],
+                    'compare' => 'IN'
+                ]
+            ]
         ];
 
         // Add category filter if specified
@@ -203,7 +210,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
                                             <?php if ($product->is_in_stock()) : ?>
                                                 <div class="product-actions">
                                                     <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" class="button add-to-cart">
-                                                        <?php echo esc_html__('Add to Cart', 'gblocks'); ?>
+                                                        <?php echo esc_html__('Add to Cart', 'blockxpert'); ?>
                                                     </a>
                                                 </div>
                                             <?php endif; ?>
@@ -215,8 +222,8 @@ error_log("🔍 Checking block: $block at $block_json_path");
                     </div>
 
                     <?php if ($show_navigation && $products->post_count > $products_per_slide) : ?>
-                        <button class="slider-nav slider-prev" aria-label="<?php esc_attr_e('Previous', 'gblocks'); ?>">‹</button>
-                        <button class="slider-nav slider-next" aria-label="<?php esc_attr_e('Next', 'gblocks'); ?>">›</button>
+                        <button class="slider-nav slider-prev" aria-label="<?php esc_attr_e('Previous', 'blockxpert'); ?>">‹</button>
+                        <button class="slider-nav slider-next" aria-label="<?php esc_attr_e('Next', 'blockxpert'); ?>">›</button>
                     <?php endif; ?>
 
                     <?php if ($show_pagination && $products->post_count > $products_per_slide) : ?>
@@ -224,7 +231,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
                     <?php endif; ?>
                 </div>
             <?php else : ?>
-                <p class="no-products"><?php esc_html_e('No products found.', 'gblocks'); ?></p>
+                <p class="no-products"><?php esc_html_e('No products found.', 'blockxpert'); ?></p>
             <?php endif; ?>
         </div>
 
@@ -477,7 +484,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
 
         return array_merge($categories, [[
             'slug'  => 'custom-blocks',
-            'title' => __('Custom Blocks', 'gblocks'),
+            'title' => __('Custom Blocks', 'blockxpert'),
         ]]);
     }
 
@@ -487,10 +494,10 @@ error_log("🔍 Checking block: $block at $block_json_path");
     public function add_admin_page()
     {
         add_menu_page(
-            __('Gutenberg Blocks Settings', 'gblocks'),
-            __('Gutenberg Blocks', 'gblocks'),
+            __('BlockXpert Settings', 'blockxpert'),
+            __('BlockXpert', 'blockxpert'),
             'manage_options',
-            'gutenberg-blocks-settings',
+            'blockxpert-settings',
             [$this, 'render_admin_page'],
             'dashicons-editor-code',
             60
@@ -507,13 +514,13 @@ error_log("🔍 Checking block: $block at $block_json_path");
         }
 
         $blocks = $this->get_block_metadata();
-        $active_blocks = get_option('gutenberg_blocks_active', $this->get_default_blocks());
+        $active_blocks = get_option('blockxpert_active', $this->get_default_blocks());
         ?>
-        <div class="wrap gutenberg-blocks-settings">
-            <h1><?php esc_html_e('Gutenberg Blocks Settings', 'gblocks'); ?></h1>
+        <div class="wrap blockxpert-settings">
+            <h1><?php esc_html_e('BlockXpert Settings', 'blockxpert'); ?></h1>
 
             <form method="post" action="options.php">
-                <?php settings_fields('gutenberg_blocks_settings'); ?>
+                <?php settings_fields('blockxpert_settings'); ?>
 
                 <div class="blocks-sub-header">
                     <div class="tabs" role="tablist">
@@ -528,8 +535,8 @@ error_log("🔍 Checking block: $block at $block_json_path");
                             id="search"
                             type="text"
                             class="search-input"
-                            placeholder="<?php esc_attr_e('Search…', 'gblocks'); ?>"
-                            aria-label="<?php esc_attr_e('Search Blocks', 'gblocks'); ?>"
+                            placeholder="<?php esc_attr_e('Search…', 'blockxpert'); ?>"
+                            aria-label="<?php esc_attr_e('Search Blocks', 'blockxpert'); ?>"
                             value="">
                         <button type="button" id="clear-search" class="button">×</button>
                     </div>
@@ -545,7 +552,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
                                 <label class="toggle-switch">
                                     <input
                                         type="checkbox"
-                                        name="gutenberg_blocks_active[]"
+                                        name="blockxpert_active[]"
                                         value="<?php echo esc_attr($slug); ?>"
                                         <?php checked($is_active); ?>>
                                     <span class="slider"></span>
@@ -560,12 +567,12 @@ error_log("🔍 Checking block: $block at $block_json_path");
                     <?php endforeach; ?>
                 </div>
 
-                <?php submit_button(__('Save Settings', 'gblocks')); ?>
+                <?php submit_button(__('Save Settings', 'blockxpert')); ?>
             </form>
 
             <?php
             // Debug output of saved option (remove on production)
-            $saved_blocks = get_option('gutenberg_blocks_active', []);
+            $saved_blocks = get_option('blockxpert_active', []);
             echo '<div class="notice notice-success"><p><strong>Saved option value:</strong></p><pre>';
             print_r($saved_blocks);
             echo '</pre></div>';
@@ -701,7 +708,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
     private function get_block_metadata()
     {
         $metadata = [];
-        $blocks_dir = GB_PATH . 'blocks/';
+        $blocks_dir = BLOCKXPERT_PATH . 'blocks/';
 
         if (!is_dir($blocks_dir)) {
             return $metadata;
@@ -718,7 +725,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
                 $metadata[$item] = [
                     'title'       => $data['title'] ?? ucfirst(str_replace('-', ' ', $item)),
                     'icon'        => $data['icon'] ?? 'block-default',
-                    'description' => $data['description'] ?? __('Custom Gutenberg block', 'gblocks'),
+                    'description' => $data['description'] ?? __('Custom Gutenberg block', 'blockxpert'),
                 ];
             }
         }
@@ -731,16 +738,16 @@ error_log("🔍 Checking block: $block at $block_json_path");
      */
     public function enqueue_admin_assets($hook)
     {
-        if ($hook !== 'toplevel_page_gutenberg-blocks-settings') {
+        if ($hook !== 'toplevel_page_blockxpert-settings') {
             return;
         }
 
-        $css_path = GB_PATH . 'includes/assets/css/admin.css';
-        $css_url = GB_URL . 'includes/assets/css/admin.css';
+        $css_path = BLOCKXPERT_PATH . 'includes/assets/css/admin.css';
+        $css_url = BLOCKXPERT_URL . 'includes/assets/css/admin.css';
 
         if (file_exists($css_path)) {
             wp_enqueue_style(
-                'gutenberg-blocks-admin',
+                'blockxpert-admin',
                 $css_url,
                 [],
                 filemtime($css_path)
@@ -749,4 +756,4 @@ error_log("🔍 Checking block: $block at $block_json_path");
     }
 }
 
-new Gutenberg_Blocks_Init();
+new BlockXpert_Init();

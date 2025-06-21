@@ -1,8 +1,7 @@
 import { registerBlockType } from '@wordpress/blocks';
-import edit from './edit';
-import save from './save';
+import Edit from './edit';
 
-registerBlockType('gutenberg-blocks/block-two', {
-    edit,
-    save,
+registerBlockType('blockxpert/block-two', {
+    edit: Edit,
+    save: () => null, // dynamic block, no static save output
 });

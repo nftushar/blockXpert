@@ -1,6 +1,6 @@
 {
     "apiVersion": 2,
-    "name": "gutenberg-blocks/block-three",
+    "name": "blockxpert/block-three",
     "title": "Block Three",
     "category": "custom-blocks",
     "icon": "admin-site",

@@ -73,7 +73,7 @@ export default function Edit({ attributes, setAttributes }) {
     }, [category, orderBy, order]);
 
     const categoryOptions = [
-        { label: __('All Categories', 'gblocks'), value: '' },
+        { label: __('All Categories', 'blockxpert'), value: '' },
         ...categories.map(cat => ({
             label: cat.name,
             value: cat.id.toString()
@@ -81,16 +81,16 @@ export default function Edit({ attributes, setAttributes }) {
     ];
 
     const orderByOptions = [
-        { label: __('Date', 'gblocks'), value: 'date' },
-        { label: __('Title', 'gblocks'), value: 'title' },
-        { label: __('Price', 'gblocks'), value: 'price' },
-        { label: __('Popularity', 'gblocks'), value: 'popularity' },
-        { label: __('Rating', 'gblocks'), value: 'rating' }
+        { label: __('Date', 'blockxpert'), value: 'date' },
+        { label: __('Title', 'blockxpert'), value: 'title' },
+        { label: __('Price', 'blockxpert'), value: 'price' },
+        { label: __('Popularity', 'blockxpert'), value: 'popularity' },
+        { label: __('Rating', 'blockxpert'), value: 'rating' }
     ];
 
     const orderOptions = [
-        { label: __('Descending', 'gblocks'), value: 'desc' },
-        { label: __('Ascending', 'gblocks'), value: 'asc' }
+        { label: __('Descending', 'blockxpert'), value: 'desc' },
+        { label: __('Ascending', 'blockxpert'), value: 'asc' }
     ];
 
     const getSlidesPerView = () => {
@@ -126,16 +126,16 @@ export default function Edit({ attributes, setAttributes }) {
     return (
         <div {...useBlockProps()}>
             <InspectorControls>
-                <PanelBody title={__('Slider Settings', 'gblocks')} initialOpen={true}>
+                <PanelBody title={__('Slider Settings', 'blockxpert')} initialOpen={true}>
                     <TextControl
-                        label={__('Slider Title', 'gblocks')}
+                        label={__('Slider Title', 'blockxpert')}
                         value={title}
                         onChange={(title) => setAttributes({ title })}
-                        placeholder={__('Enter slider title...', 'gblocks')}
+                        placeholder={__('Enter slider title...', 'blockxpert')}
                     />
                     
                     <RangeControl
-                        label={__('Products per Slide', 'gblocks')}
+                        label={__('Products per Slide', 'blockxpert')}
                         value={productsPerSlide}
                         onChange={(productsPerSlide) => setAttributes({ productsPerSlide })}
                         min={1}
@@ -143,41 +143,41 @@ export default function Edit({ attributes, setAttributes }) {
                     />
                     
                     <ToggleControl
-                        label={__('Auto Play', 'gblocks')}
+                        label={__('Auto Play', 'blockxpert')}
                         checked={autoPlay}
                         onChange={(autoPlay) => setAttributes({ autoPlay })}
                     />
                     
                     <ToggleControl
-                        label={__('Show Navigation Arrows', 'gblocks')}
+                        label={__('Show Navigation Arrows', 'blockxpert')}
                         checked={showNavigation}
                         onChange={(showNavigation) => setAttributes({ showNavigation })}
                     />
                     
                     <ToggleControl
-                        label={__('Show Pagination Dots', 'gblocks')}
+                        label={__('Show Pagination Dots', 'blockxpert')}
                         checked={showPagination}
                         onChange={(showPagination) => setAttributes({ showPagination })}
                     />
                 </PanelBody>
                 
-                <PanelBody title={__('Product Settings', 'gblocks')} initialOpen={false}>
+                <PanelBody title={__('Product Settings', 'blockxpert')} initialOpen={false}>
                     <SelectControl
-                        label={__('Product Category', 'gblocks')}
+                        label={__('Product Category', 'blockxpert')}
                         value={category}
                         options={categoryOptions}
                         onChange={(category) => setAttributes({ category })}
                     />
                     
                     <SelectControl
-                        label={__('Order By', 'gblocks')}
+                        label={__('Order By', 'blockxpert')}
                         value={orderBy}
                         options={orderByOptions}
                         onChange={(orderBy) => setAttributes({ orderBy })}
                     />
                     
                     <SelectControl
-                        label={__('Order', 'gblocks')}
+                        label={__('Order', 'blockxpert')}
                         value={order}
                         options={orderOptions}
                         onChange={(order) => setAttributes({ order })}
@@ -186,19 +186,19 @@ export default function Edit({ attributes, setAttributes }) {
             </InspectorControls>
 
             <div className="product-slider-editor-preview">
-                <h3 className="slider-title">{title || __('WooCommerce Product Slider', 'gblocks')}</h3>
+                <h3 className="slider-title">{title || __('WooProduct Slider', 'blockxpert')}</h3>
                 
                 {loading && (
-                    <Placeholder label={__('Loading Products', 'gblocks')}>
-                        <p>{__('Fetching products for the preview...', 'gblocks')}</p>
+                    <Placeholder label={__('Loading Products', 'blockxpert')}>
+                        <p>{__('Fetching products for the preview...', 'blockxpert')}</p>
                     </Placeholder>
                 )}
 
                 {!loading && products.length === 0 && (
                     <Placeholder
                         icon="woocommerce"
-                        label={__('No Products Found', 'gblocks')}
-                        instructions={__('No products were found. Please check your product visibility, selected category, or try creating new products.', 'gblocks')}
+                        label={__('No Products Found', 'blockxpert')}
+                        instructions={__('No products were found. Please check your product visibility, selected category, or try creating new products.', 'blockxpert')}
                     >
                         <a 
                             className="components-button is-primary"
@@ -206,7 +206,7 @@ export default function Edit({ attributes, setAttributes }) {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            {__('Create New Product', 'gblocks')}
+                            {__('Create New Product', 'blockxpert')}
                         </a>
                     </Placeholder>
                 )}
@@ -237,7 +237,7 @@ export default function Edit({ attributes, setAttributes }) {
                                                     <img src={product.images[0].src} alt={product.name}/>
                                                 ) : (
                                                     <div className="product-image-placeholder">
-                                                        <span>{__('No Image', 'gblocks')}</span>
+                                                        <span>{__('No Image', 'blockxpert')}</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -265,7 +265,7 @@ export default function Edit({ attributes, setAttributes }) {
                                         key={index} 
                                         className={`dot-preview ${currentSlide === index ? 'active' : ''}`}
                                         onClick={() => goToSlide(index)}
-                                        aria-label={`${__('Go to slide', 'gblocks')} ${index + 1}`}
+                                        aria-label={`${__('Go to slide', 'blockxpert')} ${index + 1}`}
                                     />
                                 ))}
                             </div>

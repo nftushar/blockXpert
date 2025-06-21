@@ -1,7 +1,7 @@
 {
   "apiVersion": 2,
-  "name": "gutenberg-blocks/product-slider",
-  "title": "WooCommerce Product Slider",
+  "name": "blockxpert/product-slider",
+  "title": "WooProduct Slider",
   "category": "custom-blocks",
   "icon": "slides",
   "editorScript": "file:../../build/product-slider/index.js",

@@ -6,10 +6,10 @@ export default function Edit({ attributes, setAttributes }) {
     return (
         <div {...useBlockProps()}>
             <TextControl
-                label={__('Content', 'gblocks')}
+                label={__('Content', 'blockxpert')}
                 value={attributes.content}
                 onChange={(content) => setAttributes({ content })}
-                placeholder={__('Enter your content...', 'gblocks')}
+                placeholder={__('Enter your content...', 'blockxpert')}
             />
         </div>
     );
