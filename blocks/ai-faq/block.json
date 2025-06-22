@@ -7,6 +7,7 @@
   "editorScript": "file:../../build/ai-faq/index.js",
   "editorStyle": "file:../../build/ai-faq/index.css",
   "style": "file:../../build/ai-faq/style-index.css",
+  "script": "file:../../build/ai-faq/view.js",
   "attributes": {
     "title": {
       "type": "string",

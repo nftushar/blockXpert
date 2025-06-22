@@ -13,5 +13,6 @@
       "default": ""
     }
   },
-  "render": "gutenberg_blocks_render_block_one"
+  "render": "gutenberg_blocks_render_block_one",
+  "script": "file:../../build/block-one/view.js"
 }

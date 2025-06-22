@@ -6,6 +6,7 @@
         "build": "wp-scripts build"
     },
     "devDependencies": {
-        "@wordpress/scripts": "^24.6.0"
+        "@wordpress/scripts": "^24.6.0",
+        "mini-css-extract-plugin": "^2.9.2"
     }
 }

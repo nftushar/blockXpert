@@ -1,0 +1,1 @@
+// Placeholder for pdf-invoice frontend JS. 

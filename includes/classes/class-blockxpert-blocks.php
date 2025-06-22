@@ -40,8 +40,9 @@ class BlockXpert_Blocks {
         ob_start();
         ?>
         <div class="dynamic-block block-one">
-            <h2><?php echo esc_html($attributes['content'] ?? 'Default Title for Block One'); ?></h2>
-            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block One.', 'blockxpert'); ?></p>
+            <h2><?php echo esc_html($attributes['title'] ?? 'Block One'); ?></h2>
+            <p><?php echo esc_html__('This is Block One. Replace this with your custom content.', 'blockxpert'); ?></p>
+            <pre style="background:#f8f8f8;padding:10px;border-radius:4px;">Attributes: <?php echo esc_html(json_encode($attributes)); ?></pre>
         </div>
         <?php
         return ob_get_clean();
@@ -52,8 +53,9 @@ class BlockXpert_Blocks {
         ob_start();
         ?>
         <div class="dynamic-block block-two">
-            <h2><?php echo esc_html($attributes['content'] ?? 'Default Title for Block Two'); ?></h2>
-            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block Two.', 'blockxpert'); ?></p>
+            <h2><?php echo esc_html($attributes['title'] ?? 'Block Two'); ?></h2>
+            <p><?php echo esc_html__('This is Block Two. Replace this with your custom content.', 'blockxpert'); ?></p>
+            <pre style="background:#f8f8f8;padding:10px;border-radius:4px;">Attributes: <?php echo esc_html(json_encode($attributes)); ?></pre>
         </div>
         <?php
         return ob_get_clean();
@@ -64,8 +66,9 @@ class BlockXpert_Blocks {
         ob_start();
         ?>
         <div class="dynamic-block block-three">
-            <h2><?php echo esc_html($attributes['content'] ?? 'Default Title for Block Three'); ?></h2>
-            <p><?php echo esc_html__('This is dynamic content rendered by PHP for Block Three.', 'blockxpert'); ?></p>
+            <h2><?php echo esc_html($attributes['title'] ?? 'Block Three'); ?></h2>
+            <p><?php echo esc_html__('This is Block Three. Replace this with your custom content.', 'blockxpert'); ?></p>
+            <pre style="background:#f8f8f8;padding:10px;border-radius:4px;">Attributes: <?php echo esc_html(json_encode($attributes)); ?></pre>
         </div>
         <?php
         return ob_get_clean();
@@ -73,332 +76,199 @@ class BlockXpert_Blocks {
 
     // Render callback for product-slider
     public function render_dynamic_block_product_slider($attributes) {
-        // Check if WooCommerce is active
         if (!class_exists('WooCommerce')) {
             return '<div class="notice notice-error"><p>' . esc_html__('WooCommerce is required for the Product Slider block.', 'blockxpert') . '</p></div>';
         }
-        $title = $attributes['title'] ?? __('Featured Products', 'blockxpert');
+        $title = $attributes['title'] ?? __('WooProduct Slider', 'blockxpert');
         $products_per_slide = $attributes['productsPerSlide'] ?? 3;
         $auto_play = $attributes['autoPlay'] ?? true;
         $show_navigation = $attributes['showNavigation'] ?? true;
         $show_pagination = $attributes['showPagination'] ?? true;
-        $category = $attributes['category'] ?? '';
-        $order_by = $attributes['orderBy'] ?? 'date';
-        $order = $attributes['order'] ?? 'desc';
         $args = [
             'post_type' => 'product',
             'post_status' => 'publish',
             'posts_per_page' => 12,
-            'orderby' => $order_by,
-            'order' => $order,
-            'meta_query' => [
-                [
-                    'key' => '_visibility',
-                    'value' => ['catalog', 'visible'],
-                    'compare' => 'IN'
-                ]
-            ]
+            'orderby' => 'date',
+            'order' => 'desc',
         ];
-        if (!empty($category)) {
-            $args['tax_query'] = [
-                [
-                    'taxonomy' => 'product_cat',
-                    'field' => 'term_id',
-                    'terms' => $category
-                ]
-            ];
-        }
         $products = new \WP_Query($args);
-        $unique_id = 'product-slider-' . uniqid();
+        $product_items = [];
+        if ($products->have_posts()) {
+            while ($products->have_posts()) {
+                $products->the_post();
+                global $product;
+                $image = has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'woocommerce_thumbnail') : wc_placeholder_img_src();
+                $product_items[] = [
+                    'title' => get_the_title(),
+                    'price_html' => $product ? $product->get_price_html() : '',
+                    'image' => $image,
+                    'permalink' => get_permalink(),
+                ];
+            }
+        }
+        wp_reset_postdata();
         ob_start();
         ?>
-        <div class="woocommerce-product-slider" id="<?php echo esc_attr($unique_id); ?>">
-            <?php if (!empty($title)) : ?>
-                <h2 class="slider-title"><?php echo esc_html($title); ?></h2>
-            <?php endif; ?>
-            <?php if ($products->have_posts()) : ?>
-                <div class="slider-container">
-                    <div class="slider-wrapper">
-                        <div class="slider-track">
-                            <?php while ($products->have_posts()) : $products->the_post(); 
-                                global $product;
-                                if (!$product) continue;
-                            ?>
-                                <div class="slider-item">
-                                    <div class="product-card">
-                                        <div class="product-image">
-                                            <a href="<?php echo esc_url(get_permalink()); ?>">
-                                                <?php if (has_post_thumbnail()) : ?>
-                                                    <?php the_post_thumbnail('woocommerce_thumbnail', ['class' => 'product-thumbnail']); ?>
-                                                <?php else : ?>
-                                                    <img src="<?php echo esc_url(wc_placeholder_img_src()); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" class="product-thumbnail">
-                                                <?php endif; ?>
-                                            </a>
-                                        </div>
-                                        <div class="product-info">
-                                            <h3 class="product-title">
-                                                <a href="<?php echo esc_url(get_permalink()); ?>"><?php echo esc_html(get_the_title()); ?></a>
-                                            </h3>
-                                            <div class="product-price">
-                                                <?php echo $product->get_price_html(); ?>
-                                            </div>
-                                            <?php if ($product->is_in_stock()) : ?>
-                                                <div class="product-actions">
-                                                    <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" class="button add-to-cart">
-                                                        <?php echo esc_html__('Add to Cart', 'blockxpert'); ?>
-                                                    </a>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
+        <div class="product-slider-editor-preview"
+            data-products-per-slide="<?php echo esc_attr($products_per_slide); ?>"
+            data-auto-play="<?php echo esc_attr($auto_play ? 'true' : 'false'); ?>"
+            data-show-navigation="<?php echo esc_attr($show_navigation ? 'true' : 'false'); ?>"
+            data-show-pagination="<?php echo esc_attr($show_pagination ? 'true' : 'false'); ?>"
+        >
+            <h3 class="slider-title"><?php echo esc_html($title); ?></h3>
+            <div class="slider-container-preview">
+                <div class="slider-wrapper-preview">
+                    <div class="slider-track-preview">
+                        <?php foreach ($product_items as $item): ?>
+                            <div class="product-item-preview">
+                                <div class="product-card-preview">
+                                    <div class="product-image-preview">
+                                        <a href="<?php echo esc_url($item['permalink']); ?>">
+                                            <img src="<?php echo esc_url($item['image']); ?>" alt="<?php echo esc_attr($item['title']); ?>" />
+                                        </a>
+                                    </div>
+                                    <div class="product-info-preview">
+                                        <h4 class="product-title-preview"><?php echo esc_html($item['title']); ?></h4>
+                                        <p class="product-price-preview"><?php echo $item['price_html']; ?></p>
                                     </div>
                                 </div>
-                            <?php endwhile; ?>
-                        </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
-                    <?php if ($show_navigation && $products->post_count > $products_per_slide) : ?>
-                        <button class="slider-nav slider-prev" aria-label="<?php esc_attr_e('Previous', 'blockxpert'); ?>">‹</button>
-                        <button class="slider-nav slider-next" aria-label="<?php esc_attr_e('Next', 'blockxpert'); ?>">›</button>
-                    <?php endif; ?>
-                    <?php if ($show_pagination && $products->post_count > $products_per_slide) : ?>
-                        <div class="slider-pagination"></div>
-                    <?php endif; ?>
                 </div>
-            <?php else : ?>
-                <p class="no-products"><?php esc_html_e('No products found.', 'blockxpert'); ?></p>
-            <?php endif; ?>
+                <?php if ($show_navigation): ?>
+                <button class="slider-nav-preview prev" aria-label="Previous">‹</button>
+                <button class="slider-nav-preview next" aria-label="Next">›</button>
+                <?php endif; ?>
+                <?php if ($show_pagination): ?>
+                <div class="slider-pagination-preview"></div>
+                <?php endif; ?>
+            </div>
         </div>
-        <style>
-            .woocommerce-product-slider {
-                margin: 2rem 0;
-            }
-            .slider-title {
-                text-align: center;
-                margin-bottom: 2rem;
-                font-size: 2rem;
-                color: #333;
-            }
-            .slider-container {
-                position: relative;
-                max-width: 100%;
-                overflow: hidden;
-            }
-            .slider-wrapper {
-                overflow: hidden;
-            }
-            .slider-track {
-                display: flex;
-                transition: transform 0.3s ease;
-            }
-            .slider-item {
-                flex: 0 0 calc(100% / <?php echo esc_attr($products_per_slide); ?>);
-                padding: 0 10px;
-                box-sizing: border-box;
-            }
-            .product-card {
-                background: #fff;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                overflow: hidden;
-                transition: transform 0.2s ease, box-shadow 0.2s ease;
-            }
-            .product-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            }
-            .product-image {
-                position: relative;
-                overflow: hidden;
-            }
-            .product-thumbnail {
-                width: 100%;
-                height: 200px;
-                object-fit: cover;
-                transition: transform 0.3s ease;
-            }
-            .product-card:hover .product-thumbnail {
-                transform: scale(1.05);
-            }
-            .product-info {
-                padding: 1rem;
-            }
-            .product-title {
-                margin: 0 0 0.5rem 0;
-                font-size: 1rem;
-                line-height: 1.3;
-            }
-            .product-title a {
-                color: #333;
-                text-decoration: none;
-            }
-            .product-title a:hover {
-                color: #0073aa;
-            }
-            .product-price {
-                font-weight: bold;
-                color: #0073aa;
-                margin-bottom: 1rem;
-            }
-            .product-actions {
-                text-align: center;
-            }
-            .add-to-cart {
-                background: #0073aa;
-                color: #fff;
-                border: none;
-                padding: 0.5rem 1rem;
-                border-radius: 4px;
-                text-decoration: none;
-                display: inline-block;
-                transition: background 0.2s ease;
-            }
-            .add-to-cart:hover {
-                background: #005a87;
-                color: #fff;
-            }
-            .slider-nav {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                background: rgba(255,255,255,0.9);
-                border: 1px solid #ddd;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 1.2rem;
-                z-index: 10;
-                transition: all 0.2s ease;
-            }
-            .slider-nav:hover {
-                background: #fff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            }
-            .slider-prev {
-                left: 10px;
-            }
-            .slider-next {
-                right: 10px;
-            }
-            .slider-pagination {
-                display: flex;
-                justify-content: center;
-                margin-top: 1rem;
-                gap: 0.5rem;
-            }
-            .slider-dot {
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                background: #ddd;
-                cursor: pointer;
-                transition: background 0.2s ease;
-            }
-            .slider-dot.active {
-                background: #0073aa;
-            }
-            .no-products {
-                text-align: center;
-                color: #666;
-                font-style: italic;
-            }
-            @media (max-width: 768px) {
-                .slider-item {
-                    flex: 0 0 calc(100% / 2);
-                }
-            }
-            @media (max-width: 480px) {
-                .slider-item {
-                    flex: 0 0 100%;
-                }
-            }
-        </style>
-        <script>
-        (function() {
-            const slider = document.getElementById('<?php echo esc_js($unique_id); ?>');
-            if (!slider) return;
-            const track = slider.querySelector('.slider-track');
-            const items = slider.querySelectorAll('.slider-item');
-            const prevBtn = slider.querySelector('.slider-prev');
-            const nextBtn = slider.querySelector('.slider-next');
-            const pagination = slider.querySelector('.slider-pagination');
-            let currentSlide = 0;
-            const totalSlides = Math.ceil(items.length / <?php echo esc_js($products_per_slide); ?>);
-            const itemsPerSlide = <?php echo esc_js($products_per_slide); ?>;
-            function updateSlider() {
-                const translateX = -(currentSlide * 100);
-                track.style.transform = `translateX(${translateX}%)`;
-                if (pagination) {
-                    const dots = pagination.querySelectorAll('.slider-dot');
-                    dots.forEach((dot, index) => {
-                        dot.classList.toggle('active', index === currentSlide);
-                    });
-                }
-            }
-            function createPagination() {
-                if (!pagination) return;
-                for (let i = 0; i < totalSlides; i++) {
-                    const dot = document.createElement('div');
-                    dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
-                    dot.addEventListener('click', () => {
-                        currentSlide = i;
-                        updateSlider();
-                    });
-                    pagination.appendChild(dot);
-                }
-            }
-            if (prevBtn) {
-                prevBtn.addEventListener('click', () => {
-                    currentSlide = Math.max(0, currentSlide - 1);
-                    updateSlider();
-                });
-            }
-            if (nextBtn) {
-                nextBtn.addEventListener('click', () => {
-                    currentSlide = Math.min(totalSlides - 1, currentSlide + 1);
-                    updateSlider();
-                });
-            }
-            createPagination();
-            <?php if ($auto_play) : ?>
-            let autoPlayInterval;
-            function startAutoPlay() {
-                autoPlayInterval = setInterval(() => {
-                    currentSlide = (currentSlide + 1) % totalSlides;
-                    updateSlider();
-                }, 5000);
-            }
-            function stopAutoPlay() {
-                if (autoPlayInterval) {
-                    clearInterval(autoPlayInterval);
-                }
-            }
-            slider.addEventListener('mouseenter', stopAutoPlay);
-            slider.addEventListener('mouseleave', startAutoPlay);
-            startAutoPlay();
-            <?php endif; ?>
-        })();
-        </script>
         <?php
-        wp_reset_postdata();
         return ob_get_clean();
     }
 
     // Render callback for ai-faq
     public function render_dynamic_block_ai_faq($attributes) {
-        // (Paste the full method from init.php here)
+        $title = $attributes['title'] ?? __('Frequently Asked Questions', 'blockxpert');
+        $questions = $attributes['questions'] ?? [];
+        ob_start();
+        ?>
+        <div class="ai-faq-block theme-<?php echo esc_attr($attributes['theme'] ?? 'light'); ?>">
+            <div class="ai-faq-editor">
+                <h2 class="faq-title"><?php echo esc_html($title); ?></h2>
+                <div class="faq-questions">
+                    <?php foreach ($questions as $index => $question): ?>
+                        <div class="faq-question" data-faq-index="<?php echo esc_attr($index); ?>">
+                            <div class="faq-question-content">
+                                <div class="faq-question-header">
+                                    <h3 class="faq-question-text"><?php echo esc_html($question['question'] ?? __('Untitled Question', 'blockxpert')); ?></h3>
+                                    <div class="faq-question-actions">
+                                        <span class="faq-toggle-icon">+</span>
+                                    </div>
+                                </div>
+                                <div class="faq-answer" style="display:none;">
+                                    <p><?php echo esc_html($question['answer'] ?? __('No answer provided.', 'blockxpert')); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php
+        return ob_get_clean();
     }
 
     // Render callback for ai-product-recommendations
     public function render_dynamic_block_ai_product_recommendations($attributes) {
-        // (Paste the full method from init.php here)
+        $title = $attributes['title'] ?? __('AI Product Recommendations', 'blockxpert');
+        $products = $attributes['recommendedProducts'] ?? [];
+        $showPrice = $attributes['showPrice'] ?? true;
+        $showRating = $attributes['showRating'] ?? true;
+        $showAddToCart = $attributes['showAddToCart'] ?? true;
+        $layoutStyle = $attributes['layoutStyle'] ?? 'grid';
+        $theme = $attributes['theme'] ?? 'light';
+        ob_start();
+        ?>
+        <div class="ai-product-recommendations theme-<?php echo esc_attr($theme); ?>">
+            <div class="ai-product-recommendations-editor">
+                <h2 class="recommendations-title"><?php echo esc_html($title); ?></h2>
+                <div class="products-grid layout-<?php echo esc_attr($layoutStyle); ?>">
+                    <?php foreach ($products as $product): ?>
+                        <div class="product-card<?php echo $layoutStyle === 'slider' ? ' slider-item' : ''; ?>">
+                            <div class="product-image">
+                                <?php if (!empty($product['images'][0]['src'])): ?>
+                                    <img src="<?php echo esc_url($product['images'][0]['src']); ?>" alt="<?php echo esc_attr($product['name']); ?>" class="product-thumbnail" />
+                                <?php else: ?>
+                                    <div class="product-placeholder"><?php esc_html_e('No Image', 'blockxpert'); ?></div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title"><?php echo esc_html($product['name']); ?></h3>
+                                <?php if ($showPrice): ?>
+                                    <div class="product-price">
+                                        <?php if (!empty($product['price_html'])): ?>
+                                            <?php echo $product['price_html']; ?>
+                                        <?php else: ?>
+                                            <?php echo esc_html($product['price'] ?? __('Price not available', 'blockxpert')); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if ($showRating && !empty($product['average_rating'])): ?>
+                                    <div class="product-rating">
+                                        <?php echo str_repeat('★', round($product['average_rating'])); ?>
+                                        <span class="rating-count">(<?php echo esc_html($product['review_count'] ?? 0); ?>)</span>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if ($showAddToCart && ($product['stock_status'] ?? '') === 'instock'): ?>
+                                    <button class="add-to-cart-btn"><?php esc_html_e('Add to Cart', 'blockxpert'); ?></button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php
+        return ob_get_clean();
     }
 
     // Render callback for pdf-invoice
     public function render_dynamic_block_pdf_invoice($attributes) {
-        // (Paste the full method from init.php here)
+        $button_text = $attributes['buttonText'] ?? __('Download Invoice (PDF)', 'blockxpert');
+        $show_order_id_field = $attributes['showOrderIdField'] ?? false;
+        $output = '<div class="blockxpert-pdf-invoice-block">';
+        $output .= '<h2>' . esc_html($attributes['title'] ?? 'PDF Invoice') . '</h2>';
+        if ($show_order_id_field) {
+            $output .= '<form class="blockxpert-invoice-form" method="get" action="" onsubmit="event.preventDefault();var oid=this.order_id.value;if(oid){window.location=\'' . esc_url(rest_url('blockxpert/v1/pdf-invoice')) . '?order_id=\'+encodeURIComponent(oid);}">';
+            $output .= '<input type="text" name="order_id" placeholder="Enter Order ID" required style="margin-right:10px;" />';
+            $output .= '<button type="submit">' . esc_html($button_text) . '</button>';
+            $output .= '</form>';
+        } else {
+            if (is_user_logged_in()) {
+                $user_id = get_current_user_id();
+                $orders = wc_get_orders([
+                    'customer_id' => $user_id,
+                    'limit' => 1,
+                    'orderby' => 'date',
+                    'order' => 'DESC',
+                    'status' => ['wc-completed', 'wc-processing']
+                ]);
+                if (!empty($orders)) {
+                    $order_id = $orders[0]->get_id();
+                    $download_url = esc_url(rest_url('blockxpert/v1/pdf-invoice') . '?order_id=' . $order_id);
+                    $output .= '<a href="' . $download_url . '" class="button blockxpert-download-invoice">' . esc_html($button_text) . '</a>';
+                } else {
+                    $output .= '<p>' . esc_html__('No recent orders found for your account.', 'blockxpert') . '</p>';
+                }
+            } else {
+                $output .= '<p>' . esc_html__('Please log in to download your invoice.', 'blockxpert') . '</p>';
+            }
+        }
+        $output .= '</div>';
+        return $output;
     }
 
     public function add_block_category($categories) {

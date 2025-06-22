@@ -88,5 +88,6 @@
       "default": []
     }
   },
-  "render": "render_dynamic_block_ai_product_recommendations"
+  "render": "render_dynamic_block_ai_product_recommendations",
+  "script": "file:../../build/ai-product-recommendations/view.js"
 } 
