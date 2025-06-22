@@ -2,13 +2,21 @@
 // Template for PDF Invoice
 $order = isset($order) ? $order : null;
 $company = isset($company) ? $company : [];
+$font_size = isset($company['font_size']) ? $company['font_size'] : '16px';
+$primary_color = isset($company['primary_color']) ? $company['primary_color'] : '#007cba';
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>Invoice</title>
-    <style><?php include __DIR__ . '/style-invoice.css'; ?></style>
+    <style>
+        :root {
+            --invoice-font-size: <?php echo esc_attr($font_size); ?>;
+            --invoice-primary-color: <?php echo esc_attr($primary_color); ?>;
+        }
+        <?php include __DIR__ . '/style-invoice.css'; ?>
+    </style>
 </head>
 <body>
     <div class="invoice-container">
@@ -63,7 +71,7 @@ $company = isset($company) ? $company : [];
         </section>
         <section class="order-summary">
             <p><strong>Subtotal:</strong> <?php echo $order ? wc_price($order->get_subtotal(), ['currency' => $order->get_currency()]) : ''; ?></p>
-            <p><strong>Total:</strong> <?php echo $order ? wc_price($order->get_total(), ['currency' => $order->get_currency()]) : ''; ?></p>
+            <p><strong>Total:</strong> <span><strong><?php echo $order ? wc_price($order->get_total(), ['currency' => $order->get_currency()]) : ''; ?></strong></span></p>
         </section>
         <footer>
             <p><?php echo esc_html($company['footer'] ?? 'Thank you for your business!'); ?></p>

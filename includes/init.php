@@ -1631,6 +1631,8 @@ error_log("🔍 Checking block: $block at $block_json_path");
             'email' => get_option('blockxpert_company_email', 'Email'),
             'logo' => get_option('blockxpert_company_logo', ''),
             'footer' => get_option('blockxpert_company_footer', 'Thank you for your business!'),
+            'font_size' => get_option('blockxpert_invoice_font_size', '16px'),
+            'primary_color' => get_option('blockxpert_invoice_primary_color', '#007cba'),
         ];
         $pdf = blockxpert_generate_invoice_pdf($order_id, $company);
         if (is_wp_error($pdf)) {
