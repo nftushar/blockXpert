@@ -7,6 +7,8 @@ if (!defined('BLOCKXPERT_URL')) {
     define('BLOCKXPERT_URL', plugin_dir_url(__FILE__));
 }
 
+require_once __DIR__ . '/pdf-invoice/generator.php';
+
 class BlockXpert_Init
 {
     public function __construct()
@@ -1623,10 +1625,22 @@ error_log("🔍 Checking block: $block at $block_json_path");
     {
         error_log('BlockXpert: rest_pdf_invoice_download called');
         $order_id = intval($request->get_param('order_id'));
-        // TODO: Generate real PDF. For now, output a dummy PDF.
+        $company = [
+            'name' => get_option('blockxpert_company_name', 'Your Company'),
+            'address' => get_option('blockxpert_company_address', 'Company Address'),
+            'email' => get_option('blockxpert_company_email', 'Email'),
+            'logo' => get_option('blockxpert_company_logo', ''),
+            'footer' => get_option('blockxpert_company_footer', 'Thank you for your business!'),
+        ];
+        $pdf = blockxpert_generate_invoice_pdf($order_id, $company);
+        if (is_wp_error($pdf)) {
+            status_header(400);
+            echo esc_html($pdf->get_error_message());
+            exit;
+        }
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="invoice-' . $order_id . '.pdf"');
-        echo "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 200 200] /Contents 4 0 R >>\nendobj\n4 0 obj\n<< /Length 44 >>\nstream\nBT /F1 24 Tf 10 100 Td (Invoice #$order_id) Tj ET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000211 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n297\n%%EOF";
+        echo $pdf;
         exit;
     }
 }

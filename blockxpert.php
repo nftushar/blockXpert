@@ -18,3 +18,7 @@ define('BLOCKXPERT_URL', plugin_dir_url(__FILE__));
 
 require_once BLOCKXPERT_PATH . 'includes/init.php';
 require_once BLOCKXPERT_PATH . 'includes/admin/settings-handler.php';
+
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
