@@ -1,0 +1,92 @@
+{
+  "apiVersion": 2,
+  "name": "blockxpert/ai-product-recommendations",
+  "title": "AI Product Recommendations",
+  "category": "custom-blocks",
+  "icon": "products",
+  "editorScript": "file:../../build/ai-product-recommendations/index.js",
+  "editorStyle": "file:../../build/ai-product-recommendations/index.css",
+  "style": "file:../../build/ai-product-recommendations/style-index.css",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Recommended for You"
+    },
+    "aiEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "recommendationType": {
+      "type": "string",
+      "default": "related"
+    },
+    "layoutStyle": {
+      "type": "string",
+      "default": "grid"
+    },
+    "productsCount": {
+      "type": "number",
+      "default": 4
+    },
+    "theme": {
+      "type": "string",
+      "default": "light"
+    },
+    "showPrice": {
+      "type": "boolean",
+      "default": true
+    },
+    "showRating": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAddToCart": {
+      "type": "boolean",
+      "default": true
+    },
+    "inStockOnly": {
+      "type": "boolean",
+      "default": true
+    },
+    "excludeCurrent": {
+      "type": "boolean",
+      "default": true
+    },
+    "priceRange": {
+      "type": "object",
+      "default": {
+        "min": 0,
+        "max": 1000
+      }
+    },
+    "customPrompt": {
+      "type": "string",
+      "default": ""
+    },
+    "apiKey": {
+      "type": "string",
+      "default": ""
+    },
+    "model": {
+      "type": "string",
+      "default": "gpt-3.5-turbo"
+    },
+    "cacheEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "cacheDuration": {
+      "type": "number",
+      "default": 3600
+    },
+    "currentProductId": {
+      "type": "number",
+      "default": 0
+    },
+    "recommendedProducts": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "render": "render_dynamic_block_ai_product_recommendations"
+} 
