@@ -1,0 +1,1709 @@
+# Copyright (C) 2024 BlockXpert Team
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: BlockXpert 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/blockxpert\n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: blockxpert.php:45
+msgid "BlockXpert"
+msgstr ""
+
+#: includes/init.php:78
+msgid "block-one"
+msgstr ""
+
+#: includes/init.php:78
+msgid "block-two"
+msgstr ""
+
+#: includes/init.php:78
+msgid "block-three"
+msgstr ""
+
+#: includes/init.php:78
+msgid "product-slider"
+msgstr ""
+
+#: includes/init.php:78
+msgid "ai-faq"
+msgstr ""
+
+#: includes/init.php:78
+msgid "ai-product-recommendations"
+msgstr ""
+
+#: includes/init.php:86
+msgid "Default Title for Block One"
+msgstr ""
+
+#: includes/init.php:87
+msgid "This is dynamic content rendered by PHP for Block One."
+msgstr ""
+
+#: includes/init.php:101
+msgid "Default Title for Block Two"
+msgstr ""
+
+#: includes/init.php:102
+msgid "This is dynamic content rendered by PHP for Block Two."
+msgstr ""
+
+#: includes/init.php:116
+msgid "Default Title for Block Three"
+msgstr ""
+
+#: includes/init.php:117
+msgid "This is dynamic content rendered by PHP for Block Three."
+msgstr ""
+
+#: includes/init.php:131
+msgid "WooCommerce is required for the Product Slider block."
+msgstr ""
+
+#: includes/init.php:133
+msgid "Featured Products"
+msgstr ""
+
+#: includes/init.php:175
+msgid "Add to Cart"
+msgstr ""
+
+#: includes/init.php:185
+msgid "Previous"
+msgstr ""
+
+#: includes/init.php:186
+msgid "Next"
+msgstr ""
+
+#: includes/init.php:192
+msgid "No products found."
+msgstr ""
+
+#: includes/init.php:476
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: includes/init.php:745
+msgid "Recommended for You"
+msgstr ""
+
+#: includes/init.php:747
+msgid "WooCommerce is required for the AI Product Recommendations block."
+msgstr ""
+
+#: includes/init.php:1159
+msgid "Custom Blocks"
+msgstr ""
+
+#: includes/init.php:1177
+msgid "BlockXpert Settings"
+msgstr ""
+
+#: includes/init.php:1193
+msgid "BlockXpert"
+msgstr ""
+
+#: includes/init.php:1391
+msgid "Custom Gutenberg block"
+msgstr ""
+
+#: includes/init.php:1466
+msgid "OpenAI API key is required."
+msgstr ""
+
+#: includes/init.php:1480
+msgid "Generate relevant FAQ questions and answers for a website"
+msgstr ""
+
+#: includes/init.php:1485
+msgid "Failed to connect to OpenAI API."
+msgstr ""
+
+#: includes/init.php:1490
+msgid "Invalid response from OpenAI API."
+msgstr ""
+
+#: includes/init.php:1495
+msgid "Generate relevant FAQ questions and answers for a website"
+msgstr ""
+
+#: includes/init.php:1505
+msgid "Answer will be provided by the user."
+msgstr ""
+
+#: includes/init.php:1573
+msgid "OpenAI API key is required."
+msgstr ""
+
+#: includes/init.php:1578
+msgid "WooCommerce is required for product recommendations."
+msgstr ""
+
+#: includes/init.php:1620
+msgid "You are a helpful AI assistant that recommends products. Always respond with valid JSON format containing only product IDs."
+msgstr ""
+
+#: includes/init.php:1635
+msgid "Failed to connect to OpenAI API."
+msgstr ""
+
+#: includes/init.php:1640
+msgid "Invalid response from OpenAI API."
+msgstr ""
+
+#: includes/init.php:1645
+msgid "Please recommend exactly"
+msgstr ""
+
+#: includes/init.php:1645
+msgid "product IDs from the available products that best match the criteria."
+msgstr ""
+
+#: includes/init.php:1645
+msgid "Return only a JSON array of product IDs, like: [123, 456, 789]"
+msgstr ""
+
+#: includes/init.php:1655
+msgid "No product recommendations available."
+msgstr ""
+
+#: includes/init.php:1657
+msgid "Use the block settings to generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:1660
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:1661
+msgid "Search FAQ questions"
+msgstr ""
+
+#: includes/init.php:1665
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:1670
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:1675
+msgid "No FAQ questions available."
+msgstr ""
+
+#: includes/init.php:1677
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:1680
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:1682
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:1685
+msgid "Edit"
+msgstr ""
+
+#: includes/init.php:1690
+msgid "Save"
+msgstr ""
+
+#: includes/init.php:1692
+msgid "Delete"
+msgstr ""
+
+#: includes/init.php:1695
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:1697
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:1700
+msgid "Please enter your OpenAI API key in the block settings."
+msgstr ""
+
+#: includes/init.php:1705
+msgid "FAQ questions generated successfully!"
+msgstr ""
+
+#: includes/init.php:1707
+msgid "Failed to generate questions. Please check your API key."
+msgstr ""
+
+#: includes/init.php:1709
+msgid "Error generating questions. Please try again."
+msgstr ""
+
+#: includes/init.php:1715
+msgid "No FAQ Questions"
+msgstr ""
+
+#: includes/init.php:1716
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:1720
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:1725
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:1730
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:1735
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:1737
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:1740
+msgid "Please wait for the current product to load, then try again."
+msgstr ""
+
+#: includes/init.php:1745
+msgid "AI recommendations generated successfully!"
+msgstr ""
+
+#: includes/init.php:1747
+msgid "Failed to generate recommendations. Please check your API key."
+msgstr ""
+
+#: includes/init.php:1749
+msgid "Error generating recommendations. Please try again."
+msgstr ""
+
+#: includes/init.php:1755
+msgid "No Products Found"
+msgstr ""
+
+#: includes/init.php:1756
+msgid "No products available for recommendations. Add products to your store or generate AI recommendations."
+msgstr ""
+
+#: includes/init.php:1760
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:1765
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:1770
+msgid "Current Product:"
+msgstr ""
+
+#: includes/init.php:1772
+msgid "Type:"
+msgstr ""
+
+#: includes/init.php:1775
+msgid "Related Products"
+msgstr ""
+
+#: includes/init.php:1775
+msgid "Cross-Sells"
+msgstr ""
+
+#: includes/init.php:1775
+msgid "Upsells"
+msgstr ""
+
+#: includes/init.php:1775
+msgid "Custom Recommendations"
+msgstr ""
+
+#: includes/init.php:1778
+msgid "Grid"
+msgstr ""
+
+#: includes/init.php:1778
+msgid "List"
+msgstr ""
+
+#: includes/init.php:1778
+msgid "Slider"
+msgstr ""
+
+#: includes/init.php:1785
+msgid "No Image"
+msgstr ""
+
+#: includes/init.php:1790
+msgid "Price not available"
+msgstr ""
+
+#: includes/init.php:1795
+msgid "Add to Cart"
+msgstr ""
+
+#: includes/init.php:1800
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:1805
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:1810
+msgid "Enter section title..."
+msgstr ""
+
+#: includes/init.php:1815
+msgid "Enter your OpenAI API key..."
+msgstr ""
+
+#: includes/init.php:1820
+msgid "e.g., \"gift ideas\", \"trending items\", \"best sellers\""
+msgstr ""
+
+#: includes/init.php:1825
+msgid "Light"
+msgstr ""
+
+#: includes/init.php:1825
+msgid "Dark"
+msgstr ""
+
+#: includes/init.php:1825
+msgid "Minimal"
+msgstr ""
+
+#: includes/init.php:1830
+msgid "Expandable"
+msgstr ""
+
+#: includes/init.php:1830
+msgid "Always Open"
+msgstr ""
+
+#: includes/init.php:1830
+msgid "Single Open"
+msgstr ""
+
+#: includes/init.php:1835
+msgid "FAQ Settings"
+msgstr ""
+
+#: includes/init.php:1840
+msgid "FAQ Title"
+msgstr ""
+
+#: includes/init.php:1845
+msgid "Enter FAQ title..."
+msgstr ""
+
+#: includes/init.php:1850
+msgid "Enable AI Generation"
+msgstr ""
+
+#: includes/init.php:1855
+msgid "Auto Generate Questions"
+msgstr ""
+
+#: includes/init.php:1860
+msgid "Show Search Bar"
+msgstr ""
+
+#: includes/init.php:1865
+msgid "AI Settings"
+msgstr ""
+
+#: includes/init.php:1870
+msgid "OpenAI API Key"
+msgstr ""
+
+#: includes/init.php:1875
+msgid "AI Model"
+msgstr ""
+
+#: includes/init.php:1880
+msgid "Maximum Questions"
+msgstr ""
+
+#: includes/init.php:1885
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:1890
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:1895
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:1900
+msgid "Accordion Style"
+msgstr ""
+
+#: includes/init.php:1905
+msgid "Theme"
+msgstr ""
+
+#: includes/init.php:1910
+msgid "Question"
+msgstr ""
+
+#: includes/init.php:1915
+msgid "Enter your question..."
+msgstr ""
+
+#: includes/init.php:1920
+msgid "Answer"
+msgstr ""
+
+#: includes/init.php:1925
+msgid "Enter your answer..."
+msgstr ""
+
+#: includes/init.php:1930
+msgid "Recommendation Settings"
+msgstr ""
+
+#: includes/init.php:1935
+msgid "Section Title"
+msgstr ""
+
+#: includes/init.php:1940
+msgid "Enable AI Recommendations"
+msgstr ""
+
+#: includes/init.php:1945
+msgid "Recommendation Type"
+msgstr ""
+
+#: includes/init.php:1950
+msgid "Custom Prompt"
+msgstr ""
+
+#: includes/init.php:1955
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:1960
+msgid "Layout Style"
+msgstr ""
+
+#: includes/init.php:1965
+msgid "Number of Products"
+msgstr ""
+
+#: includes/init.php:1970
+msgid "Product Display"
+msgstr ""
+
+#: includes/init.php:1975
+msgid "Show Price"
+msgstr ""
+
+#: includes/init.php:1980
+msgid "Show Rating"
+msgstr ""
+
+#: includes/init.php:1985
+msgid "Show Add to Cart Button"
+msgstr ""
+
+#: includes/init.php:1990
+msgid "In Stock Only"
+msgstr ""
+
+#: includes/init.php:1995
+msgid "Exclude Current Product"
+msgstr ""
+
+#: includes/init.php:2000
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:2005
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2010
+msgid "AI Product Recommendations"
+msgstr ""
+
+#: includes/init.php:2015
+msgid "No products available for recommendations. Add products to your store or generate AI recommendations."
+msgstr ""
+
+#: includes/init.php:2020
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2025
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2030
+msgid "Current Product:"
+msgstr ""
+
+#: includes/init.php:2032
+msgid "Type:"
+msgstr ""
+
+#: includes/init.php:2035
+msgid "No product recommendations available."
+msgstr ""
+
+#: includes/init.php:2040
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:2045
+msgid "Search FAQ questions"
+msgstr ""
+
+#: includes/init.php:2050
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:2055
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:2060
+msgid "No FAQ questions available."
+msgstr ""
+
+#: includes/init.php:2062
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:2065
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2067
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:2070
+msgid "Edit"
+msgstr ""
+
+#: includes/init.php:2075
+msgid "Save"
+msgstr ""
+
+#: includes/init.php:2077
+msgid "Delete"
+msgstr ""
+
+#: includes/init.php:2080
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2082
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:2085
+msgid "Please enter your OpenAI API key in the block settings."
+msgstr ""
+
+#: includes/init.php:2090
+msgid "FAQ questions generated successfully!"
+msgstr ""
+
+#: includes/init.php:2092
+msgid "Failed to generate questions. Please check your API key."
+msgstr ""
+
+#: includes/init.php:2094
+msgid "Error generating questions. Please try again."
+msgstr ""
+
+#: includes/init.php:2100
+msgid "No FAQ Questions"
+msgstr ""
+
+#: includes/init.php:2101
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:2105
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:2110
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:2115
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:2120
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2122
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:2125
+msgid "Please wait for the current product to load, then try again."
+msgstr ""
+
+#: includes/init.php:2130
+msgid "AI recommendations generated successfully!"
+msgstr ""
+
+#: includes/init.php:2132
+msgid "Failed to generate recommendations. Please check your API key."
+msgstr ""
+
+#: includes/init.php:2134
+msgid "Error generating recommendations. Please try again."
+msgstr ""
+
+#: includes/init.php:2140
+msgid "No Products Found"
+msgstr ""
+
+#: includes/init.php:2141
+msgid "No products available for recommendations. Add products to your store or generate AI recommendations."
+msgstr ""
+
+#: includes/init.php:2145
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2150
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2155
+msgid "Current Product:"
+msgstr ""
+
+#: includes/init.php:2157
+msgid "Type:"
+msgstr ""
+
+#: includes/init.php:2160
+msgid "Related Products"
+msgstr ""
+
+#: includes/init.php:2160
+msgid "Cross-Sells"
+msgstr ""
+
+#: includes/init.php:2160
+msgid "Upsells"
+msgstr ""
+
+#: includes/init.php:2160
+msgid "Custom Recommendations"
+msgstr ""
+
+#: includes/init.php:2163
+msgid "Grid"
+msgstr ""
+
+#: includes/init.php:2163
+msgid "List"
+msgstr ""
+
+#: includes/init.php:2163
+msgid "Slider"
+msgstr ""
+
+#: includes/init.php:2170
+msgid "No Image"
+msgstr ""
+
+#: includes/init.php:2175
+msgid "Price not available"
+msgstr ""
+
+#: includes/init.php:2180
+msgid "Add to Cart"
+msgstr ""
+
+#: includes/init.php:2185
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2190
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2195
+msgid "Enter section title..."
+msgstr ""
+
+#: includes/init.php:2200
+msgid "Enter your OpenAI API key..."
+msgstr ""
+
+#: includes/init.php:2205
+msgid "e.g., \"gift ideas\", \"trending items\", \"best sellers\""
+msgstr ""
+
+#: includes/init.php:2210
+msgid "Light"
+msgstr ""
+
+#: includes/init.php:2210
+msgid "Dark"
+msgstr ""
+
+#: includes/init.php:2210
+msgid "Minimal"
+msgstr ""
+
+#: includes/init.php:2215
+msgid "Expandable"
+msgstr ""
+
+#: includes/init.php:2215
+msgid "Always Open"
+msgstr ""
+
+#: includes/init.php:2215
+msgid "Single Open"
+msgstr ""
+
+#: includes/init.php:2220
+msgid "FAQ Settings"
+msgstr ""
+
+#: includes/init.php:2225
+msgid "FAQ Title"
+msgstr ""
+
+#: includes/init.php:2230
+msgid "Enter FAQ title..."
+msgstr ""
+
+#: includes/init.php:2235
+msgid "Enable AI Generation"
+msgstr ""
+
+#: includes/init.php:2240
+msgid "Auto Generate Questions"
+msgstr ""
+
+#: includes/init.php:2245
+msgid "Show Search Bar"
+msgstr ""
+
+#: includes/init.php:2250
+msgid "AI Settings"
+msgstr ""
+
+#: includes/init.php:2255
+msgid "OpenAI API Key"
+msgstr ""
+
+#: includes/init.php:2260
+msgid "AI Model"
+msgstr ""
+
+#: includes/init.php:2265
+msgid "Maximum Questions"
+msgstr ""
+
+#: includes/init.php:2270
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:2275
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:2280
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:2285
+msgid "Accordion Style"
+msgstr ""
+
+#: includes/init.php:2290
+msgid "Theme"
+msgstr ""
+
+#: includes/init.php:2295
+msgid "Question"
+msgstr ""
+
+#: includes/init.php:2300
+msgid "Enter your question..."
+msgstr ""
+
+#: includes/init.php:2305
+msgid "Answer"
+msgstr ""
+
+#: includes/init.php:2310
+msgid "Enter your answer..."
+msgstr ""
+
+#: includes/init.php:2315
+msgid "Recommendation Settings"
+msgstr ""
+
+#: includes/init.php:2320
+msgid "Section Title"
+msgstr ""
+
+#: includes/init.php:2325
+msgid "Enable AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2330
+msgid "Recommendation Type"
+msgstr ""
+
+#: includes/init.php:2335
+msgid "Custom Prompt"
+msgstr ""
+
+#: includes/init.php:2340
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:2345
+msgid "Layout Style"
+msgstr ""
+
+#: includes/init.php:2350
+msgid "Number of Products"
+msgstr ""
+
+#: includes/init.php:2355
+msgid "Product Display"
+msgstr ""
+
+#: includes/init.php:2360
+msgid "Show Price"
+msgstr ""
+
+#: includes/init.php:2365
+msgid "Show Rating"
+msgstr ""
+
+#: includes/init.php:2370
+msgid "Show Add to Cart Button"
+msgstr ""
+
+#: includes/init.php:2375
+msgid "In Stock Only"
+msgstr ""
+
+#: includes/init.php:2380
+msgid "Exclude Current Product"
+msgstr ""
+
+#: includes/init.php:2385
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:2390
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2395
+msgid "AI Product Recommendations"
+msgstr ""
+
+#: includes/init.php:2400
+msgid "No products available for recommendations. Add products to your store or generate AI recommendations."
+msgstr ""
+
+#: includes/init.php:2405
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2410
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2415
+msgid "Current Product:"
+msgstr ""
+
+#: includes/init.php:2417
+msgid "Type:"
+msgstr ""
+
+#: includes/init.php:2420
+msgid "No product recommendations available."
+msgstr ""
+
+#: includes/init.php:2425
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:2430
+msgid "Search FAQ questions"
+msgstr ""
+
+#: includes/init.php:2435
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:2440
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:2445
+msgid "No FAQ questions available."
+msgstr ""
+
+#: includes/init.php:2447
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:2450
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2452
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:2455
+msgid "Edit"
+msgstr ""
+
+#: includes/init.php:2460
+msgid "Save"
+msgstr ""
+
+#: includes/init.php:2462
+msgid "Delete"
+msgstr ""
+
+#: includes/init.php:2465
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2467
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:2470
+msgid "Please enter your OpenAI API key in the block settings."
+msgstr ""
+
+#: includes/init.php:2475
+msgid "FAQ questions generated successfully!"
+msgstr ""
+
+#: includes/init.php:2477
+msgid "Failed to generate questions. Please check your API key."
+msgstr ""
+
+#: includes/init.php:2479
+msgid "Error generating questions. Please try again."
+msgstr ""
+
+#: includes/init.php:2485
+msgid "No FAQ Questions"
+msgstr ""
+
+#: includes/init.php:2486
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:2490
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:2495
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:2500
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:2505
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2507
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:2510
+msgid "Please wait for the current product to load, then try again."
+msgstr ""
+
+#: includes/init.php:2515
+msgid "AI recommendations generated successfully!"
+msgstr ""
+
+#: includes/init.php:2517
+msgid "Failed to generate recommendations. Please check your API key."
+msgstr ""
+
+#: includes/init.php:2519
+msgid "Error generating recommendations. Please try again."
+msgstr ""
+
+#: includes/init.php:2525
+msgid "No Products Found"
+msgstr ""
+
+#: includes/init.php:2526
+msgid "No products available for recommendations. Add products to your store or generate AI recommendations."
+msgstr ""
+
+#: includes/init.php:2530
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2535
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2540
+msgid "Current Product:"
+msgstr ""
+
+#: includes/init.php:2542
+msgid "Type:"
+msgstr ""
+
+#: includes/init.php:2545
+msgid "Related Products"
+msgstr ""
+
+#: includes/init.php:2545
+msgid "Cross-Sells"
+msgstr ""
+
+#: includes/init.php:2545
+msgid "Upsells"
+msgstr ""
+
+#: includes/init.php:2545
+msgid "Custom Recommendations"
+msgstr ""
+
+#: includes/init.php:2548
+msgid "Grid"
+msgstr ""
+
+#: includes/init.php:2548
+msgid "List"
+msgstr ""
+
+#: includes/init.php:2548
+msgid "Slider"
+msgstr ""
+
+#: includes/init.php:2555
+msgid "No Image"
+msgstr ""
+
+#: includes/init.php:2560
+msgid "Price not available"
+msgstr ""
+
+#: includes/init.php:2565
+msgid "Add to Cart"
+msgstr ""
+
+#: includes/init.php:2570
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2575
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2580
+msgid "Enter section title..."
+msgstr ""
+
+#: includes/init.php:2585
+msgid "Enter your OpenAI API key..."
+msgstr ""
+
+#: includes/init.php:2590
+msgid "e.g., \"gift ideas\", \"trending items\", \"best sellers\""
+msgstr ""
+
+#: includes/init.php:2595
+msgid "Light"
+msgstr ""
+
+#: includes/init.php:2595
+msgid "Dark"
+msgstr ""
+
+#: includes/init.php:2595
+msgid "Minimal"
+msgstr ""
+
+#: includes/init.php:2600
+msgid "Expandable"
+msgstr ""
+
+#: includes/init.php:2600
+msgid "Always Open"
+msgstr ""
+
+#: includes/init.php:2600
+msgid "Single Open"
+msgstr ""
+
+#: includes/init.php:2605
+msgid "FAQ Settings"
+msgstr ""
+
+#: includes/init.php:2610
+msgid "FAQ Title"
+msgstr ""
+
+#: includes/init.php:2615
+msgid "Enter FAQ title..."
+msgstr ""
+
+#: includes/init.php:2620
+msgid "Enable AI Generation"
+msgstr ""
+
+#: includes/init.php:2625
+msgid "Auto Generate Questions"
+msgstr ""
+
+#: includes/init.php:2630
+msgid "Show Search Bar"
+msgstr ""
+
+#: includes/init.php:2635
+msgid "AI Settings"
+msgstr ""
+
+#: includes/init.php:2640
+msgid "OpenAI API Key"
+msgstr ""
+
+#: includes/init.php:2645
+msgid "AI Model"
+msgstr ""
+
+#: includes/init.php:2650
+msgid "Maximum Questions"
+msgstr ""
+
+#: includes/init.php:2655
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:2660
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:2665
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:2670
+msgid "Accordion Style"
+msgstr ""
+
+#: includes/init.php:2675
+msgid "Theme"
+msgstr ""
+
+#: includes/init.php:2680
+msgid "Question"
+msgstr ""
+
+#: includes/init.php:2685
+msgid "Enter your question..."
+msgstr ""
+
+#: includes/init.php:2690
+msgid "Answer"
+msgstr ""
+
+#: includes/init.php:2695
+msgid "Enter your answer..."
+msgstr ""
+
+#: includes/init.php:2700
+msgid "Recommendation Settings"
+msgstr ""
+
+#: includes/init.php:2705
+msgid "Section Title"
+msgstr ""
+
+#: includes/init.php:2710
+msgid "Enable AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2715
+msgid "Recommendation Type"
+msgstr ""
+
+#: includes/init.php:2720
+msgid "Custom Prompt"
+msgstr ""
+
+#: includes/init.php:2725
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:2730
+msgid "Layout Style"
+msgstr ""
+
+#: includes/init.php:2735
+msgid "Number of Products"
+msgstr ""
+
+#: includes/init.php:2740
+msgid "Product Display"
+msgstr ""
+
+#: includes/init.php:2745
+msgid "Show Price"
+msgstr ""
+
+#: includes/init.php:2750
+msgid "Show Rating"
+msgstr ""
+
+#: includes/init.php:2755
+msgid "Show Add to Cart Button"
+msgstr ""
+
+#: includes/init.php:2760
+msgid "In Stock Only"
+msgstr ""
+
+#: includes/init.php:2765
+msgid "Exclude Current Product"
+msgstr ""
+
+#: includes/init.php:2770
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:2775
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2780
+msgid "AI Product Recommendations"
+msgstr ""
+
+#: includes/init.php:2785
+msgid "No products available for recommendations. Add products to your store or generate AI recommendations."
+msgstr ""
+
+#: includes/init.php:2790
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2795
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2800
+msgid "Current Product:"
+msgstr ""
+
+#: includes/init.php:2802
+msgid "Type:"
+msgstr ""
+
+#: includes/init.php:2805
+msgid "No product recommendations available."
+msgstr ""
+
+#: includes/init.php:2810
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:2815
+msgid "Search FAQ questions"
+msgstr ""
+
+#: includes/init.php:2820
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:2825
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:2830
+msgid "No FAQ questions available."
+msgstr ""
+
+#: includes/init.php:2832
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:2835
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2837
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:2840
+msgid "Edit"
+msgstr ""
+
+#: includes/init.php:2845
+msgid "Save"
+msgstr ""
+
+#: includes/init.php:2847
+msgid "Delete"
+msgstr ""
+
+#: includes/init.php:2850
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2852
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:2855
+msgid "Please enter your OpenAI API key in the block settings."
+msgstr ""
+
+#: includes/init.php:2860
+msgid "FAQ questions generated successfully!"
+msgstr ""
+
+#: includes/init.php:2862
+msgid "Failed to generate questions. Please check your API key."
+msgstr ""
+
+#: includes/init.php:2864
+msgid "Error generating questions. Please try again."
+msgstr ""
+
+#: includes/init.php:2870
+msgid "No FAQ Questions"
+msgstr ""
+
+#: includes/init.php:2871
+msgid "Add your first FAQ question or generate AI-powered questions."
+msgstr ""
+
+#: includes/init.php:2875
+msgid "Search questions..."
+msgstr ""
+
+#: includes/init.php:2880
+msgid "No answer provided."
+msgstr ""
+
+#: includes/init.php:2885
+msgid "Untitled Question"
+msgstr ""
+
+#: includes/init.php:2890
+msgid "Add Question"
+msgstr ""
+
+#: includes/init.php:2892
+msgid "Generate More AI Questions"
+msgstr ""
+
+#: includes/init.php:2895
+msgid "Please wait for the current product to load, then try again."
+msgstr ""
+
+#: includes/init.php:2900
+msgid "AI recommendations generated successfully!"
+msgstr ""
+
+#: includes/init.php:2902
+msgid "Failed to generate recommendations. Please check your API key."
+msgstr ""
+
+#: includes/init.php:2904
+msgid "Error generating recommendations. Please try again."
+msgstr ""
+
+#: includes/init.php:2910
+msgid "No Products Found"
+msgstr ""
+
+#: includes/init.php:2911
+msgid "No products available for recommendations. Add products to your store or generate AI recommendations."
+msgstr ""
+
+#: includes/init.php:2915
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2920
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2925
+msgid "Current Product:"
+msgstr ""
+
+#: includes/init.php:2927
+msgid "Type:"
+msgstr ""
+
+#: includes/init.php:2930
+msgid "Related Products"
+msgstr ""
+
+#: includes/init.php:2930
+msgid "Cross-Sells"
+msgstr ""
+
+#: includes/init.php:2930
+msgid "Upsells"
+msgstr ""
+
+#: includes/init.php:2930
+msgid "Custom Recommendations"
+msgstr ""
+
+#: includes/init.php:2933
+msgid "Grid"
+msgstr ""
+
+#: includes/init.php:2933
+msgid "List"
+msgstr ""
+
+#: includes/init.php:2933
+msgid "Slider"
+msgstr ""
+
+#: includes/init.php:2940
+msgid "No Image"
+msgstr ""
+
+#: includes/init.php:2945
+msgid "Price not available"
+msgstr ""
+
+#: includes/init.php:2950
+msgid "Add to Cart"
+msgstr ""
+
+#: includes/init.php:2955
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2960
+msgid "Regenerate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:2965
+msgid "Enter section title..."
+msgstr ""
+
+#: includes/init.php:2970
+msgid "Enter your OpenAI API key..."
+msgstr ""
+
+#: includes/init.php:2975
+msgid "e.g., \"gift ideas\", \"trending items\", \"best sellers\""
+msgstr ""
+
+#: includes/init.php:2980
+msgid "Light"
+msgstr ""
+
+#: includes/init.php:2980
+msgid "Dark"
+msgstr ""
+
+#: includes/init.php:2980
+msgid "Minimal"
+msgstr ""
+
+#: includes/init.php:2985
+msgid "Expandable"
+msgstr ""
+
+#: includes/init.php:2985
+msgid "Always Open"
+msgstr ""
+
+#: includes/init.php:2985
+msgid "Single Open"
+msgstr ""
+
+#: includes/init.php:2990
+msgid "FAQ Settings"
+msgstr ""
+
+#: includes/init.php:2995
+msgid "FAQ Title"
+msgstr ""
+
+#: includes/init.php:3000
+msgid "Enter FAQ title..."
+msgstr ""
+
+#: includes/init.php:3005
+msgid "Enable AI Generation"
+msgstr ""
+
+#: includes/init.php:3010
+msgid "Auto Generate Questions"
+msgstr ""
+
+#: includes/init.php:3015
+msgid "Show Search Bar"
+msgstr ""
+
+#: includes/init.php:3020
+msgid "AI Settings"
+msgstr ""
+
+#: includes/init.php:3025
+msgid "OpenAI API Key"
+msgstr ""
+
+#: includes/init.php:3030
+msgid "AI Model"
+msgstr ""
+
+#: includes/init.php:3035
+msgid "Maximum Questions"
+msgstr ""
+
+#: includes/init.php:3040
+msgid "Generate AI Questions"
+msgstr ""
+
+#: includes/init.php:3045
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:3050
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:3055
+msgid "Accordion Style"
+msgstr ""
+
+#: includes/init.php:3060
+msgid "Theme"
+msgstr ""
+
+#: includes/init.php:3065
+msgid "Question"
+msgstr ""
+
+#: includes/init.php:3070
+msgid "Enter your question..."
+msgstr ""
+
+#: includes/init.php:3075
+msgid "Answer"
+msgstr ""
+
+#: includes/init.php:3080
+msgid "Enter your answer..."
+msgstr ""
+
+#: includes/init.php:3085
+msgid "Recommendation Settings"
+msgstr ""
+
+#: includes/init.php:3090
+msgid "Section Title"
+msgstr ""
+
+#: includes/init.php:3095
+msgid "Enable AI Recommendations"
+msgstr ""
+
+#: includes/init.php:3100
+msgid "Recommendation Type"
+msgstr ""
+
+#: includes/init.php:3105
+msgid "Custom Prompt"
+msgstr ""
+
+#: includes/init.php:3110
+msgid "Display Settings"
+msgstr ""
+
+#: includes/init.php:3115
+msgid "Layout Style"
+msgstr ""
+
+#: includes/init.php:3120
+msgid "Number of Products"
+msgstr ""
+
+#: includes/init.php:3125
+msgid "Product Display"
+msgstr ""
+
+#: includes/init.php:3130
+msgid "Show Price"
+msgstr ""
+
+#: includes/init.php:3135
+msgid "Show Rating"
+msgstr ""
+
+#: includes/init.php:3140
+msgid "Show Add to Cart Button"
+msgstr ""
+
+#: includes/init.php:3145
+msgid "In Stock Only"
+msgstr ""
+
+#: includes/init.php:3150
+msgid "Exclude Current Product"
+msgstr ""
+
+#: includes/init.php:3155
+msgid "Generating..."
+msgstr ""
+
+#: includes/init.php:3160
+msgid "Generate AI Recommendations"
+msgstr ""
+
+#: includes/init.php:3165
+msgid "AI Product Recommendations"
+msgst
