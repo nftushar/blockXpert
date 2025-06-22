@@ -16,6 +16,7 @@ class BlockXpert_Init
         add_action('admin_menu', [$this, 'add_admin_page']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
         add_action('admin_init', [$this, 'register_settings']);
+        add_action('rest_api_init', [$this, 'register_rest_routes']);
     }
 
     /**
@@ -77,7 +78,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
      */
     private function get_default_blocks()
     {
-        return ['block-one', 'block-two', 'block-three', 'product-slider'];
+        return ['block-one', 'block-two', 'block-three', 'product-slider', 'ai-faq'];
     }
 
     /**
@@ -471,6 +472,274 @@ error_log("🔍 Checking block: $block at $block_json_path");
     }
 
     /**
+     * Render callback for ai-faq
+     */
+    public function render_dynamic_block_ai_faq($attributes)
+    {
+        $title = $attributes['title'] ?? __('Frequently Asked Questions', 'blockxpert');
+        $ai_enabled = $attributes['aiEnabled'] ?? true;
+        $max_questions = $attributes['maxQuestions'] ?? 5;
+        $auto_generate = $attributes['autoGenerate'] ?? true;
+        $show_search = $attributes['showSearch'] ?? true;
+        $accordion_style = $attributes['accordionStyle'] ?? 'expandable';
+        $theme = $attributes['theme'] ?? 'light';
+        $questions = $attributes['questions'] ?? [];
+        $api_key = $attributes['apiKey'] ?? '';
+        $model = $attributes['model'] ?? 'gpt-3.5-turbo';
+
+        $unique_id = 'ai-faq-' . uniqid();
+
+        ob_start();
+        ?>
+        <div class="ai-faq-block theme-<?php echo esc_attr($theme); ?>" id="<?php echo esc_attr($unique_id); ?>">
+            <?php if (!empty($title)) : ?>
+                <h2 class="faq-title"><?php echo esc_html($title); ?></h2>
+            <?php endif; ?>
+
+            <?php if ($show_search) : ?>
+                <div class="faq-search">
+                    <input 
+                        type="text" 
+                        class="faq-search-input" 
+                        placeholder="<?php esc_attr_e('Search questions...', 'blockxpert'); ?>"
+                        aria-label="<?php esc_attr_e('Search FAQ questions', 'blockxpert'); ?>"
+                    >
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($questions)) : ?>
+                <div class="faq-questions accordion-style-<?php echo esc_attr($accordion_style); ?>">
+                    <?php foreach ($questions as $index => $question) : ?>
+                        <div class="faq-question" data-index="<?php echo esc_attr($index); ?>">
+                            <div class="faq-question-header">
+                                <h3 class="faq-question-text">
+                                    <?php echo esc_html($question['question'] ?? __('Untitled Question', 'blockxpert')); ?>
+                                </h3>
+                                <span class="faq-toggle-icon">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <?php echo wp_kses_post(wpautop($question['answer'] ?? __('No answer provided.', 'blockxpert'))); ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else : ?>
+                <div class="faq-empty">
+                    <p><?php esc_html_e('No FAQ questions available.', 'blockxpert'); ?></p>
+                    <?php if ($ai_enabled && !empty($api_key)) : ?>
+                        <p><?php esc_html_e('Use the block settings to generate AI-powered questions.', 'blockxpert'); ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <style>
+            .ai-faq-block {
+                max-width: 800px;
+                margin: 2rem auto;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+
+            .ai-faq-block.theme-light {
+                background: #fff;
+                color: #333;
+            }
+
+            .ai-faq-block.theme-dark {
+                background: #1a1a1a;
+                color: #fff;
+            }
+
+            .ai-faq-block.theme-minimal {
+                background: transparent;
+                color: inherit;
+            }
+
+            .faq-title {
+                text-align: center;
+                margin-bottom: 2rem;
+                font-size: 2rem;
+                font-weight: 600;
+            }
+
+            .faq-search {
+                margin-bottom: 2rem;
+            }
+
+            .faq-search-input {
+                width: 100%;
+                padding: 12px 16px;
+                border: 2px solid #e1e5e9;
+                border-radius: 8px;
+                font-size: 16px;
+                transition: border-color 0.3s ease;
+            }
+
+            .faq-search-input:focus {
+                outline: none;
+                border-color: #007cba;
+            }
+
+            .faq-questions {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .faq-question {
+                border: 1px solid #e1e5e9;
+                border-radius: 8px;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .faq-question:hover {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .faq-question-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 1.5rem;
+                background: #f8f9fa;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .faq-question-header:hover {
+                background: #e9ecef;
+            }
+
+            .faq-question-text {
+                margin: 0;
+                font-size: 1.1rem;
+                font-weight: 500;
+                flex: 1;
+            }
+
+            .faq-toggle-icon {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #6c757d;
+                transition: transform 0.3s ease;
+            }
+
+            .faq-answer {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .faq-answer-content {
+                padding: 1rem 1.5rem;
+                line-height: 1.6;
+            }
+
+            .faq-question.active .faq-toggle-icon {
+                transform: rotate(45deg);
+            }
+
+            .faq-question.active .faq-answer {
+                max-height: 500px;
+            }
+
+            .faq-empty {
+                text-align: center;
+                padding: 3rem 1rem;
+                color: #6c757d;
+            }
+
+            /* Accordion styles */
+            .accordion-style-single-open .faq-question.active {
+                border-color: #007cba;
+            }
+
+            .accordion-style-always-open .faq-answer {
+                max-height: none;
+            }
+
+            .accordion-style-always-open .faq-toggle-icon {
+                display: none;
+            }
+
+            /* Dark theme adjustments */
+            .ai-faq-block.theme-dark .faq-question {
+                border-color: #404040;
+            }
+
+            .ai-faq-block.theme-dark .faq-question-header {
+                background: #2d2d2d;
+            }
+
+            .ai-faq-block.theme-dark .faq-question-header:hover {
+                background: #404040;
+            }
+
+            .ai-faq-block.theme-dark .faq-search-input {
+                background: #2d2d2d;
+                border-color: #404040;
+                color: #fff;
+            }
+        </style>
+
+        <script>
+        (function() {
+            const faqBlock = document.getElementById('<?php echo esc_js($unique_id); ?>');
+            if (!faqBlock) return;
+
+            const questions = faqBlock.querySelectorAll('.faq-question');
+            const searchInput = faqBlock.querySelector('.faq-search-input');
+            const accordionStyle = '<?php echo esc_js($accordion_style); ?>';
+
+            // Handle question toggling
+            questions.forEach(question => {
+                const header = question.querySelector('.faq-question-header');
+                header.addEventListener('click', () => {
+                    if (accordionStyle === 'single-open') {
+                        // Close all other questions
+                        questions.forEach(q => {
+                            if (q !== question) {
+                                q.classList.remove('active');
+                            }
+                        });
+                    }
+                    
+                    question.classList.toggle('active');
+                });
+            });
+
+            // Handle search functionality
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    
+                    questions.forEach(question => {
+                        const questionText = question.querySelector('.faq-question-text').textContent.toLowerCase();
+                        const answerText = question.querySelector('.faq-answer-content').textContent.toLowerCase();
+                        
+                        if (questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+                            question.style.display = 'block';
+                        } else {
+                            question.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Auto-expand first question for single-open style
+            if (accordionStyle === 'single-open' && questions.length > 0) {
+                questions[0].classList.add('active');
+            }
+        })();
+        </script>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
      * Add custom block category to Gutenberg editor
      */
     public function add_block_category($categories)
@@ -753,6 +1022,127 @@ error_log("🔍 Checking block: $block at $block_json_path");
                 filemtime($css_path)
             );
         }
+    }
+
+    /**
+     * Register REST API routes
+     */
+    public function register_rest_routes()
+    {
+        register_rest_route('blockxpert/v1', '/generate-faq', [
+            'methods' => 'POST',
+            'callback' => [$this, 'generate_faq_questions'],
+            'permission_callback' => function () {
+                return current_user_can('edit_posts');
+            },
+        ]);
+    }
+
+    /**
+     * Generate FAQ questions using OpenAI API
+     */
+    public function generate_faq_questions($request)
+    {
+        $params = $request->get_params();
+        $api_key = sanitize_text_field($params['apiKey'] ?? '');
+        $model = sanitize_text_field($params['model'] ?? 'gpt-3.5-turbo');
+        $max_questions = intval($params['maxQuestions'] ?? 5);
+        $context = sanitize_textarea_field($params['context'] ?? '');
+
+        if (empty($api_key)) {
+            return new WP_Error('missing_api_key', __('OpenAI API key is required.', 'blockxpert'), ['status' => 400]);
+        }
+
+        // Prepare the prompt for OpenAI
+        $prompt = "Generate {$max_questions} relevant FAQ questions and answers for a website. ";
+        if (!empty($context)) {
+            $prompt .= "Context: {$context}. ";
+        }
+        $prompt .= "Format the response as a JSON array with 'question' and 'answer' fields for each FAQ item. Make the questions practical and the answers helpful and informative.";
+
+        $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $api_key,
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'model' => $model,
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are a helpful assistant that generates FAQ questions and answers. Always respond with valid JSON format.'
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ],
+                'max_tokens' => 2000,
+                'temperature' => 0.7,
+            ]),
+            'timeout' => 30,
+        ]);
+
+        if (is_wp_error($response)) {
+            return new WP_Error('api_error', __('Failed to connect to OpenAI API.', 'blockxpert'), ['status' => 500]);
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if (empty($data) || !isset($data['choices'][0]['message']['content'])) {
+            return new WP_Error('invalid_response', __('Invalid response from OpenAI API.', 'blockxpert'), ['status' => 500]);
+        }
+
+        $content = $data['choices'][0]['message']['content'];
+        
+        // Try to extract JSON from the response
+        preg_match('/\[.*\]/s', $content, $matches);
+        if (empty($matches)) {
+            // If no JSON found, create a simple FAQ structure
+            $questions = [];
+            $lines = explode("\n", $content);
+            $current_question = '';
+            
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if (empty($line)) continue;
+                
+                if (preg_match('/^\d+\.\s*(.+)$/', $line, $matches)) {
+                    if (!empty($current_question)) {
+                        $questions[] = [
+                            'question' => $current_question,
+                            'answer' => 'Answer will be provided by the user.',
+                            'id' => time() + count($questions)
+                        ];
+                    }
+                    $current_question = $matches[1];
+                }
+            }
+            
+            if (!empty($current_question)) {
+                $questions[] = [
+                    'question' => $current_question,
+                    'answer' => 'Answer will be provided by the user.',
+                    'id' => time() + count($questions)
+                ];
+            }
+        } else {
+            $questions = json_decode($matches[0], true);
+            if (!is_array($questions)) {
+                $questions = [];
+            }
+            
+            // Add IDs to questions
+            foreach ($questions as &$question) {
+                $question['id'] = time() + rand(1, 1000);
+            }
+        }
+
+        return [
+            'success' => true,
+            'questions' => array_slice($questions, 0, $max_questions),
+        ];
     }
 }
 

@@ -1,0 +1,53 @@
+{
+  "apiVersion": 2,
+  "name": "blockxpert/ai-faq",
+  "title": "AI FAQ",
+  "category": "custom-blocks",
+  "icon": "editor-help",
+  "editorScript": "file:../../build/ai-faq/index.js",
+  "editorStyle": "file:../../build/ai-faq/index.css",
+  "style": "file:../../build/ai-faq/style-index.css",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Frequently Asked Questions"
+    },
+    "aiEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "maxQuestions": {
+      "type": "number",
+      "default": 5
+    },
+    "autoGenerate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showSearch": {
+      "type": "boolean",
+      "default": true
+    },
+    "accordionStyle": {
+      "type": "string",
+      "default": "expandable"
+    },
+    "theme": {
+      "type": "string",
+      "default": "light"
+    },
+    "questions": {
+      "type": "array",
+      "default": []
+    },
+    "apiKey": {
+      "type": "string",
+      "default": ""
+    },
+    "model": {
+      "type": "string",
+      "default": "gpt-3.5-turbo"
+    }
+  },
+  "render": "gutenberg_blocks_render_ai_faq"
+} 
