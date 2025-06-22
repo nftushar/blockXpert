@@ -78,7 +78,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
      */
     private function get_default_blocks()
     {
-        return ['block-one', 'block-two', 'block-three', 'product-slider', 'ai-faq', 'ai-product-recommendations'];
+        return ['block-one', 'block-two', 'block-three', 'product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'];
     }
 
     /**
@@ -1154,6 +1154,28 @@ error_log("🔍 Checking block: $block at $block_json_path");
     }
 
     /**
+     * Render callback for pdf-invoice
+     */
+    public function render_dynamic_block_pdf_invoice($attributes)
+    {
+        if (!is_user_logged_in()) return '';
+        $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
+        $button_text = esc_html($attributes['buttonText'] ?? __('Download Invoice (PDF)', 'blockxpert'));
+        ob_start();
+        ?>
+        <form method="get" action="<?php echo esc_url(rest_url('blockxpert/v1/pdf-invoice')); ?>" target="_blank">
+            <?php if (!empty($attributes['showOrderIdField'])): ?>
+                <input type="text" name="order_id" placeholder="<?php esc_attr_e('Order ID', 'blockxpert'); ?>" />
+            <?php else: ?>
+                <input type="hidden" name="order_id" value="<?php echo esc_attr($order_id); ?>" />
+            <?php endif; ?>
+            <button type="submit" class="blockxpert-pdf-invoice-btn"><?php echo $button_text; ?></button>
+        </form>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
      * Add custom block category to Gutenberg editor
      */
     public function add_block_category($categories)
@@ -1314,6 +1336,7 @@ error_log("🔍 Checking block: $block at $block_json_path");
      */
     public function register_rest_routes()
     {
+        error_log('BlockXpert: register_rest_routes called');
         register_rest_route('blockxpert/v1', '/generate-faq', [
             'methods' => 'POST',
             'callback' => [$this, 'generate_faq_questions'],
@@ -1328,6 +1351,12 @@ error_log("🔍 Checking block: $block at $block_json_path");
             'permission_callback' => function () {
                 return current_user_can('edit_posts');
             },
+        ]);
+
+        register_rest_route('blockxpert/v1', '/pdf-invoice', [
+            'methods' => 'GET',
+            'callback' => [$this, 'rest_pdf_invoice_download'],
+             
         ]);
     }
 
@@ -1588,6 +1617,17 @@ error_log("🔍 Checking block: $block at $block_json_path");
             'success' => true,
             'products' => array_slice($recommended_products, 0, $products_count),
         ];
+    }
+
+    public function rest_pdf_invoice_download($request)
+    {
+        error_log('BlockXpert: rest_pdf_invoice_download called');
+        $order_id = intval($request->get_param('order_id'));
+        // TODO: Generate real PDF. For now, output a dummy PDF.
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="invoice-' . $order_id . '.pdf"');
+        echo "%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 200 200] /Contents 4 0 R >>\nendobj\n4 0 obj\n<< /Length 44 >>\nstream\nBT /F1 24 Tf 10 100 Td (Invoice #$order_id) Tj ET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f \n0000000010 00000 n \n0000000060 00000 n \n0000000117 00000 n \n0000000211 00000 n \ntrailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n297\n%%EOF";
+        exit;
     }
 }
 

@@ -1,0 +1,19 @@
+{
+  "apiVersion": 2,
+  "name": "blockxpert/pdf-invoice",
+  "title": "Woo PDF Invoice Download",
+  "category": "custom-blocks",
+  "icon": "media-document",
+  "editorScript": "file:../../build/pdf-invoice/index.js",
+  "attributes": {
+    "buttonText": {
+      "type": "string",
+      "default": "Download Invoice (PDF)"
+    },
+    "showOrderIdField": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "render": "render_dynamic_block_pdf_invoice"
+} 
