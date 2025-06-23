@@ -190,6 +190,38 @@ class BlockXpert_Blocks {
         $showAddToCart = $attributes['showAddToCart'] ?? true;
         $layoutStyle = $attributes['layoutStyle'] ?? 'grid';
         $theme = $attributes['theme'] ?? 'light';
+
+        // If no recommended products, fetch recent WooCommerce products
+        if (empty($products) && class_exists('WooCommerce')) {
+            $args = [
+                'post_type' => 'product',
+                'post_status' => 'publish',
+                'posts_per_page' => $attributes['productsCount'] ?? 4,
+                'orderby' => 'date',
+                'order' => 'DESC',
+            ];
+            $query = new \WP_Query($args);
+            $products = [];
+            while ($query->have_posts()) {
+                $query->the_post();
+                global $product;
+                if (!$product) {
+                    $product = wc_get_product(get_the_ID());
+                }
+                $products[] = [
+                    'id' => $product->get_id(),
+                    'name' => $product->get_name(),
+                    'images' => [['src' => $product->get_image_id() ? wp_get_attachment_url($product->get_image_id()) : wc_placeholder_img_src()]],
+                    'price_html' => $product->get_price_html(),
+                    'price' => $product->get_price(),
+                    'average_rating' => $product->get_average_rating(),
+                    'review_count' => $product->get_review_count(),
+                    'stock_status' => $product->get_stock_status(),
+                ];
+            }
+            wp_reset_postdata();
+        }
+
         ob_start();
         ?>
         <div class="ai-product-recommendations theme-<?php echo esc_attr($theme); ?>">

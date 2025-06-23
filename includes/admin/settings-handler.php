@@ -36,9 +36,24 @@ class Gutenberg_Blocks_Settings
             }, 'blockxpert-settings', 'blockxpert_pdf_invoice_section');
             register_setting('blockxpert-settings-group', 'blockxpert_company_email');
 
-            add_settings_field('blockxpert_company_logo', __('Company Logo URL', 'blockxpert'), function() {
-                echo '<input type="text" name="blockxpert_company_logo" value="' . esc_attr(get_option('blockxpert_company_logo', '')) . '" class="regular-text">';
-            }, 'blockxpert-settings', 'blockxpert_pdf_invoice_section');
+            add_settings_field('blockxpert_company_logo', __('Company Logo', 'blockxpert'), function() {
+                $logo_url = esc_attr(get_option('blockxpert_company_logo', ''));
+                echo '<div id="blockxpert-logo-upload-wrapper">';
+                echo '<img id="blockxpert-logo-preview" src="' . ($logo_url ? $logo_url : '') . '" style="max-height:60px;max-width:200px;display:' . ($logo_url ? 'block' : 'none') . ';margin-bottom:8px;" />';
+                echo '<input type="hidden" id="blockxpert_company_logo" name="blockxpert_company_logo" value="' . $logo_url . '" />';
+                echo '<button type="button" class="button" id="blockxpert-logo-upload-btn">' . __('Select/Upload Logo', 'blockxpert') . '</button> ';
+                echo '<button type="button" class="button" id="blockxpert-logo-remove-btn" style="' . ($logo_url ? '' : 'display:none;') . '">' . __('Remove Logo', 'blockxpert') . '</button>';
+                echo '</div>';
+                ?>
+                <script>
+                jQuery(document).ready(function($){
+                    var frame;
+                    $('#blockxpert-logo-upload-btn').on('click', function(e){
+                        e.preventDefault();
+                        if(frame){ frame.open(); return; }
+                        frame = wp.media({
+                            title: '
+            });
             register_setting('blockxpert-settings-group', 'blockxpert_company_logo');
 
             add_settings_field('blockxpert_company_footer', __('Footer Text', 'blockxpert'), function() {
