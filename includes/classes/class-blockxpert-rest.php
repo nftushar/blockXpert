@@ -4,8 +4,7 @@
  * Handles REST API endpoints for BlockXpert.
  */
 if (!defined('ABSPATH')) exit;
-use WP_Error;
-use WP_Query;
+
 class BlockXpert_REST
 {
     public function __construct()
@@ -31,9 +30,39 @@ class BlockXpert_REST
             },
         ]);
         register_rest_route('blockxpert/v1', '/pdf-invoice', [
-            'methods' => 'GET',
+            'methods' => ['GET', 'HEAD'],
             'callback' => [$this, 'rest_pdf_invoice_download'],
-            'permission_callback' => '__return_true',
+            'permission_callback' => function ($request) {
+                // Allow HEAD requests for validation
+                if ($request->get_method() === 'HEAD') {
+                    return is_user_logged_in();
+                }
+
+                // For GET requests, check if user is logged in
+                if (!is_user_logged_in()) {
+                    return false;
+                }
+
+                // Get the order ID from the request
+                $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
+                if (!$order_id) {
+                    return false;
+                }
+
+                // Get the order
+                $order = wc_get_order($order_id);
+                if (!$order) {
+                    return false;
+                }
+
+                // Allow if user is admin or shop manager
+                if (current_user_can('manage_woocommerce')) {
+                    return true;
+                }
+
+                // For regular users, check if the order belongs to them
+                return $order->get_customer_id() === get_current_user_id();
+            },
         ]);
     }
 
@@ -196,7 +225,20 @@ class BlockXpert_REST
             return new WP_Error('invalid_order_id', 'Invalid Order ID.', ['status' => 400]);
         }
 
-        // Optionally, check user permissions here
+        // Get the order
+        $order = wc_get_order($order_id);
+        if (!$order) {
+            return new WP_Error('order_not_found', 'Order not found.', ['status' => 404]);
+        }
+
+        // Check user permissions
+        if (!current_user_can('manage_woocommerce')) {
+            // For regular customers, check if the order belongs to them
+            $current_user_id = get_current_user_id();
+            if (!$current_user_id || $order->get_customer_id() !== $current_user_id) {
+                return new WP_Error('permission_denied', 'You do not have permission to access this order.', ['status' => 403]);
+            }
+        }
 
         // Gather company info from options
         $company = [
@@ -209,8 +251,9 @@ class BlockXpert_REST
             'primary_color' => get_option('blockxpert_invoice_primary_color', '#007cba'),
         ];
 
-        require_once BLOCKXPERT_PATH . 'includes/pdf-invoice/generator.php';
-        $pdf = blockxpert_generate_invoice_pdf($order_id, $company);
+        // Use the PDF invoice class
+        $pdf_invoice = new BlockXpert_PDF_Invoice();
+        $pdf = $pdf_invoice->generate_invoice_pdf($order_id, $company);
 
         if (is_wp_error($pdf)) {
             return $pdf;
