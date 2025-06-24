@@ -25,7 +25,6 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 
 require_once __DIR__ . '/includes/classes/class-blockxpert-blocks.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-rest.php';
-require_once __DIR__ . '/includes/classes/class-blockxpert-pdf-invoice.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-admin-settings.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert.php';
 

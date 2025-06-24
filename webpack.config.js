@@ -12,8 +12,6 @@ module.exports = {
     'ai-faq/view': './src/blocks/ai-faq/view.js',
     'ai-product-recommendations/style-index': './src/blocks/ai-product-recommendations/style.scss',
     'ai-product-recommendations/view': './src/blocks/ai-product-recommendations/view.js',
-    'pdf-invoice/style-index': './src/blocks/pdf-invoice/style.scss',
-    'pdf-invoice/view': './src/blocks/pdf-invoice/view.js',
   },
   output: {
     path: path.resolve(__dirname, 'build'),

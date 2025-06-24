@@ -26,7 +26,7 @@ class BlockXpert_Admin_Settings {
         register_setting('blockxpert_settings', 'blockxpert_active', [
             'type' => 'array',
             'sanitize_callback' => [$this, 'sanitize_active_blocks'],
-            'default' => ['product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'],
+            'default' => ['product-slider', 'ai-faq', 'ai-product-recommendations'],
         ]);
     }
 
@@ -40,12 +40,11 @@ class BlockXpert_Admin_Settings {
         // Add tabs navigation
         echo '<h2 class="nav-tab-wrapper">';
         echo '<a href="#blocks" class="nav-tab nav-tab-active" data-tab="blocks">' . __('Blocks', 'blockxpert') . '</a>';
-        echo '<a href="#pdf-invoice" class="nav-tab" data-tab="pdf-invoice">' . __('PDF Invoice', 'blockxpert') . '</a>';
         echo '</h2>';
         
         // Blocks Settings Section
         echo '<div id="blocks-section" class="blockxpert-section active">';
-        $blocks = ['product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'];
+        $blocks = ['product-slider', 'ai-faq', 'ai-product-recommendations'];
         $active_blocks = get_option('blockxpert_active', $blocks);
         
         echo '<form method="post" action="options.php">';
@@ -76,86 +75,6 @@ class BlockXpert_Admin_Settings {
         submit_button();
         echo '</form>';
         echo '</div>';
-        
-        // PDF Invoice Settings Section
-        echo '<div id="pdf-invoice-section" class="blockxpert-section">';
-        echo '<div class="blockxpert-invoice-layout">';
-        
-        // Settings Column
-        echo '<div class="blockxpert-settings-column">';
-        echo '<form method="post" action="options.php" id="invoice-settings-form">';
-        wp_nonce_field('blockxpert_invoice_settings', 'blockxpert_invoice_nonce');
-        settings_fields('blockxpert-settings-group');
-        do_settings_sections('blockxpert-settings');
-        echo '<div class="submit-wrapper">';
-        echo '<div id="save-status" style="display:none;margin-left:10px;"></div>';
-        submit_button(__('Save Changes', 'blockxpert'), 'primary', 'submit', false);
-        echo '</div>';
-        echo '</form>';
-        echo '</div>';
-        
-        // Preview Column
-        echo '<div class="blockxpert-preview-column">';
-        echo '<div class="preview-header">';
-        echo '<h3>' . __('Live Preview', 'blockxpert') . '</h3>';
-        echo '<div class="preview-controls">';
-        echo '<button type="button" class="button" id="refresh-preview">' . __('Refresh Preview', 'blockxpert') . '</button>';
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="preview-container">';
-        // Sample invoice preview
-        echo '<div class="invoice-preview" id="invoice-preview">';
-        $company_name = get_option('blockxpert_company_name', '');
-        $company_address = get_option('blockxpert_company_address', '');
-        $company_email = get_option('blockxpert_company_email', '');
-        $company_logo = get_option('blockxpert_company_logo', '');
-        $footer_text = get_option('blockxpert_company_footer', '');
-        $font_size = get_option('blockxpert_invoice_font_size', '16px');
-        $primary_color = get_option('blockxpert_invoice_primary_color', '#007cba');
-        echo '<style>
-            .invoice-preview {
-                font-size: ' . esc_attr($font_size) . ';
-                --invoice-primary-color: ' . esc_attr($primary_color) . ';
-            }
-        </style>';
-        echo '<div class="preview-invoice-container">';
-        echo '<header>';
-        if ($company_logo) {
-            echo '<div class="company-logo"><img src="' . esc_url($company_logo) . '" alt="Company Logo" style="max-height: 60px;"></div>';
-        }
-        echo '<div class="company-info">';
-        echo '<h2>' . esc_html($company_name ?: 'Your Company Name') . '</h2>';
-        echo '<p>' . esc_html($company_address ?: 'Company Address') . '</p>';
-        echo '<p>' . esc_html($company_email ?: 'company@email.com') . '</p>';
-        echo '</div>';
-        echo '</header>';
-        echo '<section class="invoice-details">';
-        echo '<h1>Invoice</h1>';
-        echo '<p><strong>Invoice #:</strong> SAMPLE-001</p>';
-        echo '<p><strong>Date:</strong> ' . date('Y-m-d') . '</p>';
-        echo '</section>';
-        echo '<section class="order-items">';
-        echo '<table width="100%">';
-        echo '<thead><tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr></thead>';
-        echo '<tbody>';
-        echo '<tr><td>Sample Product 1</td><td>2</td><td>$49.99</td><td>$99.98</td></tr>';
-        echo '<tr><td>Sample Product 2</td><td>1</td><td>$29.99</td><td>$29.99</td></tr>';
-        echo '</tbody>';
-        echo '</table>';
-        echo '</section>';
-        echo '<section class="order-summary">';
-        echo '<p><strong>Subtotal:</strong> $129.97</p>';
-        echo '<p><strong>Total:</strong> $129.97</p>';
-        echo '</section>';
-        echo '<footer>';
-        echo '<p>' . esc_html($footer_text ?: 'Thank you for your business!') . '</p>';
-        echo '</footer>';
-        echo '</div>'; // .preview-invoice-container
-        echo '</div>'; // .invoice-preview
-        echo '</div>'; // .preview-container
-        echo '</div>'; // .blockxpert-preview-column
-        echo '</div>'; // .blockxpert-invoice-layout
-        echo '</div>'; // #pdf-invoice-section
         
         // Add styles for the layout
         echo '<style>
@@ -316,8 +235,6 @@ class BlockXpert_Admin_Settings {
                 $(".blockxpert-section").removeClass("active").hide();
                 if(tab === "blocks") {
                     $("#blocks-section").addClass("active").show();
-                } else if(tab === "pdf-invoice") {
-                    $("#pdf-invoice-section").addClass("active").show();
                 }
             });
             // Tabs

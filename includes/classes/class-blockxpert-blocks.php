@@ -32,7 +32,7 @@ class BlockXpert_Blocks {
     }
 
     private function get_default_blocks() {
-        return ['product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'];
+        return ['product-slider', 'ai-faq', 'ai-product-recommendations'];
     }
 
     // Render callback for product-slider
@@ -262,107 +262,6 @@ class BlockXpert_Blocks {
         </div>
         <?php
         return ob_get_clean();
-    }
-
-    // Render callback for pdf-invoice
-    public function render_dynamic_block_pdf_invoice($attributes) {
-        $button_text = $attributes['buttonText'] ?? __('Download Invoice (PDF)', 'blockxpert');
-        $show_order_id_field = $attributes['showOrderIdField'] ?? false;
-        $output = '<div class="blockxpert-pdf-invoice-block">';
-        $output .= '<h2>' . esc_html($attributes['title'] ?? 'PDF Invoice') . '</h2>';
-        if ($show_order_id_field) {
-            $output .= '<form class="blockxpert-invoice-form" method="get" action="" onsubmit="
-                event.preventDefault();
-                var form = this;
-                var submitBtn = form.querySelector(\'button[type=submit]\');
-                var oid = form.order_id.value;
-                if (!oid) return;
-                
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = \'Loading...\';
-                
-                var xhr = new XMLHttpRequest();
-                xhr.open(\'HEAD\', \'' . esc_url(rest_url('blockxpert/v1/pdf-invoice')) . '?order_id=\' + encodeURIComponent(oid));
-                xhr.setRequestHeader(\'X-WP-Nonce\', \'' . wp_create_nonce('wp_rest') . '\');
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            var downloadXhr = new XMLHttpRequest();
-                            downloadXhr.open(\'GET\', \'' . esc_url(rest_url('blockxpert/v1/pdf-invoice')) . '?order_id=\' + encodeURIComponent(oid));
-                            downloadXhr.setRequestHeader(\'X-WP-Nonce\', \'' . wp_create_nonce('wp_rest') . '\');
-                            downloadXhr.responseType = \'blob\';
-                            downloadXhr.onload = function() {
-                                if (downloadXhr.status === 200) {
-                                    var blob = new Blob([downloadXhr.response], { type: \'application/pdf\' });
-                                    var url = window.URL.createObjectURL(blob);
-                                    var a = document.createElement(\'a\');
-                                    a.href = url;
-                                    a.download = \'invoice-\' + oid + \'.pdf\';
-                                    document.body.appendChild(a);
-                                    a.click();
-                                    window.URL.revokeObjectURL(url);
-                                    document.body.removeChild(a);
-                                } else {
-                                    var errorMsg = form.querySelector(\'.error-message\');
-                                    if (!errorMsg) {
-                                        errorMsg = document.createElement(\'div\');
-                                        errorMsg.className = \'error-message\';
-                                        form.appendChild(errorMsg);
-                                    }
-                                    errorMsg.textContent = \'Error: Unable to download invoice. Please try again.\';
-                                    errorMsg.style.color = \'red\';
-                                    errorMsg.style.marginTop = \'10px\';
-                                }
-                                submitBtn.disabled = false;
-                                submitBtn.innerHTML = \'' . esc_js($button_text) . '\';
-                            };
-                            downloadXhr.send();
-                        } else {
-                            var errorMsg = form.querySelector(\'.error-message\');
-                            if (!errorMsg) {
-                                errorMsg = document.createElement(\'div\');
-                                errorMsg.className = \'error-message\';
-                                form.appendChild(errorMsg);
-                            }
-                            errorMsg.textContent = xhr.status === 403 ? \'Error: You do not have permission to access this order.\' : \'Error: Unable to generate invoice. Please check the order ID.\';
-                            errorMsg.style.color = \'red\';
-                            errorMsg.style.marginTop = \'10px\';
-                            submitBtn.disabled = false;
-                            submitBtn.innerHTML = \'' . esc_js($button_text) . '\';
-                        }
-                    }
-                };
-                xhr.send();
-            ">';
-            $output .= '<input type="text" name="order_id" placeholder="Enter Order ID" required style="margin-right:10px;" />';
-            $output .= '<button type="submit">' . esc_html($button_text) . '</button>';
-            $output .= '</form>';
-        
-            if (is_user_logged_in()) {
-                $user_id = get_current_user_id();
-                $orders = wc_get_orders([
-                    'customer_id' => $user_id,
-                    'limit' => 1,
-                    'orderby' => 'date',
-                    'order' => 'DESC',
-                    'status' => ['wc-completed', 'wc-processing']
-                ]);
-                if (!empty($orders)) {
-                    $order_id = $orders[0]->get_id();
-                    $download_url = add_query_arg([
-                        'order_id' => $order_id,
-                        '_wpnonce' => wp_create_nonce('wp_rest'),
-                    ], rest_url('blockxpert/v1/pdf-invoice'));
-                    $output .= '<a href="' . esc_url($download_url) . '" class="button blockxpert-download-invoice">' . esc_html($button_text) . '</a>';
-                } else {
-                    $output .= '<p>' . esc_html__('No recent orders found for your account.', 'blockxpert') . '</p>';
-                }
-            } else {
-                $output .= '<p>' . esc_html__('Please log in to download your invoice.', 'blockxpert') . '</p>';
-            }
-        }
-        $output .= '</div>';
-        return $output;
     }
 
     public function add_block_category($categories) {
