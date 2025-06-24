@@ -1,1 +1,0 @@
-// Placeholder for block-one frontend JS. Add interactivity here if needed in the future. 

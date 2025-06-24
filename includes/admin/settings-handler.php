@@ -138,7 +138,7 @@ class Gutenberg_Blocks_Settings
 
     public static function get_default_blocks()
     {
-        return ['block-one', 'block-two', 'block-three'];
+        return [];
     }
 }
 

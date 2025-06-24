@@ -6,6 +6,7 @@ class BlockXpert_Blocks {
     public function __construct() {
         add_action('init', [$this, 'register_blocks']);
         add_filter('block_categories_all', [$this, 'add_block_category']);
+        add_action('enqueue_block_editor_assets', [$this, 'enqueue_editor_assets']);
     }
 
     public function register_blocks() {
@@ -31,46 +32,7 @@ class BlockXpert_Blocks {
     }
 
     private function get_default_blocks() {
-        return ['block-one', 'block-two', 'block-three', 'product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'];
-    }
-
-    // Render callback for block-one
-    public function render_dynamic_block_block_one($attributes) {
-        ob_start();
-        ?>
-        <div class="dynamic-block block-one">
-            <h2><?php echo esc_html($attributes['title'] ?? 'Block One'); ?></h2>
-            <p><?php echo esc_html__('This is Block One. Replace this with your custom content.', 'blockxpert'); ?></p>
-            <pre style="background:#f8f8f8;padding:10px;border-radius:4px;">Attributes: <?php echo esc_html(json_encode($attributes)); ?></pre>
-        </div>
-        <?php
-        return ob_get_clean();
-    }
-
-    // Render callback for block-two
-    public function render_dynamic_block_block_two($attributes) {
-        ob_start();
-        ?>
-        <div class="dynamic-block block-two">
-            <h2><?php echo esc_html($attributes['title'] ?? 'Block Two'); ?></h2>
-            <p><?php echo esc_html__('This is Block Two. Replace this with your custom content.', 'blockxpert'); ?></p>
-            <pre style="background:#f8f8f8;padding:10px;border-radius:4px;">Attributes: <?php echo esc_html(json_encode($attributes)); ?></pre>
-        </div>
-        <?php
-        return ob_get_clean();
-    }
-
-    // Render callback for block-three
-    public function render_dynamic_block_block_three($attributes) {
-        ob_start();
-        ?>
-        <div class="dynamic-block block-three">
-            <h2><?php echo esc_html($attributes['title'] ?? 'Block Three'); ?></h2>
-            <p><?php echo esc_html__('This is Block Three. Replace this with your custom content.', 'blockxpert'); ?></p>
-            <pre style="background:#f8f8f8;padding:10px;border-radius:4px;">Attributes: <?php echo esc_html(json_encode($attributes)); ?></pre>
-        </div>
-        <?php
-        return ob_get_clean();
+        return ['product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'];
     }
 
     // Render callback for product-slider
@@ -152,23 +114,59 @@ class BlockXpert_Blocks {
     public function render_dynamic_block_ai_faq($attributes) {
         $title = $attributes['title'] ?? __('Frequently Asked Questions', 'blockxpert');
         $questions = $attributes['questions'] ?? [];
+        
+        $wrapper_attributes = get_block_wrapper_attributes([
+            'data-animation-type' => $attributes['animationType'] ?? 'slide',
+            'data-animation-duration' => $attributes['animationDuration'] ?? 300,
+        ]);
+
+        $title_style = '';
+        if (!empty($attributes['titleColor'])) {
+            $title_style .= 'color:' . esc_attr($attributes['titleColor']) . ';';
+        }
+        if (!empty($attributes['titleFontSize'])) {
+            $title_style .= 'font-size:' . esc_attr($attributes['titleFontSize']) . ';';
+        }
+
+        $question_style = '';
+        if (!empty($attributes['questionColor'])) {
+            $question_style .= 'color:' . esc_attr($attributes['questionColor']) . ';';
+        }
+        if (!empty($attributes['questionFontSize'])) {
+            $question_style .= 'font-size:' . esc_attr($attributes['questionFontSize']) . ';';
+        }
+
+        $answer_style = '';
+        if (!empty($attributes['answerColor'])) {
+            $answer_style .= 'color:' . esc_attr($attributes['answerColor']) . ';';
+        }
+        if (!empty($attributes['answerFontSize'])) {
+            $answer_style .= 'font-size:' . esc_attr($attributes['answerFontSize']) . ';';
+        }
+
         ob_start();
         ?>
-        <div class="ai-faq-block theme-<?php echo esc_attr($attributes['theme'] ?? 'light'); ?>">
+        <div <?php echo $wrapper_attributes; ?>>
             <div class="ai-faq-editor">
-                <h2 class="faq-title"><?php echo esc_html($title); ?></h2>
+                <h2 class="faq-title" style="<?php echo $title_style; ?>"><?php echo esc_html($title); ?></h2>
                 <div class="faq-questions">
                     <?php foreach ($questions as $index => $question): ?>
                         <div class="faq-question" data-faq-index="<?php echo esc_attr($index); ?>">
                             <div class="faq-question-content">
                                 <div class="faq-question-header">
-                                    <h3 class="faq-question-text"><?php echo esc_html($question['question'] ?? __('Untitled Question', 'blockxpert')); ?></h3>
+                                    <h3 class="faq-question-text" style="<?php echo esc_attr(
+                                        (!empty($question['questionColor']) ? 'color:' . esc_attr($question['questionColor']) . ';' : $question_style)
+                                        . (!empty($question['questionFontSize']) ? 'font-size:' . esc_attr($question['questionFontSize']) . ';' : '')
+                                    ); ?>"><?php echo esc_html($question['question'] ?? __('Untitled Question', 'blockxpert')); ?></h3>
                                     <div class="faq-question-actions">
                                         <span class="faq-toggle-icon">+</span>
                                     </div>
                                 </div>
-                                <div class="faq-answer" style="display:none;">
-                                    <p><?php echo esc_html($question['answer'] ?? __('No answer provided.', 'blockxpert')); ?></p>
+                                <div class="faq-answer">
+                                    <p style="<?php echo esc_attr(
+                                        (!empty($question['answerColor']) ? 'color:' . esc_attr($question['answerColor']) . ';' : $answer_style)
+                                        . (!empty($question['answerFontSize']) ? 'font-size:' . esc_attr($question['answerFontSize']) . ';' : '')
+                                    ); ?>"><?php echo esc_html($question['answer'] ?? __('No answer provided.', 'blockxpert')); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -182,7 +180,7 @@ class BlockXpert_Blocks {
 
     // Render callback for ai-product-recommendations
     public function render_dynamic_block_ai_product_recommendations($attributes) {
-        $title = $attributes['title'] ?? __('AI Product Recommendations', 'blockxpert');
+        $title = $attributes['title'] ?? __('Ai Product Recom', 'blockxpert');
         $products = $attributes['recommendedProducts'] ?? [];
         $showPrice = $attributes['showPrice'] ?? true;
         $showRating = $attributes['showRating'] ?? true;
@@ -377,5 +375,17 @@ class BlockXpert_Blocks {
             'slug'  => 'custom-blocks',
             'title' => __('Custom Blocks', 'blockxpert'),
         ]]);
+    }
+
+    public function enqueue_editor_assets() {
+        $asset_file = include(BLOCKXPERT_PATH . 'build/index.asset.php');
+        
+        wp_enqueue_script(
+            'blockxpert-editor',
+            BLOCKXPERT_URL . 'build/index.js',
+            $asset_file['dependencies'],
+            $asset_file['version'],
+            true
+        );
     }
 } 

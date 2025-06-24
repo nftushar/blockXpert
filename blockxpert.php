@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BlockXpert
  * Plugin URI:  https://wordpress.org/plugins/blockxpert/
- * Description: A powerful set of AI-driven Gutenberg blocks, including an AI FAQ and AI Product Recommendations for WooCommerce, with comprehensive admin controls.
+ * Description: A powerful set of AI-driven Gutenberg blocks, including an AI FAQ and Ai Product Recommendations for WooCommerce, with comprehensive admin controls.
  * Version:     1.0.0
  * Author:      The WordPress Contributor Team
  * Author URI:  https://wordpress.org/

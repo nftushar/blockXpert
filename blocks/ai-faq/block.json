@@ -39,7 +39,19 @@
     },
     "questions": {
       "type": "array",
-      "default": []
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": { "type": "string" },
+          "answer": { "type": "string" },
+          "id": { "type": "number" },
+          "questionColor": { "type": "string" },
+          "questionFontSize": { "type": "string" },
+          "answerColor": { "type": "string" },
+          "answerFontSize": { "type": "string" }
+        }
+      }
     },
     "apiKey": {
       "type": "string",
@@ -48,7 +60,44 @@
     "model": {
       "type": "string",
       "default": "gpt-3.5-turbo"
+    },
+    "titleColor": {
+      "type": "string"
+    },
+    "questionColor": {
+      "type": "string"
+    },
+    "answerColor": {
+      "type": "string"
+    },
+    "titleFontSize": {
+      "type": "string"
+    },
+    "questionFontSize": {
+      "type": "string"
+    },
+    "answerFontSize": {
+      "type": "string"
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 300
     }
   },
-  "render": "gutenberg_blocks_render_ai_faq"
+  "supports": {
+    "color": {
+      "background": true,
+      "text": false,
+      "link": true
+    },
+    "typography": {
+      "fontSize": false,
+      "lineHeight": true
+    },
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "render": "render_dynamic_block_ai_faq"
 } 

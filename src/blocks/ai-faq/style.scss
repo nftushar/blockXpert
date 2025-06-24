@@ -1,60 +1,126 @@
 // AI FAQ Frontend Styles
-.blockxpert-ai-faq-block {
-  background: #fffbe6;
-  border: 1px solid #ffe58f;
-  padding: 24px;
+.wp-block-blockxpert-ai-faq {
+  border: 1px solid transparent;
   border-radius: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 2em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+  .faq-title {
+    font-weight: 600;
+    margin-bottom: 1.2em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .faq-search {
+    margin-bottom: 1.5em;
+    .components-text-control__input {
+      border-radius: 6px;
+      padding: 10px 15px;
+      &:focus {
+        border-color: #9a67ff;
+        box-shadow: 0 0 0 1px #9a67ff;
+      }
+    }
+  }
+
+  .faq-question {
+    border-bottom: 1px solid #f0f0f0;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  .faq-question-content {
+    .faq-question-header {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      justify-content: space-between;
+      padding: 1.2em 0.5em;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: rgba(0,0,0,0.02);
+      }
+      
+      .faq-question-text {
+        font-weight: 500;
+        margin: 0;
+        flex: 1;
+      }
+      
+      .faq-question-actions {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+
+        .faq-toggle-icon {
+          font-size: 1.5em;
+          font-weight: 300;
+          transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+          display: inline-block;
+          line-height: 1;
+          
+          &.open {
+            transform: rotate(45deg);
+          }
+        }
+      }
+    }
+    
+    .faq-answer {
+      opacity: 0;
+      padding: 0 1em;
+      margin: 0;
+      max-height: 0;
+      overflow: hidden;
+      transform: translateY(-10px);
+      transition-property: max-height, opacity, transform, padding;
+      transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+      
+      p {
+        margin: 0;
+        line-height: 1.7;
+        padding-bottom: 1.5em;
+      }
+
+      &.is-open {
+        opacity: 1;
+        max-height: 500px; /* Adjust as needed for your content */
+        transform: translateY(0);
+        padding-top: 1.5em;
+      }
+    }
+  }
+
+  // Edit form styling
+  .faq-edit-form {
+    padding: 1.5em;
+    background: rgba(0,0,0,0.02);
+    border-radius: 6px;
+    margin: 0.5em 0;
+  }
+  .faq-edit-actions {
+    margin-top: 1em;
+    display: flex;
+    gap: 0.5em;
+  }
 }
 
-// Editor class names for frontend
-.ai-faq-block {
-  font-family: inherit;
+// Default colors for frontend if not set by user
+.wp-block-blockxpert-ai-faq:not([style*="background-color"]) {
+  background-color: #ffffff;
 }
-.faq-title {
-  font-size: 1.5em;
-  margin-bottom: 1em;
-  color: #333;
+.wp-block-blockxpert-ai-faq {
+  h2, h3, p, span {
+    &:not([style*="color"]) {
+      color: #333333;
+    }
+  }
 }
-.faq-search {
-  margin-bottom: 1em;
-}
-.faq-questions {
-  margin-top: 1em;
-}
-.faq-question {
-  border-bottom: 1px solid #ffe58f;
-  padding: 1em 0;
-}
-.faq-question-header {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  justify-content: space-between;
-}
-.faq-question-text {
-  font-size: 1.1em;
-  font-weight: 500;
-}
-.faq-toggle-icon {
-  font-size: 1.2em;
-  margin-left: 1em;
-}
-.faq-answer {
-  margin-top: 0.5em;
-  color: #555;
-}
-.faq-edit-form {
-  background: #fffde7;
-  border: 1px solid #ffe58f;
-  padding: 1em;
-  border-radius: 6px;
-}
-.faq-edit-actions {
-  margin-top: 0.5em;
-  display: flex;
-  gap: 0.5em;
-}
+
 .faq-actions {
   margin-top: 1em;
   display: flex;

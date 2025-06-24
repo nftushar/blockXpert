@@ -1,4 +1,4 @@
-import '../blocks/block-one';
-import '../blocks/block-two';
-import '../blocks/block-three';
-import '../blocks/product-slider';
+import './blocks/product-slider';
+import './blocks/ai-faq';
+import './blocks/ai-product-recommendations';
+import './blocks/pdf-invoice';

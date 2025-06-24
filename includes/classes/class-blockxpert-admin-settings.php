@@ -26,7 +26,7 @@ class BlockXpert_Admin_Settings {
         register_setting('blockxpert_settings', 'blockxpert_active', [
             'type' => 'array',
             'sanitize_callback' => [$this, 'sanitize_active_blocks'],
-            'default' => ['block-one', 'block-two', 'block-three', 'product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'],
+            'default' => ['product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'],
         ]);
     }
 
@@ -45,7 +45,7 @@ class BlockXpert_Admin_Settings {
         
         // Blocks Settings Section
         echo '<div id="blocks-section" class="blockxpert-section active">';
-        $blocks = ['block-one', 'block-two', 'block-three', 'product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'];
+        $blocks = ['product-slider', 'ai-faq', 'ai-product-recommendations', 'pdf-invoice'];
         $active_blocks = get_option('blockxpert_active', $blocks);
         
         echo '<form method="post" action="options.php">';

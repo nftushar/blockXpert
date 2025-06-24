@@ -118,4 +118,97 @@ if (!function_exists('blockxpert_generate_invoice_pdf')) {
             return new WP_Error('pdf_error', 'Failed to generate PDF: ' . $e->getMessage());
         }
     }
-} 
+}
+
+// Attach PDF invoice to WooCommerce emails
+add_filter('woocommerce_email_attachments', function($attachments, $email_id, $order, $email = null) {
+    $attach_to = [
+        'customer_completed_order',
+        'customer_processing_order',
+    ];
+    if (in_array($email_id, $attach_to) && $order instanceof WC_Order) {
+        $pdf_path = blockxpert_generate_pdf_invoice($order->get_id());
+        if ($pdf_path && file_exists($pdf_path)) {
+            $attachments[] = $pdf_path;
+        }
+    }
+    return $attachments;
+}, 10, 4);
+
+// Generate PDF invoice and return file path
+function blockxpert_generate_pdf_invoice($order_id) {
+    $upload_dir = wp_upload_dir();
+    $pdf_dir = $upload_dir['basedir'] . '/blockxpert-invoices/';
+    if (!file_exists($pdf_dir)) {
+        wp_mkdir_p($pdf_dir);
+    }
+    $pdf_path = $pdf_dir . 'invoice-' . $order_id . '.pdf';
+
+    if (!file_exists($pdf_path)) {
+        $order = wc_get_order($order_id);
+        $html = '<h1>Invoice for Order #' . $order_id . '</h1>';
+        // ...build your invoice HTML here...
+
+        // Use Dompdf to generate PDF
+        require_once __DIR__ . '/../../vendor/autoload.php';
+        $dompdf = new Dompdf\Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        file_put_contents($pdf_path, $dompdf->output());
+    }
+    return $pdf_path;
+}
+
+// 2. Add a download invoice button to the order admin actions
+add_action('woocommerce_admin_order_actions_end', function($order) {
+    $url = wp_nonce_url(
+        admin_url('admin-ajax.php?action=blockxpert_download_invoice&order_id=' . $order->get_id()),
+        'blockxpert_download_invoice_' . $order->get_id()
+    );
+    echo '<a href="' . esc_url($url) . '" class="button tips" target="_blank" alt="Download Invoice" style="margin-left:5px;">PDF Invoice</a>';
+});
+
+// Handle the AJAX download request
+add_action('wp_ajax_blockxpert_download_invoice', function() {
+    if (empty($_GET['order_id']) || !current_user_can('manage_woocommerce')) {
+        wp_die('Unauthorized', 'Error', ['response' => 403]);
+    }
+    $order_id = intval($_GET['order_id']);
+    if (!wp_verify_nonce($_GET['_wpnonce'], 'blockxpert_download_invoice_' . $order_id)) {
+        wp_die('Invalid nonce', 'Error', ['response' => 403]);
+    }
+    $pdf_path = blockxpert_generate_pdf_invoice($order_id);
+    if ($pdf_path && file_exists($pdf_path)) {
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="invoice-' . $order_id . '.pdf"');
+        readfile($pdf_path);
+        exit;
+    }
+    wp_die('Invoice not found', 'Error', ['response' => 404]);
+});
+
+// 3. Add bulk action to generate invoices
+add_filter('bulk_actions-edit-shop_order', function($actions) {
+    $actions['blockxpert_bulk_invoice'] = __('Generate PDF Invoices', 'blockxpert');
+    return $actions;
+});
+
+add_filter('handle_bulk_actions-edit-shop_order', function($redirect, $action, $post_ids) {
+    if ($action === 'blockxpert_bulk_invoice') {
+        foreach ($post_ids as $order_id) {
+            blockxpert_generate_pdf_invoice($order_id);
+        }
+        $redirect = add_query_arg('blockxpert_bulk_invoice', count($post_ids), $redirect);
+    }
+    return $redirect;
+}, 10, 3);
+
+add_action('admin_notices', function() {
+    if (!empty($_REQUEST['blockxpert_bulk_invoice'])) {
+        $count = intval($_REQUEST['blockxpert_bulk_invoice']);
+        echo '<div class="notice notice-success is-dismissible"><p>' .
+            sprintf(_n('%d invoice generated.', '%d invoices generated.', $count, 'blockxpert'), $count) .
+            '</p></div>';
+    }
+}); 

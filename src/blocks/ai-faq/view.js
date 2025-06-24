@@ -1,15 +1,26 @@
-document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.ai-faq-block .faq-question-header').forEach(function (header) {
-    header.addEventListener('click', function () {
-      const question = header.closest('.faq-question');
-      const answer = question.querySelector('.faq-answer');
-      if (answer.style.display === 'none' || !answer.style.display) {
-        answer.style.display = 'block';
-        header.querySelector('.faq-toggle-icon').textContent = '−';
-      } else {
-        answer.style.display = 'none';
-        header.querySelector('.faq-toggle-icon').textContent = '+';
-      }
+document.addEventListener('DOMContentLoaded', function() {
+    const faqBlocks = document.querySelectorAll('.wp-block-blockxpert-ai-faq');
+    
+    faqBlocks.forEach(block => {
+        const animationDuration = block.dataset.animationDuration || '300';
+
+        const faqQuestions = block.querySelectorAll('.faq-question-header');
+        
+        faqQuestions.forEach(question => {
+            const content = question.closest('.faq-question-content');
+            if (!content) return;
+
+            const answer = content.querySelector('.faq-answer');
+            const icon = question.querySelector('.faq-toggle-icon');
+
+            if(!answer || !icon) return;
+
+            answer.style.transitionDuration = `${animationDuration}ms`;
+            
+            question.addEventListener('click', function() {
+                answer.classList.toggle('is-open');
+                icon.classList.toggle('open');
+            });
+        });
     });
-  });
 }); 

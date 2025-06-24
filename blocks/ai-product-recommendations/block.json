@@ -1,7 +1,7 @@
 {
   "apiVersion": 2,
   "name": "blockxpert/ai-product-recommendations",
-  "title": "AI Product Recommendations",
+  "title": "Ai Product Reco",
   "category": "custom-blocks",
   "icon": "products",
   "editorScript": "file:../../build/ai-product-recommendations/index.js",

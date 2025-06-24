@@ -342,14 +342,14 @@ export default function Edit({ attributes, setAttributes }) {
                             isBusy={loading}
                             disabled={!apiKey}
                         >
-                            {loading ? __('Generating...', 'blockxpert') : __('Generate AI Recommendations', 'blockxpert')}
+                            {loading ? __('Generating...', 'blockxpert') : __('Generate AI Recom', 'blockxpert')}
                         </Button>
                     )}
                 </PanelBody>
             </InspectorControls>
 
             <div className="ai-product-recommendations-editor">
-                <h2 className="recommendations-title">{title || __('AI Product Recommendations', 'blockxpert')}</h2>
+                <h2 className="recommendations-title">{title || __('Ai Product Recom', 'blockxpert')}</h2>
                 
                 <style>
                     {`
