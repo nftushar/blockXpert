@@ -1,11 +1,10 @@
 <?php
 /**
  * Plugin Name: BlockXpert
- * Plugin URI:  https://wordpress.org/plugins/blockxpert/
  * Description: A powerful set of AI-driven Gutenberg blocks, including an AI FAQ and Ai Product Recommendations for WooCommerce, with comprehensive admin controls.
  * Version:     1.0.0
- * Author:      The WordPress Contributor Team
- * Author URI:  https://wordpress.org/
+ * Author:      NF Tushar
+ * Author URI:  https://your-website.com/
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: blockxpert

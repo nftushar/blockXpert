@@ -14,7 +14,6 @@ class BlockXpert_REST
 
     public function register_rest_routes()
     {
-        error_log('BlockXpert: register_rest_routes called');
         register_rest_route('blockxpert/v1', '/generate-faq', [
             'methods' => 'POST',
             'callback' => [$this, 'generate_faq_questions'],

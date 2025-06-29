@@ -1,5 +1,5 @@
 === BlockXpert ===
-Contributors: (this should be a list of wordpress.org user IDs)
+Contributors: NF Tushar
 Tags: blocks, gutenberg, ai, openai, faq, woocommerce, products, recommendations, slider
 Requires at least: 5.8
 Tested up to: 6.5

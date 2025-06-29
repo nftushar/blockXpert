@@ -102,7 +102,6 @@ export default function Edit({ attributes, setAttributes }) {
         try {
             // This is a placeholder for your actual API call
             // You would use wp.apiFetch or similar here
-            console.log('Generating AI questions with API Key:', apiKey);
             
             // Simulate API call
             await new Promise(resolve => setTimeout(resolve, 1500));

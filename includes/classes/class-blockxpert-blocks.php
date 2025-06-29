@@ -11,7 +11,6 @@ class BlockXpert_Blocks {
 
     public function register_blocks() {
         $active_blocks = get_option('blockxpert_active', $this->get_default_blocks());
-        error_log('BlockXpert: Active blocks: ' . print_r($active_blocks, true));
         foreach ($active_blocks as $block) {
             $block_dir = BLOCKXPERT_PATH . 'blocks/' . $block;
             $block_json_path = $block_dir . '/block.json';
@@ -22,11 +21,7 @@ class BlockXpert_Blocks {
                     register_block_type($block_dir, [
                         'render_callback' => [$this, $callback_method],
                     ]);
-                } else {
-                    error_log("BlockXpert: Skipping $block - missing callback $callback_method");
                 }
-            } else {
-                error_log("BlockXpert: Skipping $block - missing block.json at $block_json_path");
             }
         }
     }
@@ -264,6 +259,12 @@ class BlockXpert_Blocks {
         return ob_get_clean();
     }
 
+    // Render callback for advanced-post-block
+    public function render_dynamic_block_advanced_post_block($attributes) {
+        // Placeholder output for now
+        return '<div class="apb-frontend-placeholder">Advanced Post Block will render here. (Layout: ' . esc_html($attributes['layout'] ?? 'grid') . ')</div>';
+    }
+
     public function add_block_category($categories) {
         foreach ($categories as $category) {
             if ($category['slug'] === 'custom-blocks') {
@@ -279,6 +280,7 @@ class BlockXpert_Blocks {
     public function enqueue_editor_assets() {
         $asset_file = include(BLOCKXPERT_PATH . 'build/index.asset.php');
         
+        wp_enqueue_script('wp-api-fetch');
         wp_enqueue_script(
             'blockxpert-editor',
             BLOCKXPERT_URL . 'build/index.js',

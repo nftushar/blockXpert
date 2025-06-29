@@ -1,0 +1,72 @@
+{
+  "apiVersion": 2,
+  "name": "blockxpert/advanced-post-block",
+  "title": "Advanced Post Block",
+  "category": "custom-blocks",
+  "icon": "admin-post",
+  "editorScript": "file:../../build/advanced-post-block/index.js",
+  "editorStyle": "file:../../build/advanced-post-block/index.css",
+  "style": "file:../../build/advanced-post-block/style-index.css",
+  "script": "file:../../build/advanced-post-block/view.js",
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "grid"
+    },
+    "postsToShow": {
+      "type": "number",
+      "default": 6
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "category": {
+      "type": "string",
+      "default": ""
+    },
+    "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "sliderOptions": {
+      "type": "object",
+      "default": {"autoplay": true, "speed": 3000}
+    },
+    "tickerOptions": {
+      "type": "object",
+      "default": {"speed": 50}
+    }
+  },
+  "supports": {
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    },
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
+  },
+  "description": "Display posts in Grid, Masonry, Slider, or Ticker layouts.",
+  "keywords": ["posts", "grid", "masonry", "slider", "ticker", "carousel", "news"],
+  "example": {},
+  "render": "render_dynamic_block_advanced_post_block"
+} 

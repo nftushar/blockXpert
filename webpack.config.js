@@ -12,6 +12,8 @@ module.exports = {
     'ai-faq/view': './src/blocks/ai-faq/view.js',
     'ai-product-recommendations/style-index': './src/blocks/ai-product-recommendations/style.scss',
     'ai-product-recommendations/view': './src/blocks/ai-product-recommendations/view.js',
+    'advanced-post-block/index': './src/blocks/advanced-post-block/index.js',
+    'advanced-post-block/view': './src/blocks/advanced-post-block/view.js',
   },
   output: {
     path: path.resolve(__dirname, 'build'),
