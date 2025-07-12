@@ -1,5 +1,36 @@
 {
+    "name": "nftushar/blockxpert",
+    "description": "A powerful set of AI-driven Gutenberg blocks for WordPress",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "nftushar",
+            "homepage": "https://github.com/nftushar"
+        }
+    ],
+    "keywords": [
+        "wordpress",
+        "gutenberg",
+        "blocks",
+        "ai",
+        "openai",
+        "woocommerce"
+    ],
     "require": {
-       
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BlockXpert\\": "includes/classes/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }

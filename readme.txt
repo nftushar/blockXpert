@@ -1,8 +1,8 @@
 === BlockXpert ===
-Contributors: NF Tushar
-Tags: blocks, gutenberg, ai, openai, faq, woocommerce, products, recommendations, slider
+Contributors: nftushar
+Tags: blocks, gutenberg, ai, openai, woocommerce
 Requires at least: 5.8
-Tested up to: 6.5
+Tested up to: 6.8
 Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -22,6 +22,26 @@ BlockXpert is your AI-powered content assistant for the WordPress block editor. 
 *   **Simple Static Blocks**: Includes several basic blocks for demonstration and boilerplate.
 *   **Centralized Admin Panel**: Enable or disable any block from a single, easy-to-use settings page to keep your editor clean.
 *   **Developer Friendly**: Built with a modular architecture that is easy to extend.
+
+== Source Code ==
+
+The full source code for this plugin is available on [GitHub](https://github.com/nftushar/blockxpert). The distributed plugin includes only the production-ready, compiled JavaScript and CSS in the `build/` directory.
+
+== Build Instructions ==
+
+To review or contribute to the source code, or to build the plugin yourself:
+
+1. Clone the repository from GitHub.
+2. Run `npm install` to install dependencies.
+3. Run `npm run build` to generate the production assets.
+
+For detailed development instructions, see the README.md file in the plugin directory.
+
+== External services ==
+
+This plugin connects to OpenAI's API ([https://api.openai.com/v1/chat/completions](https://api.openai.com/v1/chat/completions)) to provide AI-powered features for generating FAQ content and product recommendations. When you use the AI blocks, your page content (text, product descriptions) and your OpenAI API key are sent to OpenAI's API to generate relevant content. No data is sent automatically—only when you actively use the AI blocks in the editor.
+
+This service is provided by OpenAI. Please review their [terms of use](https://openai.com/policies/terms-of-use) and [privacy policy](https://openai.com/policies/privacy-policy).
 
 == Installation ==
 
@@ -44,6 +64,14 @@ WooCommerce is only required for the blocks that interact with products, such as
 = Can I customize the look and feel? =
 
 Yes! Most blocks come with built-in styling options, such as light/dark themes and different layouts (grid, list, slider).
+
+= What data is sent to OpenAI? =
+
+When you use the AI features, your page content (text, product descriptions) is sent to OpenAI's API to generate relevant FAQs or product recommendations. Your API key is also sent for authentication. No data is sent automatically - only when you actively use the AI blocks.
+
+= Is my data secure? =
+
+Your data is sent to OpenAI's secure API endpoints. We do not store your API key or the content you send to OpenAI. Please review OpenAI's privacy policy for more information about how they handle your data.
 
 == Screenshots ==
 

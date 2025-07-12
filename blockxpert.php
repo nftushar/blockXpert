@@ -4,10 +4,11 @@
  * Description: A powerful set of AI-driven Gutenberg blocks, including an AI FAQ and Ai Product Recommendations for WooCommerce, with comprehensive admin controls.
  * Version:     1.0.0
  * Author:      NF Tushar
- * Author URI:  https://your-website.com/
+ * Author URI:  https://github.com/nftushar/
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: blockxpert
+ * Text Domain: BlockXpert
+ * Domain Path: /languages
  */
 
 defined('ABSPATH') || exit;
@@ -26,6 +27,11 @@ require_once __DIR__ . '/includes/classes/class-blockxpert-blocks.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-rest.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-admin-settings.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert.php';
+
+// Load text domain for translations
+add_action('init', function() {
+    load_plugin_textdomain('BlockXpert', false, dirname(plugin_basename(__FILE__)) . '/languages');
+});
 
 // Initialize the plugin
 $blockxpert = new BlockXpert();

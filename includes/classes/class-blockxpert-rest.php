@@ -3,7 +3,7 @@
 /**
  * Handles REST API endpoints for BlockXpert.
  */
-if (!defined('ABSPATH')) exit;
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class BlockXpert_REST
 {
@@ -18,34 +18,44 @@ class BlockXpert_REST
             'methods' => 'POST',
             'callback' => [$this, 'generate_faq_questions'],
             'permission_callback' => function () {
-                return current_user_can('edit_posts');
+                return current_user_can('edit_posts') && wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['_wpnonce'] ?? '')), 'wp_rest');
             },
         ]);
         register_rest_route('blockxpert/v1', '/generate-product-recommendations', [
             'methods' => 'POST',
             'callback' => [$this, 'generate_product_recommendations'],
             'permission_callback' => function () {
-                return current_user_can('edit_posts');
+                return current_user_can('edit_posts') && wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['_wpnonce'] ?? '')), 'wp_rest');
             },
         ]);
     }
 
     public function generate_faq_questions($request)
     {
+        // Verify nonce for additional security
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['_wpnonce'] ?? '')), 'wp_rest')) {
+            return new WP_Error('invalid_nonce', esc_html__('Security check failed.', 'BlockXpert'), ['status' => 403]);
+        }
+        
+        // Verify user permissions
+        if (!current_user_can('edit_posts')) {
+            return new WP_Error('insufficient_permissions', esc_html__('You do not have permission to perform this action.', 'BlockXpert'), ['status' => 403]);
+        }
+        
         $params = $request->get_json_params();
         $apiKey = $params['apiKey'] ?? '';
         $model = $params['model'] ?? 'gpt-3.5-turbo';
         $customPrompt = $params['customPrompt'] ?? '';
         $questionsCount = $params['questionsCount'] ?? 5;
         if (empty($apiKey)) {
-            return new WP_Error('missing_api_key', __('OpenAI API key is required.', 'blockxpert'), ['status' => 400]);
+            return new WP_Error('missing_api_key', esc_html__('OpenAI API key is required.', 'BlockXpert'), ['status' => 400]);
         }
-        $prompt = $customPrompt ?: __('Generate relevant FAQ questions and answers for a website', 'blockxpert');
+        $prompt = $customPrompt ?: esc_html__('Generate relevant FAQ questions and answers for a website', 'BlockXpert');
         $openai_url = 'https://api.openai.com/v1/chat/completions';
         $body = [
             'model' => $model,
             'messages' => [
-                ['role' => 'system', 'content' => __('You are a helpful AI assistant that generates FAQ questions and answers.', 'blockxpert')],
+                ['role' => 'system', 'content' => esc_html__('You are a helpful AI assistant that generates FAQ questions and answers.', 'BlockXpert')],
                 ['role' => 'user', 'content' => $prompt]
             ],
             'max_tokens' => 1024,
@@ -60,11 +70,11 @@ class BlockXpert_REST
             'timeout' => 30,
         ]);
         if (is_wp_error($response)) {
-            return new WP_Error('openai_error', __('Failed to connect to OpenAI API.', 'blockxpert'), ['status' => 500]);
+            return new WP_Error('openai_error', esc_html__('Failed to connect to OpenAI API.', 'BlockXpert'), ['status' => 500]);
         }
         $data = json_decode(wp_remote_retrieve_body($response), true);
         if (empty($data['choices'][0]['message']['content'])) {
-            return new WP_Error('openai_invalid', __('Invalid response from OpenAI API.', 'blockxpert'), ['status' => 500]);
+            return new WP_Error('openai_invalid', esc_html__('Invalid response from OpenAI API.', 'BlockXpert'), ['status' => 500]);
         }
         $content = $data['choices'][0]['message']['content'];
         // Try to parse as JSON, fallback to text
@@ -92,6 +102,16 @@ class BlockXpert_REST
 
     public function generate_product_recommendations($request)
     {
+        // Verify nonce for additional security
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['_wpnonce'] ?? '')), 'wp_rest')) {
+            return new WP_Error('invalid_nonce', esc_html__('Security check failed.', 'BlockXpert'), ['status' => 403]);
+        }
+        
+        // Verify user permissions
+        if (!current_user_can('edit_posts')) {
+            return new WP_Error('insufficient_permissions', esc_html__('You do not have permission to perform this action.', 'BlockXpert'), ['status' => 403]);
+        }
+        
         $params = $request->get_json_params();
         $apiKey = $params['apiKey'] ?? '';
         $model = $params['model'] ?? 'gpt-3.5-turbo';
@@ -102,10 +122,10 @@ class BlockXpert_REST
         $priceRange = $params['priceRange'] ?? ['min' => 0, 'max' => 1000];
         $inStockOnly = $params['inStockOnly'] ?? true;
         if (empty($apiKey)) {
-            return new WP_Error('missing_api_key', __('OpenAI API key is required.', 'blockxpert'), ['status' => 400]);
+            return new WP_Error('missing_api_key', esc_html__('OpenAI API key is required.', 'BlockXpert'), ['status' => 400]);
         }
         if (!class_exists('WooCommerce')) {
-            return new WP_Error('missing_woocommerce', __('WooCommerce is required for product recommendations.', 'blockxpert'), ['status' => 400]);
+            return new WP_Error('missing_woocommerce', esc_html__('WooCommerce is required for product recommendations.', 'BlockXpert'), ['status' => 400]);
         }
         // Fetch all products for context
         $args = [
@@ -120,7 +140,7 @@ class BlockXpert_REST
         $all_products = $query->posts;
         wp_reset_postdata();
         // Prepare OpenAI prompt
-        $prompt = $customPrompt ?: __('You are a helpful AI assistant that recommends products. Always respond with valid JSON format containing only product IDs.', 'blockxpert');
+        $prompt = $customPrompt ?: esc_html__('You are a helpful AI assistant that recommends products. Always respond with valid JSON format containing only product IDs.', 'BlockXpert');
         $prompt .= "\nAvailable product IDs: [" . implode(", ", $all_products) . "]";
         if ($currentProduct && isset($currentProduct['id'])) {
             $prompt .= "\nCurrent product ID: " . $currentProduct['id'];
@@ -144,11 +164,11 @@ class BlockXpert_REST
             'timeout' => 30,
         ]);
         if (is_wp_error($response)) {
-            return new WP_Error('openai_error', __('Failed to connect to OpenAI API.', 'blockxpert'), ['status' => 500]);
+            return new WP_Error('openai_error', esc_html__('Failed to connect to OpenAI API.', 'BlockXpert'), ['status' => 500]);
         }
         $data = json_decode(wp_remote_retrieve_body($response), true);
         if (empty($data['choices'][0]['message']['content'])) {
-            return new WP_Error('openai_invalid', __('Invalid response from OpenAI API.', 'blockxpert'), ['status' => 500]);
+            return new WP_Error('openai_invalid', esc_html__('Invalid response from OpenAI API.', 'BlockXpert'), ['status' => 500]);
         }
         $content = $data['choices'][0]['message']['content'];
         $ids = json_decode($content, true);
