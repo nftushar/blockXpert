@@ -5,7 +5,7 @@
   "category": "custom-blocks",
   "icon": "slides",
   "editorScript": "file:../../build/product-slider/index.js",
-  "editorStyle": "file:../../build/product-slider/index.css",
+  "editorStyle": "file:../../build/product-slider/editor.css",
   "style": "file:../../build/product-slider/style-index.css",
   "script": "file:../../build/product-slider/view.js",
   "attributes": {

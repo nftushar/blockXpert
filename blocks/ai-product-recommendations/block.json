@@ -5,7 +5,7 @@
   "category": "custom-blocks",
   "icon": "products",
   "editorScript": "file:../../build/ai-product-recommendations/index.js",
-  "editorStyle": "file:../../build/ai-product-recommendations/index.css",
+  "editorStyle": "file:../../build/ai-product-recommendations/editor.css",
   "style": "file:../../build/ai-product-recommendations/style-index.css",
   "attributes": {
     "title": {

@@ -8,10 +8,12 @@ module.exports = {
     index: './src/index.js',
     'product-slider/style-index': './src/blocks/product-slider/style.scss',
     'product-slider/view': './src/blocks/product-slider/view.js',
+    'product-slider/editor': './src/blocks/product-slider/editor.css',
     'ai-faq/style-index': './src/blocks/ai-faq/style.scss',
     'ai-faq/view': './src/blocks/ai-faq/view.js',
     'ai-product-recommendations/style-index': './src/blocks/ai-product-recommendations/style.scss',
     'ai-product-recommendations/view': './src/blocks/ai-product-recommendations/view.js',
+    'ai-product-recommendations/editor': './src/blocks/ai-product-recommendations/editor.css',
     'advanced-post-block/index': './src/blocks/advanced-post-block/index.js',
     'advanced-post-block/view': './src/blocks/advanced-post-block/view.js',
   },
@@ -33,6 +35,10 @@ module.exports = {
         if (pathData.chunk.name && pathData.chunk.name.endsWith('style-index')) {
           const block = pathData.chunk.name.split('/')[0];
           return `${block}/style-index.css`;
+        }
+        if (pathData.chunk.name && pathData.chunk.name.endsWith('editor')) {
+          const block = pathData.chunk.name.split('/')[0];
+          return `${block}/editor.css`;
         }
         if (pathData.chunk.name && pathData.chunk.name.endsWith('view')) {
           const block = pathData.chunk.name.split('/')[0];
