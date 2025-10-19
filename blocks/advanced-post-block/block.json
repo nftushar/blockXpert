@@ -13,6 +13,14 @@
       "type": "string",
       "default": "grid"
     },
+    "subLayout": {
+      "type": "string",
+      "default": "default"
+    },
+    "postType": {
+      "type": "string",
+      "default": "post"
+    },
     "postsToShow": {
       "type": "number",
       "default": 6
@@ -21,11 +29,67 @@
       "type": "number",
       "default": 3
     },
-    "category": {
+    "categories": {
+      "type": "array",
+      "default": []
+    },
+    "tags": {
+      "type": "array",
+      "default": []
+    },
+    "authors": {
+      "type": "array",
+      "default": []
+    },
+    "orderBy": {
       "type": "string",
-      "default": ""
+      "default": "date"
+    },
+    "order": {
+      "type": "string",
+      "default": "desc"
+    },
+    "offset": {
+      "type": "number",
+      "default": 0
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "medium"
+    },
+    "imagePosition": {
+      "type": "string",
+      "default": "top"
+    },
+    "imageLinkToPost": {
+      "type": "boolean",
+      "default": true
+    },
+    "showImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "titleTag": {
+      "type": "string",
+      "default": "h3"
+    },
+    "titleLength": {
+      "type": "number",
+      "default": 0
     },
     "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "excerptLength": {
+      "type": "number",
+      "default": 20
+    },
+    "showMeta": {
       "type": "boolean",
       "default": true
     },
@@ -37,17 +101,45 @@
       "type": "boolean",
       "default": true
     },
-    "showImage": {
+    "showCategories": {
       "type": "boolean",
       "default": true
     },
+    "showTags": {
+      "type": "boolean",
+      "default": false
+    },
+    "showReadMore": {
+      "type": "boolean",
+      "default": true
+    },
+    "readMoreText": {
+      "type": "string",
+      "default": "Read More"
+    },
     "sliderOptions": {
       "type": "object",
-      "default": {"autoplay": true, "speed": 3000}
+      "default": {
+        "autoplay": true,
+        "speed": 3000,
+        "arrows": true,
+        "dots": true,
+        "loop": true
+      }
     },
     "tickerOptions": {
       "type": "object",
-      "default": {"speed": 50}
+      "default": {
+        "speed": 50,
+        "direction": "left",
+        "pauseOnHover": true
+      }
+    },
+    "masonryOptions": {
+      "type": "object",
+      "default": {
+        "gutter": 20
+      }
     }
   },
   "supports": {

@@ -1,0 +1,17 @@
+.wp-block-blockxpert-product-slider {
+    margin-bottom: 2em;
+}
+
+.product-slider {
+    position: relative;
+    padding: 0 40px;
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: #333;
+    }
+
+    .swiper-pagination-bullet {
+        background: #333;
+    }
+}

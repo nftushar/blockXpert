@@ -228,8 +228,91 @@ class BlockXpert_Blocks {
 
     // Render callback for advanced-post-block
     public function render_dynamic_block_advanced_post_block($attributes) {
-        // Placeholder output for now
-        return '<div class="apb-frontend-placeholder">Advanced Post Block will render here. (Layout: ' . esc_html($attributes['layout'] ?? 'grid') . ')</div>';
+        $layout = $attributes['layout'] ?? 'grid';
+        $posts_to_show = $attributes['postsToShow'] ?? 6;
+        $columns = $attributes['columns'] ?? 3;
+        $category = $attributes['category'] ?? '';
+        $show_excerpt = $attributes['showExcerpt'] ?? true;
+        $show_date = $attributes['showDate'] ?? true;
+        $show_author = $attributes['showAuthor'] ?? true;
+        $show_image = $attributes['showImage'] ?? true;
+        
+        // Query args
+        $args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => $posts_to_show,
+            'ignore_sticky_posts' => true,
+            'no_found_rows' => true,
+        ];
+        
+        if (!empty($category)) {
+            $args['cat'] = intval($category);
+        }
+        
+        $query = new \WP_Query($args);
+        
+        if (!$query->have_posts()) {
+            return '<div class="wp-block-blockxpert-advanced-post-block no-posts">' . 
+                esc_html__('No posts found.', 'BlockXpert') . 
+                '</div>';
+        }
+        
+        $wrapper_class = 'wp-block-blockxpert-advanced-post-block';
+        $wrapper_class .= ' layout-' . esc_attr($layout);
+        if ($layout === 'grid') {
+            $wrapper_class .= ' columns-' . esc_attr($columns);
+        }
+        
+        ob_start();
+        ?>
+        <div class="<?php echo esc_attr($wrapper_class); ?>">
+            <div class="post-grid">
+                <?php while ($query->have_posts()) : $query->the_post(); ?>
+                    <article <?php post_class('post-item'); ?>>
+                        <?php if ($show_image && has_post_thumbnail()) : ?>
+                            <div class="post-thumbnail">
+                                <a href="<?php the_permalink(); ?>">
+                                    <?php the_post_thumbnail('medium'); ?>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="post-content">
+                            <h3 class="post-title">
+                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                            </h3>
+                            
+                            <?php if ($show_date || $show_author) : ?>
+                                <div class="post-meta">
+                                    <?php if ($show_date) : ?>
+                                        <span class="post-date">
+                                            <?php echo esc_html(get_the_date()); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($show_author) : ?>
+                                        <span class="post-author">
+                                            <?php esc_html_e('by', 'BlockXpert'); ?> 
+                                            <?php the_author(); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            
+                            <?php if ($show_excerpt) : ?>
+                                <div class="post-excerpt">
+                                    <?php the_excerpt(); ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
+            </div>
+        </div>
+        <?php
+        wp_reset_postdata();
+        return ob_get_clean();
     }
 
     public function add_block_category($categories) {
