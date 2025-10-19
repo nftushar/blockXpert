@@ -3,49 +3,73 @@ const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  ...defaultConfig,
-  entry: {
-    index: './src/index.js',
-    'product-slider/style-index': './src/blocks/product-slider/style.scss',
-    'product-slider/view': './src/blocks/product-slider/view.js',
-    'product-slider/editor': './src/blocks/product-slider/editor.css',
-    'ai-faq/style-index': './src/blocks/ai-faq/style.scss',
-    'ai-faq/view': './src/blocks/ai-faq/view.js',
-    'ai-product-recommendations/style-index': './src/blocks/ai-product-recommendations/style.scss',
-    'ai-product-recommendations/view': './src/blocks/ai-product-recommendations/view.js',
-    'ai-product-recommendations/editor': './src/blocks/ai-product-recommendations/editor.css',
-    'advanced-post-block/index': './src/blocks/advanced-post-block/index.js',
-    'advanced-post-block/view': './src/blocks/advanced-post-block/view.js',
-  },
-  output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: '[name].js',
-  },
-  externals: {
-    '@wordpress/blocks': 'wp.blocks',
-    '@wordpress/block-editor': 'wp.blockEditor',
-    '@wordpress/components': 'wp.components',
-    '@wordpress/element': 'wp.element',
-    '@wordpress/i18n': 'wp.i18n',
-  },
-  plugins: [
-    ...defaultConfig.plugins,
-    new MiniCssExtractPlugin({
-      filename: (pathData) => {
-        if (pathData.chunk.name && pathData.chunk.name.endsWith('style-index')) {
-          const block = pathData.chunk.name.split('/')[0];
-          return `${block}/style-index.css`;
+    ...defaultConfig,
+    entry: {
+        // Main entry point
+        index: './src/index.js',
+        
+        // Block-specific entries with optimized structure
+        'advanced-post-block/index': './src/blocks/advanced-post-block/index.js',
+        'advanced-post-block/editor': './src/blocks/advanced-post-block/editor/Edit.js',
+        'advanced-post-block/frontend': './src/blocks/advanced-post-block/frontend/Save.js',
+        
+        'product-slider/index': './src/blocks/product-slider/index.js',
+        'ai-faq/index': './src/blocks/ai-faq/index.js',
+        'ai-product-recommendations/index': './src/blocks/ai-product-recommendations/index.js',
+    },
+    output: {
+        path: path.resolve(__dirname, 'build'),
+        filename: '[name].js',
+        clean: true
+    },
+    module: {
+        rules: [
+            ...defaultConfig.module.rules,
+            {
+                test: /\.scss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ]
+            }
+        ]
+    },
+    resolve: {
+        alias: {
+            '@shared': path.resolve(__dirname, 'src/shared'),
+            '@blocks': path.resolve(__dirname, 'src/blocks'),
+            '@components': path.resolve(__dirname, 'src/shared/components'),
+            '@hooks': path.resolve(__dirname, 'src/shared/hooks'),
+            '@services': path.resolve(__dirname, 'src/shared/services'),
+            '@utils': path.resolve(__dirname, 'src/shared/utils')
         }
-        if (pathData.chunk.name && pathData.chunk.name.endsWith('editor')) {
-          const block = pathData.chunk.name.split('/')[0];
-          return `${block}/editor.css`;
+    },
+    plugins: [
+        ...defaultConfig.plugins,
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        })
+    ],
+    optimization: {
+        ...defaultConfig.optimization,
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                shared: {
+                    name: 'shared',
+                    test: /[\\/]src[\\/]shared[\\/]/,
+                    priority: 10,
+                    reuseExistingChunk: true
+                },
+                vendor: {
+                    name: 'vendor',
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: 5,
+                    reuseExistingChunk: true
+                }
+            }
         }
-        if (pathData.chunk.name && pathData.chunk.name.endsWith('view')) {
-          const block = pathData.chunk.name.split('/')[0];
-          return `${block}/view.js`;
-        }
-        return '[name].js';
-      },
-    }),
-  ],
+    }
 };

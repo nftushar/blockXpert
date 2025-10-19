@@ -1,0 +1,182 @@
+/**
+ * Advanced Post Block Editor Styles
+ * Professional, semantic CSS classes for the editor interface
+ */
+
+// Editor wrapper
+.blockxpert-advanced-post-block-editor {
+    .blockxpert-apb-editor-preview {
+        padding: 20px;
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+        margin: 20px 0;
+        min-height: 200px;
+        position: relative;
+
+        &::before {
+            content: "Advanced Post Block Preview";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #fff;
+            padding: 0 8px;
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+    }
+
+    .blockxpert-apb-editor-placeholder {
+        text-align: center;
+        padding: 40px 20px;
+        color: #666;
+        font-style: italic;
+    }
+}
+
+// Control panels
+.blockxpert-apb-layout-controls,
+.blockxpert-apb-display-controls,
+.blockxpert-apb-post-controls {
+    .blockxpert-apb-section-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 16px 0 8px 0;
+        color: #1e1e1e;
+        border-bottom: 1px solid #e0e0e0;
+        padding-bottom: 4px;
+    }
+
+    .blockxpert-apb-preview-label {
+        font-size: 12px;
+        color: #666;
+        margin: 8px 0 4px 0;
+        font-weight: 500;
+    }
+
+    .blockxpert-apb-preview-details {
+        font-size: 11px;
+        color: #888;
+        margin: 4px 0;
+        line-height: 1.4;
+    }
+}
+
+// Layout preview
+.blockxpert-apb-layout-preview {
+    background: #f0f0f1;
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 12px;
+    border-left: 3px solid #007cba;
+}
+
+// Display preview
+.blockxpert-apb-display-preview {
+    background: #f0f0f1;
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 12px;
+    border-left: 3px solid #00a32a;
+
+    .blockxpert-apb-preview-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+    }
+
+    .blockxpert-apb-preview-item {
+        background: #fff;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        color: #666;
+        border: 1px solid #ddd;
+    }
+}
+
+// Query preview
+.blockxpert-apb-query-preview {
+    background: #f0f0f1;
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 12px;
+    border-left: 3px solid #d63638;
+
+    .blockxpert-apb-preview-details {
+        p {
+            margin: 2px 0;
+            font-size: 11px;
+        }
+    }
+}
+
+// Checkbox groups
+.blockxpert-apb-checkbox-group {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    background: #fff;
+
+    .components-checkbox-control {
+        margin-bottom: 4px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// Control labels
+.blockxpert-apb-control-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1e1e1e;
+    margin-bottom: 8px;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .blockxpert-advanced-post-block-editor {
+        .blockxpert-apb-editor-preview {
+            padding: 15px;
+            margin: 15px 0;
+        }
+    }
+}
+
+// Animation for preview updates
+.blockxpert-apb-preview-updating {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+// Loading states
+.blockxpert-apb-loading {
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid #007cba;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: blockxpert-apb-spin 1s linear infinite;
+    }
+}
+
+@keyframes blockxpert-apb-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

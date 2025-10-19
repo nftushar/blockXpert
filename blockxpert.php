@@ -25,8 +25,10 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 
 require_once __DIR__ . '/includes/classes/class-blockxpert-blocks.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-rest.php';
-require_once __DIR__ . '/includes/classes/class-blockxpert-admin-settings.php';
-require_once __DIR__ . '/includes/classes/class-blockxpert.php';
+// admin settings class moved to includes/admin/class-settings.php
+require_once __DIR__ . '/includes/admin/class-settings.php';
+// main plugin class was renamed to class-plugin.php
+require_once __DIR__ . '/includes/class-plugin.php';
 
 // Load text domain for translations
 add_action('init', function() {
