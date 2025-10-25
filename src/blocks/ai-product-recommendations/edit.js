@@ -11,7 +11,7 @@ export default function Edit({ attributes, setAttributes }) {
 
     return (
         <div {...blockProps}>
-            <p>{__('AI Product Recommendations placeholder', 'blockxpert')}</p>
+            <p>{__('Product Recommend AI placeholder', 'blockxpert')}</p>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: BlockXpert
- * Description: A powerful set of AI-driven Gutenberg blocks, including an AI FAQ and Ai Product Recommendations for WooCommerce, with comprehensive admin controls.
+ * Description: A powerful set of AI-driven Gutenberg blocks, including an AI FAQ and Product Recommend AI for WooCommerce, with comprehensive admin controls.
  * Version:     1.0.0
  * Author:      NF Tushar
  * Author URI:  https://github.com/nftushar/

@@ -1,1 +1,1 @@
-// Placeholder for Ai Product Recommendations frontend JS. Add interactivity here if needed in the future. 
+// Placeholder for Product Recommend AI frontend JS. Add interactivity here if needed in the future. 

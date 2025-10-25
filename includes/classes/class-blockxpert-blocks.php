@@ -14,8 +14,9 @@ class BlockXpert_Blocks {
     public function register_blocks() {
         $active_blocks = get_option('blockxpert_blocks_active', $this->get_default_blocks());
         foreach ($active_blocks as $block) {
-            $block_dir = BLOCKXPERT_PATH . 'blocks/' . $block;
+            $block_dir = BLOCKXPERT_PATH . 'src/blocks/' . $block;
             $block_json_path = $block_dir . '/block.json';
+            
             if (file_exists($block_json_path)) {
                 
                 $callback_method = 'render_dynamic_block_' . str_replace('-', '_', $block);
@@ -177,7 +178,7 @@ class BlockXpert_Blocks {
     // Render callback for ai-product-recommendations
     public function render_dynamic_block_ai_product_recommendations($attributes) {
         if (!class_exists('WooCommerce')) {
-            return '<div class="notice notice-error"><p>' . esc_html__('WooCommerce is required for the AI Product Recommendations block.', 'BlockXpert') . '</p></div>';
+            return '<div class="notice notice-error"><p>' . esc_html__('WooCommerce is required for the Product Recommend AI block.', 'BlockXpert') . '</p></div>';
         }
         
         $title = $attributes['title'] ?? esc_html__('Ai Product Recom', 'BlockXpert');

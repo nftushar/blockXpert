@@ -72,7 +72,7 @@ msgid "Recommended for You"
 msgstr ""
 
 #: includes/init.php:747
-msgid "WooCommerce is required for the Ai Product Recommendations block."
+msgid "WooCommerce is required for the Product Recommend AI block."
 msgstr ""
 
 #: includes/init.php:1159
@@ -6724,7 +6724,7 @@ msgid "Generate AI Recommendations"
 msgstr ""
 
 #: includes/init.php:8170
-msgid "Ai Product Recommendations"
+msgid "Product Recommend AI"
 msgstr ""
 
 #: includes/init.php:8175
@@ -7159,7 +7159,7 @@ msgid "Recommended for You"
 msgstr ""
 
 #: includes/init.php:747
-msgid "WooCommerce is required for the Ai Product Recommendations block."
+msgid "WooCommerce is required for the Product Recommend AI block."
 msgstr ""
 
 #: includes/init.php:1159
@@ -13811,7 +13811,7 @@ msgid "Generate AI Recommendations"
 msgstr ""
 
 #: includes/init.php:8170
-msgid "Ai Product Recommendations"
+msgid "Product Recommend AI"
 msgstr ""
 
 #: includes/init.php:8175

@@ -4,7 +4,7 @@ import Edit from './edit';
 import './style.scss';
 
 registerBlockType('blockxpert/ai-product-recommendations', {
-    title: __('AI Product Recommendations', 'blockxpert'),
+    title: __('Product Recommend AI', 'blockxpert'),
     description: __('Display AI-powered product recommendations.', 'blockxpert'),
     category: 'blockxpert',
     icon: 'star-filled',

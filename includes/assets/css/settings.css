@@ -107,15 +107,14 @@
 .blockxpert-block-list { 
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-    gap: 24px; 
-    margin-top: 20px;
+    gap: 10px;  
 }
 
 .blockxpert-block-card { 
     background: #fff; 
     border: 1px solid #e5e7eb; 
     border-radius: 12px; 
-    padding: 24px; 
+    padding: 15px; 
     display: flex; 
     align-items: center; 
     justify-content: space-between; 
