@@ -4,19 +4,36 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     ...defaultConfig,
-    entry: {
-        // Main entry point
-        index: './src/index.js',
-        
-        // Block-specific entries with optimized structure
-        'advanced-post-block/index': './src/blocks/advanced-post-block/index.js',
-        'advanced-post-block/editor': './src/blocks/advanced-post-block/editor/Edit.js',
-        'advanced-post-block/frontend': './src/blocks/advanced-post-block/frontend/Save.js',
-        
-        'product-slider/index': './src/blocks/product-slider/index.js',
-        'ai-faq/index': './src/blocks/ai-faq/index.js',
-        'ai-product-recommendations/index': './src/blocks/ai-product-recommendations/index.js',
-    },
+    entry: (function () {
+        // Auto-discover blocks under src/blocks and build convenient entries per block
+        const fs = require('fs');
+        const baseEntries = {
+            index: './src/index.js'
+        };
+        const blocksDir = path.resolve(__dirname, 'src/blocks');
+        if (fs.existsSync(blocksDir)) {
+            fs.readdirSync(blocksDir, { withFileTypes: true }).forEach(dirent => {
+                if (!dirent.isDirectory()) return;
+                const name = dirent.name;
+                const candidates = [
+                    { key: `${name}/index`, file: `./src/blocks/${name}/index.js` },
+                    { key: `${name}/view`, file: `./src/blocks/${name}/view.js` },
+                    { key: `${name}/editor`, file: `./src/blocks/${name}/edit.js` },
+                    { key: `${name}/editor`, file: `./src/blocks/${name}/editor.js` },
+                    { key: `${name}/editor`, file: `./src/blocks/${name}/editor.css` },
+                    { key: `${name}/style-index`, file: `./src/blocks/${name}/style.scss` },
+                    { key: `${name}/frontend`, file: `./src/blocks/${name}/frontend/Save.js` },
+                ];
+                candidates.forEach(c => {
+                    const absolute = path.resolve(__dirname, c.file.replace(/^\.\//, ''));
+                    if (fs.existsSync(absolute)) {
+                        baseEntries[c.key] = c.file;
+                    }
+                });
+            });
+        }
+        return baseEntries;
+    })(),
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: '[name].js',

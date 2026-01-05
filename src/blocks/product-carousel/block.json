@@ -1,0 +1,22 @@
+{
+  "apiVersion": 2,
+  "name": "blockxpert/product-carousel",
+  "title": "Product Carousel",
+  "category": "blockxpert",
+  "icon": "slides",
+  "editorScript": "file:../../build/product-carousel/index.js",
+  "editorStyle": "file:../../build/product-carousel/editor.css",
+  "style": "file:../../build/product-carousel/style-index.css",
+  "script": "file:../../build/product-carousel/view.js",
+  "attributes": {
+    "title": { "type": "string", "default": "Featured Products" },
+    "productsPerSlide": { "type": "number", "default": 3 },
+    "autoPlay": { "type": "boolean", "default": true },
+    "showNavigation": { "type": "boolean", "default": true },
+    "showPagination": { "type": "boolean", "default": true },
+    "category": { "type": "string", "default": "" },
+    "orderBy": { "type": "string", "default": "date" },
+    "order": { "type": "string", "default": "desc" }
+  },
+  "render": "blockxpert_render_product_carousel"
+}

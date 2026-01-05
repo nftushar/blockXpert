@@ -18,12 +18,14 @@ class BlockXpert_Blocks {
             $block_json_path = $block_dir . '/block.json';
             
             if (file_exists($block_json_path)) {
-                
                 $callback_method = 'render_dynamic_block_' . str_replace('-', '_', $block);
                 if (method_exists($this, $callback_method)) {
                     register_block_type($block_dir, [
                         'render_callback' => [$this, $callback_method],
                     ]);
+                } else {
+                    // Register block from block.json without a PHP render callback (client-side or JSON-based)
+                    register_block_type($block_dir);
                 }
             }
         }
@@ -146,6 +148,11 @@ class BlockXpert_Blocks {
         $output .= '</div>';
         
         return $output;
+    }
+
+    // Render callback for product-carousel (reuses product-slider rendering)
+    public function render_dynamic_block_product_carousel($attributes) {
+        return $this->render_dynamic_block_product_slider($attributes);
     }
 
     // Render callback for ai-faq
@@ -326,13 +333,13 @@ class BlockXpert_Blocks {
 
     public function add_block_category($categories) {
         foreach ($categories as $category) {
-            if ($category['slug'] === 'custom-blocks') {
+            if ($category['slug'] === 'blockxpert') {
                 return $categories;
             }
         }
         return array_merge($categories, [[
-            'slug'  => 'custom-blocks',
-            'title' => __('Custom Blocks', 'BlockXpert'),
+            'slug'  => 'blockxpert',
+            'title' => __('BlockXpert', 'BlockXpert'),
         ]]);
     }
 

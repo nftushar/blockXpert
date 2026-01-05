@@ -61,6 +61,12 @@ src/
 
 ## Key Improvements
 
+> Build & Tooling
+
+The build process now auto-discovers blocks under `src/blocks` and generates per-block assets (JS/CSS) in `build/<block-name>/` using `webpack.config.js`. Add `index.js`, `view.js`, `edit.js`, `editor.css` or `style.scss` files in your block folder and the build will pick them up automatically.
+
+## Key Improvements
+
 ### 1. **Separation of Concerns**
 - **Editor components** are isolated in their own folder
 - **Frontend components** are separated for better organization
