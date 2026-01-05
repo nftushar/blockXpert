@@ -39,11 +39,11 @@ class BlockXpert_Blocks {
             return '<div class="notice notice-error"><p>' . esc_html__('WooCommerce is required for the Product Slider block.', 'BlockXpert') . '</p></div>';
         }
         
-        $title = $attributes['title'] ?? esc_html__('WooProduct Slider', 'BlockXpert');
-        $products_per_slide = $attributes['productsPerSlide'] ?? 3;
-        $auto_play = $attributes['autoPlay'] ?? true;
-        $show_navigation = $attributes['showNavigation'] ?? true;
-        $show_pagination = $attributes['showPagination'] ?? true;
+        $title = $attributes['title'] ?? esc_html__('Product Slider', 'BlockXpert');
+        $products_per_slide = isset($attributes['productsPerSlide']) ? intval($attributes['productsPerSlide']) : 3;
+        $auto_play = isset($attributes['autoPlay']) ? (bool)$attributes['autoPlay'] : true;
+        $show_navigation = isset($attributes['showNavigation']) ? (bool)$attributes['showNavigation'] : true;
+        $show_pagination = isset($attributes['showPagination']) ? (bool)$attributes['showPagination'] : true;
         $category = $attributes['category'] ?? '';
         $order_by = $attributes['orderBy'] ?? 'date';
         $order = $attributes['order'] ?? 'desc';
@@ -58,20 +58,29 @@ class BlockXpert_Blocks {
         ];
         
         if (!empty($category)) {
-            // Use term_id for better performance and add query optimization
+            // Allow slug or term_id
+            if (is_numeric($category)) {
+                $term_field = 'term_id';
+                $term = intval($category);
+            } else {
+                $term_field = 'slug';
+                $term = sanitize_text_field($category);
+            }
+
             $args['tax_query'] = [
                 [
                     'taxonomy' => 'product_cat',
-                    'field' => 'term_id',
-                    'terms' => intval($category),
-                    'include_children' => false, // Disable children for better performance
-                    'operator' => 'IN', // Explicitly set operator for better performance
+                    'field' => $term_field,
+                    'terms' => $term,
+                    'include_children' => false,
+                    'operator' => 'IN',
                 ],
             ];
+
             // Add query optimization hints
-            $args['no_found_rows'] = true; // Skip counting total rows for better performance
-            $args['update_post_meta_cache'] = false; // Skip meta cache for better performance
-            $args['update_post_term_cache'] = false; // Skip term cache for better performance
+            $args['no_found_rows'] = true;
+            $args['update_post_meta_cache'] = false;
+            $args['update_post_term_cache'] = false;
         }
         
         $query = new \WP_Query($args);
@@ -84,13 +93,15 @@ class BlockXpert_Blocks {
                 if (!$product) {
                     $product = wc_get_product(get_the_ID());
                 }
-                
+
+                $image_id = $product->get_image_id();
                 $products[] = [
                     'id' => $product->get_id(),
                     'name' => $product->get_name(),
                     'price_html' => $product->get_price_html(),
                     'price' => $product->get_price(),
-                    'image' => $product->get_image_id() ? wp_get_attachment_url($product->get_image_id()) : wc_placeholder_img_src(),
+                    'image_id' => $image_id ?: 0,
+                    'image_url' => $image_id ? wp_get_attachment_url($image_id) : wc_placeholder_img_src(),
                     'url' => get_permalink(),
                 ];
             }
@@ -102,20 +113,17 @@ class BlockXpert_Blocks {
         }
         
         // Build slider HTML
-        $wrapper_attributes = 'class="product-slider"';
-        $title_style = 'style="text-align: center; margin-bottom: 20px;"';
-        
-        $output = '<div ' . esc_attr($wrapper_attributes) . '>';
-        $output .= '<h2 ' . esc_attr($title_style) . '>' . esc_html($title) . '</h2>';
+        $output = '<div class="product-slider" data-products-per-slide="' . esc_attr($products_per_slide) . '" data-auto-play="' . ($auto_play ? 'true' : 'false') . '" data-show-navigation="' . ($show_navigation ? 'true' : 'false') . '" data-show-pagination="' . ($show_pagination ? 'true' : 'false') . '">';
+        $output .= '<h2 style="text-align:center;margin-bottom:20px;">' . esc_html($title) . '</h2>';
         $output .= '<div class="product-slider-container">';
         
         foreach ($products as $product) {
             $output .= '<div class="product-slide">';
             $output .= '<div class="product-image">';
-            if (!empty($product['image'])) {
-                $output .= wp_get_attachment_image($product['image'], 'woocommerce_thumbnail', false, ['alt' => esc_attr($product['name'])]);
+            if (!empty($product['image_id'])) {
+                $output .= wp_get_attachment_image($product['image_id'], 'woocommerce_thumbnail', false, ['alt' => esc_attr($product['name'])]);
             } else {
-                $output .= '<img src="' . esc_url($product['image']) . '" alt="' . esc_attr($product['name']) . '">';
+                $output .= '<img src="' . esc_url($product['image_url']) . '" alt="' . esc_attr($product['name']) . '">';
             }
             $output .= '</div>';
             $output .= '<h3 class="product-title">' . esc_html($product['name']) . '</h3>';
@@ -204,7 +212,7 @@ class BlockXpert_Blocks {
                     $output .= '<img src="' . esc_url($product['images'][0]['src']) . '" alt="' . esc_attr($product['name']) . '">';
                 }
             } else {
-                $output .= '<div class="product-placeholder">' . esc_html_e('No Image', 'BlockXpert') . '</div>';
+                $output .= '<div class="product-placeholder">' . esc_html__('No Image', 'BlockXpert') . '</div>';
             }
             $output .= '</div>';
             $output .= '<h3 class="product-title">' . esc_html($product['name']) . '</h3>';
@@ -217,7 +225,7 @@ class BlockXpert_Blocks {
                 $output .= '</div>';
             }
             
-            $output .= '<button class="add-to-cart-btn">' . esc_html_e('Add to Cart', 'BlockXpert') . '</button>';
+            $output .= '<button class="add-to-cart-btn">' . esc_html__('Add to Cart', 'BlockXpert') . '</button>';
             $output .= '</div>';
         }
         

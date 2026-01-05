@@ -1,8 +1,8 @@
 {
   "apiVersion": 2,
   "name": "blockxpert/product-slider",
-  "title": "WooProduct Slider",
-  "category": "custom-blocks",
+  "title": "Product Slider",
+  "category": "blockxpert",
   "icon": "slides",
   "editorScript": "file:../../build/product-slider/index.js",
   "editorStyle": "file:../../build/product-slider/editor.css",

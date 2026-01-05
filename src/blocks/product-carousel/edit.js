@@ -186,7 +186,7 @@ export default function Edit({ attributes, setAttributes }) {
             </InspectorControls>
 
             <div className="product-slider-editor-preview">
-                <h3 className="slider-title">{title || __('WooProduct Slider', 'blockxpert')}</h3>
+                <h3 className="slider-title">{title || __('Product Carousel', 'blockxpert')}</h3>
                 
                 {loading && (
                     <Placeholder label={__('Loading Products', 'blockxpert')}>

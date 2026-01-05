@@ -13,19 +13,15 @@ registerBlockType('blockxpert/product-slider', {
         align: ['wide', 'full']
     },
     attributes: {
-        productsToShow: {
-            type: 'number',
-            default: 6
+        title: {
+            type: 'string',
+            default: __('Featured Products', 'blockxpert')
         },
-        categories: {
-            type: 'array',
-            default: []
-        },
-        slidesPerView: {
+        productsPerSlide: {
             type: 'number',
             default: 3
         },
-        autoplay: {
+        autoPlay: {
             type: 'boolean',
             default: true
         },
@@ -36,6 +32,18 @@ registerBlockType('blockxpert/product-slider', {
         showPagination: {
             type: 'boolean',
             default: true
+        },
+        category: {
+            type: 'string',
+            default: ''
+        },
+        orderBy: {
+            type: 'string',
+            default: 'date'
+        },
+        order: {
+            type: 'string',
+            default: 'desc'
         }
     },
     edit: Edit,
