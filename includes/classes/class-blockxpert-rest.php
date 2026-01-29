@@ -1,13 +1,30 @@
 <?php
 
 /**
- * Handles REST API endpoints for BlockXpert.
+ * BlockXpert_REST
+ * Handles REST API endpoints for BlockXpert
+ * Uses Singleton pattern for single instance
  */
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class BlockXpert_REST
 {
-    public function __construct()
+    private static $instance = null;
+
+    /**
+     * Get singleton instance
+     */
+    public static function get_instance() {
+        if ( self::$instance === null ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Private constructor - prevents direct instantiation
+     */
+    private function __construct()
     {
         add_action('rest_api_init', [$this, 'register_rest_routes']);
     }

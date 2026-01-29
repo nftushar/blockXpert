@@ -1,9 +1,28 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * BlockXpert_Blocks
+ * Handles block registration and asset enqueueing
+ * Uses Singleton pattern for single instance
+ */
 class BlockXpert_Blocks {
+    private static $instance = null;
 
-    public function __construct() {
+    /**
+     * Get singleton instance
+     */
+    public static function get_instance() {
+        if ( self::$instance === null ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Private constructor - prevents direct instantiation
+     */
+    private function __construct() {
         add_action( 'init', [ $this, 'register_blocks' ] );
         add_filter( 'block_categories_all', [ $this, 'add_block_category' ], 10, 1 );
         add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );

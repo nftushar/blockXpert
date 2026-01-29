@@ -42,13 +42,16 @@ class BlockXpert {
             return;
         }
         
+        // Mark instance as created
+        self::$instance = $this;
+        
         // Initialize service layer
         $this->service = BlockXpert_Service::get_instance();
-        $this->cache = new BlockXpert_Cache();
+        $this->cache = BlockXpert_Cache::get_instance();
         
         // Initialize components
-        $this->blocks = new BlockXpert_Blocks();
-        $this->rest = new BlockXpert_REST();
+        $this->blocks = BlockXpert_Blocks::get_instance();
+        $this->rest = BlockXpert_REST::get_instance();
         $this->admin_settings = BlockXpert_Admin_Settings::get_instance();
         
         // Register hooks

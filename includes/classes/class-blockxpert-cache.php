@@ -2,6 +2,7 @@
 /**
  * BlockXpert Cache Layer
  * Handles transients and caching for performance
+ * Uses Singleton pattern for single instance
  */
 
 if (!defined('ABSPATH')) exit;
@@ -9,6 +10,25 @@ if (!defined('ABSPATH')) exit;
 class BlockXpert_Cache {
     const CACHE_PREFIX = 'blockxpert_';
     const DEFAULT_TTL = 3600; // 1 hour
+    
+    private static $instance = null;
+
+    /**
+     * Get singleton instance
+     */
+    public static function get_instance() {
+        if ( self::$instance === null ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Private constructor - prevents direct instantiation
+     */
+    private function __construct() {
+        // Constructor is private for singleton pattern
+    }
     
     /**
      * Get cached value
