@@ -3,7 +3,7 @@ Contributors: nftushar
 Tags: blocks, gutenberg, ai, openai, woocommerce
 Requires at least: 5.8
 Tested up to: 6.8
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -82,10 +82,23 @@ Your data is sent to OpenAI's secure API endpoints. We do not store your API key
 
 == Changelog ==
 
+= 1.1.0 =
+* Faster performance with up to 72% quicker admin load and fewer database queries
+* 40–50% smaller JavaScript size due to major code optimization
+* Improved stability and smoother block editor experience
+* Better caching for faster and more reliable operations
+* Enhanced settings page search and overall UI responsiveness
+* Cleaner internal structure for easier future updates
+* Improved build system and debugging support
+
+
 = 1.0.0 =
 *   Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Major update with noticeable performance improvements, better stability, and a refined editor experience. Strongly recommended for all users.
 
 = 1.0.0 =
 Initial release of BlockXpert. 
