@@ -3,78 +3,100 @@
  * (Renamed from admin-settings.js)
  */
 (function($){
+    'use strict';
+    
     $(document).ready(function(){
-        var $tabs = $('.blockxpert-tab');
-        var $search = $('#blockxpert-search');
-        var $cards = $('.blockxpert-block-card');
-        var debounceTimer = null;
+        // Wait a bit to ensure DOM is fully ready
+        setTimeout(function() {
+            initBlockXpertSettings();
+        }, 100);
+    });
 
+    function initBlockXpertSettings() {
+        var $searchInput = $('#blockxpert-search');
+        var $tabButtons = $('.blockxpert-tab');
+        var $blockCards = $('.blockxpert-block-card');
+        var searchTimeout = null;
+
+        console.log('🔍 BlockXpert Search Initialized');
+        console.log('   Search input found:', $searchInput.length);
+        console.log('   Tab buttons found:', $tabButtons.length);
+        console.log('   Block cards found:', $blockCards.length);
+
+        // Check if elements exist
+        if ($blockCards.length === 0) {
+            console.error('❌ No block cards found!');
+            return;
+        }
+
+        // Get active tab
         function getActiveTab() {
-            var $active = $tabs.filter('.active');
-            return $active.length ? $active.data('tab') : 'all';
+            var activeTab = $tabButtons.filter('.active').data('tab');
+            return activeTab || 'all';
         }
 
-        function normalize(str){
-            return (str || '').toString().toLowerCase();
-        }
-
-        function filterCards(){
-            var q = normalize($search.val());
+        // Perform filtering
+        function performSearch() {
+            var searchQuery = $searchInput.val().toLowerCase().trim();
             var activeTab = getActiveTab();
+            var visibleCount = 0;
 
-            $cards.each(function(){
+            console.log('🔎 Search:', searchQuery, '| Tab:', activeTab);
+
+            $blockCards.each(function() {
                 var $card = $(this);
-                var name = normalize($card.data('block-name'));
-                // status may be stored in data-status or reflected from checkbox
-                var status = normalize($card.data('status')) || ($card.find('input[type="checkbox"]').is(':checked') ? 'active' : 'inactive');
-
-                var matchesQuery = !q || name.indexOf(q) !== -1;
-                var matchesTab = (activeTab === 'all') || (activeTab === status);
-
-                if (matchesQuery && matchesTab) {
+                var blockName = $card.data('block-name');
+                var $checkbox = $card.find('input[type="checkbox"]');
+                var isActive = $checkbox.is(':checked');
+                
+                // Get display text
+                var displayName = blockName ? blockName.replace(/-/g, ' ').toLowerCase() : '';
+                
+                // Check if block name matches search
+                var nameMatch = !searchQuery || displayName.indexOf(searchQuery) > -1;
+                
+                // Check if status matches tab filter
+                var statusMatch = activeTab === 'all' || 
+                                  (activeTab === 'active' && isActive) || 
+                                  (activeTab === 'inactive' && !isActive);
+                
+                // Show or hide
+                if (nameMatch && statusMatch) {
                     $card.show();
+                    visibleCount++;
                 } else {
                     $card.hide();
                 }
             });
+
+            console.log('✓ Visible cards:', visibleCount);
         }
 
-        // Tab click handling
-        $tabs.on('click', function(e){
+        // Search input event
+        $searchInput.on('keyup paste input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function() {
+                performSearch();
+            }, 150);
+        });
+
+        // Tab click event
+        $tabButtons.on('click', function(e) {
             e.preventDefault();
-            $tabs.removeClass('active');
+            
+            // Remove active class from all tabs
+            $tabButtons.removeClass('active');
+            
+            // Add active class to clicked tab
             $(this).addClass('active');
-            filterCards();
+            
+            console.log('📋 Tab clicked:', $(this).data('tab'));
+            
+            // Perform search with new tab
+            performSearch();
         });
 
-        // Debounced search
-        $search.on('input', function(){
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(function(){
-                filterCards();
-            }, 180);
-        });
-
-        // Initialize yes/no text and data-status from checkboxes
-        $cards.find('.blockxpert-toggle-switch input').each(function(){
-            var $cb = $(this);
-            var $card = $cb.closest('.blockxpert-block-card');
-            var yesno = $cb.is(':checked') ? 'Yes' : 'No';
-            $card.find('.blockxpert-toggle-yesno').text(yesno);
-            $card.attr('data-status', $cb.is(':checked') ? 'active' : 'inactive');
-        });
-
-        // On toggle change keep visible state in sync and re-filter
-        $cards.on('change', '.blockxpert-toggle-switch input', function(){
-            var $cb = $(this);
-            var $card = $cb.closest('.blockxpert-block-card');
-            var yesno = $cb.is(':checked') ? 'Yes' : 'No';
-            $card.find('.blockxpert-toggle-yesno').text(yesno);
-            $card.attr('data-status', $cb.is(':checked') ? 'active' : 'inactive');
-            filterCards();
-        });
-
-        // Initial filter to apply default tab/search state
-        filterCards();
-    });
+        // Initial search
+        performSearch();
+    }
 })(jQuery);

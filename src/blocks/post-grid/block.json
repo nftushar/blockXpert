@@ -1,0 +1,83 @@
+{
+  "apiVersion": 2,
+  "name": "blockxpert/post-grid",
+  "title": "Post Grid",
+  "category": "blockxpert",
+  "icon": "table",
+  "description": "Display posts in a beautiful grid layout",
+  "keywords": ["posts", "grid", "layout", "blog"],
+  "editorScript": "file:../../build/post-grid/index.js",
+  "editorStyle": "file:../../build/post-grid/index.css",
+  "style": "file:../../build/post-grid/style-index.css",
+  "script": "file:../../build/post-grid/view.js",
+  "viewScript": "file:../../build/post-grid/view.js",
+  "attributes": {
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "postsToShow": {
+      "type": "number",
+      "default": 6
+    },
+    "postType": {
+      "type": "string",
+      "default": "post"
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "date",
+      "enum": ["date", "title", "relevance"]
+    },
+    "order": {
+      "type": "string",
+      "default": "desc",
+      "enum": ["asc", "desc"]
+    },
+    "categories": {
+      "type": "array",
+      "default": []
+    },
+    "tags": {
+      "type": "array",
+      "default": []
+    },
+    "layout": {
+      "type": "string",
+      "default": "grid",
+      "enum": ["grid", "list", "masonry", "slider"]
+    },
+    "showImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showReadMore": {
+      "type": "boolean",
+      "default": true
+    },
+    "readMoreText": {
+      "type": "string",
+      "default": "Read More"
+    },
+    "excerptLength": {
+      "type": "number",
+      "default": 30
+    }
+  },
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false
+  }
+}

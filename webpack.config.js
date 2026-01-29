@@ -34,11 +34,6 @@ module.exports = {
         }
         return baseEntries;
     })(),
-    output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: '[name].js',
-        clean: true
-    },
     module: {
         rules: [
             ...defaultConfig.module.rules,

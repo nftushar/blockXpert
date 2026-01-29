@@ -6,14 +6,15 @@ class BlockXpert_Blocks {
     public function __construct() {
         add_action( 'init', [ $this, 'register_blocks' ] );
         add_filter( 'block_categories_all', [ $this, 'add_block_category' ], 10, 1 );
-         add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
+        add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
+        add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_dependencies' ] );
 
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_frontend_assets' ] );
     }
 
     public function register_blocks() {
         $blocks_root = trailingslashit( BLOCKXPERT_PATH . 'src/blocks' );
-        $active_blocks = get_option( 'blockxpert_blocks_active', ['product-slider'] );
+        $active_blocks = get_option( 'blockxpert_blocks_active', BlockXpert::get_all_blocks() );
 
         foreach ( (array) $active_blocks as $block ) {
             $block = sanitize_key( $block );
@@ -36,46 +37,83 @@ class BlockXpert_Blocks {
         return $categories;
     }
 
+    /**
+     * Enqueue dependencies needed for block editor
+     */
+    public function enqueue_block_editor_dependencies() {
+        // Ensure dashicons are available for block icons
+        wp_enqueue_style( 'dashicons' );
+    }
+
      public function enqueue_editor_assets() {
-    $blocks_root = BLOCKXPERT_PATH . 'build/';
-    $blocks = ['product-slider'];
+        $blocks_root = BLOCKXPERT_PATH . 'build/';
+        $blocks = get_option( 'blockxpert_blocks_active', BlockXpert::get_all_blocks() );
 
-    foreach ($blocks as $block) {
-        $block_dir = $blocks_root . $block . '/';
+        foreach ( (array) $blocks as $block ) {
+            $block_dir = $blocks_root . $block . '/';
 
-        $js_asset = $block_dir . 'index.asset.php';
-        $js_file = $block_dir . 'index.js';
-        $css_file = $block_dir . 'editor.css';
+            // Try to enqueue index.js first (primary editor script)
+            $js_asset = $block_dir . 'index.asset.php';
+            $js_file = $block_dir . 'index.js';
 
-        if (file_exists($js_asset) && file_exists($js_file)) {
-            $asset = include $js_asset;
+            if ( file_exists( $js_asset ) && file_exists( $js_file ) ) {
+                $asset = include $js_asset;
 
-            wp_enqueue_script(
-                "blockxpert-{$block}-editor",
-                BLOCKXPERT_URL . "build/{$block}/index.js",
-                $asset['dependencies'] ?? [],
-                $asset['version'] ?? false,
-                true
-            );
-        }
+                wp_enqueue_script(
+                    "blockxpert-{$block}-editor",
+                    BLOCKXPERT_URL . "build/{$block}/index.js",
+                    $asset['dependencies'] ?? [],
+                    $asset['version'] ?? false,
+                    true
+                );
+            } else {
+                // Fallback: Try editor.js if index.js doesn't exist
+                $editor_js = $block_dir . 'editor.js';
+                $editor_asset = $block_dir . 'editor.asset.php';
+                
+                if ( file_exists( $editor_asset ) && file_exists( $editor_js ) ) {
+                    $asset = include $editor_asset;
+                    
+                    wp_enqueue_script(
+                        "blockxpert-{$block}-editor",
+                        BLOCKXPERT_URL . "build/{$block}/editor.js",
+                        $asset['dependencies'] ?? [],
+                        $asset['version'] ?? false,
+                        true
+                    );
+                }
+            }
 
-        if (file_exists($css_file)) {
-            wp_enqueue_style(
-                "blockxpert-{$block}-editor",
-                BLOCKXPERT_URL . "build/{$block}/editor.css",
-                [],
-                filemtime($css_file)
-            );
+            // Enqueue editor CSS if it exists
+            $editor_css = $block_dir . 'editor.css';
+            if ( file_exists( $editor_css ) ) {
+                wp_enqueue_style(
+                    "blockxpert-{$block}-editor-css",
+                    BLOCKXPERT_URL . "build/{$block}/editor.css",
+                    [],
+                    filemtime( $editor_css )
+                );
+            }
+
+            // Enqueue index CSS as fallback editor styles
+            $index_css = $block_dir . 'index.css';
+            if ( file_exists( $index_css ) ) {
+                wp_enqueue_style(
+                    "blockxpert-{$block}-index-css",
+                    BLOCKXPERT_URL . "build/{$block}/index.css",
+                    [],
+                    filemtime( $index_css )
+                );
+            }
         }
     }
-}
 
 
     public function enqueue_frontend_assets() {
         $blocks_root = BLOCKXPERT_PATH . 'build/';
-        $blocks = ['product-slider'];
+        $blocks = get_option( 'blockxpert_blocks_active', BlockXpert::get_all_blocks() );
 
-        foreach ($blocks as $block) {
+        foreach ( (array) $blocks as $block ) {
             $block_dir = $blocks_root.$block.'/';
 
             $js_file = $block_dir.'view.js';

@@ -17,4 +17,27 @@ class BlockXpert {
         $this->rest = new BlockXpert_REST();
         $this->admin_settings = new BlockXpert_Admin_Settings();
     }
+
+    /**
+     * Return the list of available block slugs by scanning the plugin's blocks directory.
+     * This centralizes discovery so all callers use the same source of truth.
+     *
+     * @return array
+     */
+    public static function get_all_blocks() {
+        $blocks = [];
+        $blocks_dir = trailingslashit( BLOCKXPERT_PATH . 'src/blocks' );
+
+        if ( is_dir( $blocks_dir ) ) {
+            foreach ( scandir( $blocks_dir ) as $item ) {
+                if ( $item === '.' || $item === '..' ) continue;
+                $full = $blocks_dir . $item;
+                if ( is_dir( $full ) ) {
+                    $blocks[] = sanitize_key( $item );
+                }
+            }
+        }
+
+        return array_values( array_unique( $blocks ) );
+    }
 } 

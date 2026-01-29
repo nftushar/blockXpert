@@ -35,13 +35,20 @@ class BlockXpert_Settings_Handler
 
     public static function register_settings()
     {
+        $default_active = ['product-slider'];
+
+        // Ensure option exists and is not autoloaded
+        if ( false === get_option( 'blockxpert_blocks_active', false ) ) {
+            add_option( 'blockxpert_blocks_active', $default_active, '', 'no' );
+        }
+
         register_setting(
             'blockxpert_settings_handler',
             'blockxpert_blocks_active',
             [
                 'type' => 'array',
                 'sanitize_callback' => [self::class, 'sanitize_blocks'],
-                'default' => self::get_default_blocks()
+                'default' => $default_active
             ]
         );
 
@@ -50,25 +57,22 @@ class BlockXpert_Settings_Handler
 
     public static function sanitize_blocks($input)
     {
-        if (!is_array($input)) {
+        if ( ! is_array( $input ) ) {
             return [];
         }
 
-        $valid_blocks = [];
-        $blocks_dir = BLOCKXPERT_PATH . 'blocks/';
+        $allowed = BlockXpert::get_all_blocks();
 
-        foreach (scandir($blocks_dir) as $item) {
-            if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . $item)) {
-                $valid_blocks[] = $item;
-            }
-        }
+        $sanitized = array_map( function ( $block ) {
+            return preg_replace( '/[^a-z0-9_-]/', '', strtolower( $block ) );
+        }, $input );
 
-        return array_intersect($input, $valid_blocks);
+        return array_values( array_intersect( $allowed, $sanitized ) );
     }
 
     public static function get_default_blocks()
     {
-        return [];
+        return BlockXpert::get_all_blocks();
     }
 }
 

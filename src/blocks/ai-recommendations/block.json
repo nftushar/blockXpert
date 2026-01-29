@@ -1,0 +1,61 @@
+{
+  "apiVersion": 2,
+  "name": "blockxpert/ai-recommendations",
+  "title": "AI Recommendations",
+  "category": "blockxpert",
+  "icon": "heart",
+  "description": "AI-powered recommendations block",
+  "keywords": ["ai", "recommendations", "suggestions"],
+  "editorScript": "file:../../build/ai-recommendations/index.js",
+  "editorStyle": "file:../../build/ai-recommendations/editor.css",
+  "style": "file:../../build/ai-recommendations/style-index.css",
+  "script": "file:../../build/ai-recommendations/view.js",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Recommended For You"
+    },
+    "aiEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "maxRecommendations": {
+      "type": "number",
+      "default": 5
+    },
+    "recommendationType": {
+      "type": "string",
+      "default": "smart",
+      "enum": ["smart", "trending", "popular"]
+    },
+    "displayStyle": {
+      "type": "string",
+      "default": "grid",
+      "enum": ["grid", "list", "carousel"]
+    },
+    "itemsPerRow": {
+      "type": "number",
+      "default": 3
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPrice": {
+      "type": "boolean",
+      "default": true
+    },
+    "useAI": {
+      "type": "boolean",
+      "default": true
+    },
+    "customQuery": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "align": ["wide", "full"],
+    "html": false
+  }
+}
