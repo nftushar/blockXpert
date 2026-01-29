@@ -2,8 +2,16 @@
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
 class BlockXpert_Admin_Settings {
+    private static $instance = null;
 
-    public function __construct() {
+    public static function get_instance() {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    private function __construct() {
         add_action('admin_menu', [$this, 'add_admin_page']);
         add_action('admin_init', [$this, 'register_settings']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
@@ -81,8 +89,6 @@ class BlockXpert_Admin_Settings {
         ];
         ?>
         <div class="wrap">
-            <h1><?php esc_html_e('BlockXpert Settings', 'blockxpert'); ?></h1>
-
             <!-- Tabs -->
             <h2 class="nav-tab-wrapper">
                 <a href="#blocks" class="nav-tab nav-tab-active" data-tab="blocks"><?php esc_html_e('Blocks', 'blockxpert'); ?></a>

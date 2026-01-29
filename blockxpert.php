@@ -17,17 +17,17 @@ define('BLOCKXPERT_PATH', plugin_dir_path(__FILE__));
 define('BLOCKXPERT_URL', plugin_dir_url(__FILE__));
 
 require_once BLOCKXPERT_PATH . 'includes/init.php';
-require_once BLOCKXPERT_PATH . 'includes/admin/settings-handler.php';
 
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
+// Load core classes
+require_once __DIR__ . '/includes/classes/class-blockxpert-service.php';
+require_once __DIR__ . '/includes/classes/class-blockxpert-cache.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-blocks.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-rest.php';
-// admin settings class moved to includes/admin/class-settings.php
 require_once __DIR__ . '/includes/admin/class-settings.php';
-// main plugin class was renamed to class-plugin.php
 require_once __DIR__ . '/includes/class-plugin.php';
 
 // Load text domain for translations
