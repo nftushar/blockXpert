@@ -1,4 +1,3 @@
-"use strict";
 /*
  * ATTENTION: An "eval-source-map" devtool has been used.
  * This devtool is neither made for production nor for readable output files.
@@ -7,112 +6,136 @@
  * or disable the default devtool with "devtool: false".
  * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
  */
-(globalThis["webpackChunkblockxpert"] = globalThis["webpackChunkblockxpert"] || []).push([["index"],{
+(globalThis["webpackChunkblockxpert"] = globalThis["webpackChunkblockxpert"] || []).push([[57,367,627,730,933,939,985],{
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _blocks_product_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./blocks/product-slider */ \"./src/blocks/product-slider/index.js\");\n/* harmony import */ var _blocks_ai_faq__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/ai-faq */ \"./src/blocks/ai-faq/index.js\");\n/* harmony import */ var _blocks_ai_product_recommendations__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./blocks/ai-product-recommendations */ \"./src/blocks/ai-product-recommendations/index.js\");\n/* harmony import */ var _blocks_advanced_post_block__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./blocks/advanced-post-block */ \"./src/blocks/advanced-post-block/index.js\");\n\n\n\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvaW5kZXguanMiLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBaUM7QUFDUjtBQUNvQiIsInNvdXJjZXMiOlsid2VicGFjazovL2Jsb2NreHBlcnQvLi9zcmMvaW5kZXguanM/YjYzNSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgJy4vYmxvY2tzL3Byb2R1Y3Qtc2xpZGVyJztcclxuaW1wb3J0ICcuL2Jsb2Nrcy9haS1mYXEnO1xyXG5pbXBvcnQgJy4vYmxvY2tzL2FpLXByb2R1Y3QtcmVjb21tZW5kYXRpb25zJztcclxuaW1wb3J0ICcuL2Jsb2Nrcy9hZHZhbmNlZC1wb3N0LWJsb2NrJztcclxuIl0sIm5hbWVzIjpbXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./src/index.js\n");
-
-/***/ }),
-
-/***/ "@wordpress/api-fetch":
-/*!**********************************!*\
-  !*** external ["wp","apiFetch"] ***!
-  \**********************************/
+/***/ 87:
 /***/ ((module) => {
 
-module.exports = window["wp"]["apiFetch"];
-
-/***/ }),
-
-/***/ "@wordpress/block-editor":
-/*!*************************************!*\
-  !*** external ["wp","blockEditor"] ***!
-  \*************************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["blockEditor"];
-
-/***/ }),
-
-/***/ "@wordpress/blocks":
-/*!********************************!*\
-  !*** external ["wp","blocks"] ***!
-  \********************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["blocks"];
-
-/***/ }),
-
-/***/ "@wordpress/components":
-/*!************************************!*\
-  !*** external ["wp","components"] ***!
-  \************************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["components"];
-
-/***/ }),
-
-/***/ "@wordpress/core-data":
-/*!**********************************!*\
-  !*** external ["wp","coreData"] ***!
-  \**********************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["coreData"];
-
-/***/ }),
-
-/***/ "@wordpress/data":
-/*!******************************!*\
-  !*** external ["wp","data"] ***!
-  \******************************/
-/***/ ((module) => {
-
-module.exports = window["wp"]["data"];
-
-/***/ }),
-
-/***/ "@wordpress/element":
-/*!*********************************!*\
-  !*** external ["wp","element"] ***!
-  \*********************************/
-/***/ ((module) => {
-
+"use strict";
 module.exports = window["wp"]["element"];
 
 /***/ }),
 
-/***/ "@wordpress/i18n":
-/*!******************************!*\
-  !*** external ["wp","i18n"] ***!
-  \******************************/
+/***/ 143:
 /***/ ((module) => {
 
+"use strict";
+module.exports = window["wp"]["data"];
+
+/***/ }),
+
+/***/ 171:
+/***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony import */ var _blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(394);
+/* harmony import */ var _blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_blocks__WEBPACK_IMPORTED_MODULE_0__);
+
+
+/***/ }),
+
+/***/ 394:
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("const blockModules = __webpack_require__(915);\nblockModules.keys().forEach(modulePath => {\n  blockModules(modulePath);\n});//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMzk0LmpzIiwibWFwcGluZ3MiOiJBQUFBLE1BQU1BLFlBQVksR0FBR0Msd0JBQXFEO0FBRTFFRCxZQUFZLENBQUNHLElBQUksQ0FBQyxDQUFDLENBQUNDLE9BQU8sQ0FBRUMsVUFBVSxJQUFLO0VBQ3hDTCxZQUFZLENBQUNLLFVBQVUsQ0FBQztBQUM1QixDQUFDLENBQUMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly9ibG9ja3hwZXJ0Ly4vc3JjL2Jsb2Nrcy9pbmRleC5qcz8wZjg3Il0sInNvdXJjZXNDb250ZW50IjpbImNvbnN0IGJsb2NrTW9kdWxlcyA9IHJlcXVpcmUuY29udGV4dCgnLi8nLCB0cnVlLCAvXlxcLlxcL1teL10rXFwvaW5kZXhcXC5qcyQvKTtcclxuXHJcbmJsb2NrTW9kdWxlcy5rZXlzKCkuZm9yRWFjaCgobW9kdWxlUGF0aCkgPT4ge1xyXG4gICAgYmxvY2tNb2R1bGVzKG1vZHVsZVBhdGgpO1xyXG59KTsiXSwibmFtZXMiOlsiYmxvY2tNb2R1bGVzIiwicmVxdWlyZSIsImNvbnRleHQiLCJrZXlzIiwiZm9yRWFjaCIsIm1vZHVsZVBhdGgiXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///394\n");
+
+/***/ }),
+
+/***/ 427:
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ 455:
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["apiFetch"];
+
+/***/ }),
+
+/***/ 582:
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["coreData"];
+
+/***/ }),
+
+/***/ 609:
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["React"];
+
+/***/ }),
+
+/***/ 715:
+/***/ ((module) => {
+
+"use strict";
+module.exports = window["wp"]["blockEditor"];
+
+/***/ }),
+
+/***/ 723:
+/***/ ((module) => {
+
+"use strict";
 module.exports = window["wp"]["i18n"];
 
 /***/ }),
 
-/***/ "react":
-/*!************************!*\
-  !*** external "React" ***!
-  \************************/
+/***/ 915:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var map = {
+	"./advanced-post-block/index.js": 272,
+	"./ai-faq/index.js": 297,
+	"./ai-product-recommendations/index.js": 571,
+	"./ai-recommendations/index.js": 592,
+	"./post-grid/index.js": 807,
+	"./product-carousel/index.js": 856,
+	"./product-slider/index.js": 844
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 915;
+
+/***/ }),
+
+/***/ 997:
 /***/ ((module) => {
 
-module.exports = window["React"];
+"use strict";
+module.exports = window["wp"]["blocks"];
 
 /***/ })
 
 },
 /******/ __webpack_require__ => { // webpackRuntimeModules
 /******/ var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-/******/ __webpack_require__.O(0, ["vendor","common"], () => (__webpack_exec__("./src/index.js")));
+/******/ __webpack_require__.O(0, [502,76], () => (__webpack_exec__(171)));
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);

@@ -5,8 +5,8 @@
     "scripts": {
         "start": "wp-scripts start",
         "build": "wp-scripts build",
-        "start:assets": "wp-scripts start --webpack-config webpack.config.js",
-        "build:assets": "wp-scripts build --webpack-config webpack.config.js",
+        "start:assets": "webpack --config webpack.config.js --watch --mode=development",
+        "build:assets": "webpack --config webpack.config.js --mode=production",
         "clean": "rimraf build",
         "lint": "wp-scripts lint",
         "lint:fix": "wp-scripts lint --fix",

@@ -2,6 +2,7 @@ const path = require('path');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const getBlockEntries = require('./scripts/build/getBlockEntries');
 
 /**
  * Enhanced Webpack Configuration for BlockXpert
@@ -24,49 +25,7 @@ module.exports = {
     /**
      * Auto-discover entry points from blocks
      */
-    entry: (function () {
-        const fs = require('fs');
-        const baseEntries = {
-            // Main editor entry
-            index: './src/index.js'
-        };
-        
-        const blocksDir = path.resolve(__dirname, 'src/blocks');
-        if (fs.existsSync(blocksDir)) {
-            fs.readdirSync(blocksDir, { withFileTypes: true }).forEach(dirent => {
-                if (!dirent.isDirectory()) return;
-                
-                const blockName = dirent.name;
-                const blockPath = path.join(blocksDir, blockName);
-                
-                // Define entry points for each block
-                const entryPoints = [
-                    // Block registration entry
-                    { key: `${blockName}/index`, file: `./src/blocks/${blockName}/index.js` },
-                    // Frontend/View entry (for dynamic blocks)
-                    { key: `${blockName}/view`, file: `./src/blocks/${blockName}/view.js` },
-                    // Editor entry (if separate from index)
-                    { key: `${blockName}/editor`, file: `./src/blocks/${blockName}/editor.js` },
-                ];
-                
-                // Check for style files
-                const styleFiles = [
-                    './src/blocks/${blockName}/styles/editor.scss',
-                    './src/blocks/${blockName}/styles/frontend.scss',
-                    './src/blocks/${blockName}/style.scss'
-                ];
-                
-                entryPoints.forEach(entry => {
-                    const absolute = path.resolve(__dirname, entry.file.replace(/^\.\//, ''));
-                    if (fs.existsSync(absolute)) {
-                        baseEntries[entry.key] = entry.file;
-                    }
-                });
-            });
-        }
-        
-        return baseEntries;
-    })(),
+    entry: getBlockEntries(__dirname),
     
     module: {
         rules: [

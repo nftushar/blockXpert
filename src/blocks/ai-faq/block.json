@@ -2,7 +2,7 @@
   "apiVersion": 2,
   "name": "blockxpert/ai-faq",
   "title": "AI FAQ",
-  "category": "custom-blocks",
+  "category": "blockxpert",
   "icon": "faq",
   "editorScript": "file:../../build/ai-faq/index.js",
   "editorStyle": "file:../../build/ai-faq/index.css",

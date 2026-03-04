@@ -59,11 +59,39 @@ src/
 └── index.js                          # Main entry point
 ```
 
+### PHP Runtime Structure
+
+```
+includes/
+├── class-plugin.php
+├── admin/
+│   └── class-settings.php
+└── classes/
+	├── api/
+	│   └── class-blockxpert-rest.php
+	├── core/
+	│   ├── class-blockxpert-service.php
+	│   ├── class-blockxpert-cache.php
+	│   └── class-blockxpert-blocks.php
+	└── class-blockxpert-*.php        # Backward-compatible bridge files
+```
+
+Core runtime classes are grouped by domain (`core`, `api`) to reduce top-level clutter and make class discovery faster. Legacy include paths remain available through lightweight bridge files under `includes/classes/`.
+
 ## Key Improvements
 
 > Build & Tooling
 
 The build process now auto-discovers blocks under `src/blocks` and generates per-block assets (JS/CSS) in `build/<block-name>/` using `webpack.config.js`. Add `index.js`, `view.js`, `edit.js`, `editor.css` or `style.scss` files in your block folder and the build will pick them up automatically.
+
+### Build Structure Files
+
+- `src/blocks/index.js`: central block loader that auto-imports every `src/blocks/<block>/index.js`.
+- `src/index.js`: single entry point that imports `src/blocks/index.js`.
+- `scripts/build/getBlockEntries.js`: reusable entry discovery utility for webpack.
+- `webpack.config.js`: focused on configuration only; entry discovery logic is delegated to `scripts/build/getBlockEntries.js`.
+
+This keeps block onboarding simple: creating a new block folder with an `index.js` is enough for registration and build inclusion.
 
 ## Key Improvements
 
