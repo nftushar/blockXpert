@@ -1,5 +1,8 @@
 # Dependencies
 node_modules/
+vendor/
+composer.lock
+package-lock.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -9,6 +12,11 @@ build/
 dist/
 *.min.js
 *.min.css
+
+# Build system cache and logs
+.webpack_cache/
+.build_logs/
+bundle-report.html
 
 # Environment files
 .env

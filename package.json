@@ -3,15 +3,23 @@
     "version": "1.1.0",
     "description": "A powerful set of AI-driven Gutenberg blocks for WordPress",
     "scripts": {
-        "start": "wp-scripts start",
-        "build": "wp-scripts build",
-        "start:assets": "wp-scripts start --webpack-config webpack.config.js",
-        "build:assets": "wp-scripts build --webpack-config webpack.config.js",
-        "clean": "rimraf build",
-        "lint": "wp-scripts lint",
-        "lint:fix": "wp-scripts lint --fix",
-        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
-        "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+        "start": "node scripts/dev-server.js",
+        "build": "cross-env NODE_ENV=production node scripts/build.js",
+        "build:dev": "cross-env NODE_ENV=development node scripts/build.js",
+        "build:watch": "cross-env NODE_ENV=development node scripts/build.js --watch",
+        "build:analyze": "cross-env NODE_ENV=production node scripts/build.js --analyze",
+        "prebuild": "npm run clean",
+        "clean": "rimraf build dist .webpack_cache .build_logs",
+        "clean:cache": "rimraf .webpack_cache",
+        "clean:deep": "npm run clean && rimraf node_modules package-lock.json",
+        "lint": "wp-scripts lint-js src --fix",
+        "lint:check": "wp-scripts lint-js src",
+        "lint:styles": "wp-scripts lint-style \"src/**/*.{css,scss}\"",
+        "lint:styles:fix": "wp-scripts lint-style \"src/**/*.{css,scss}\" --fix",
+        "format": "prettier --write \"src/**/*.{js,jsx,json,css,scss,md}\"",
+        "format:check": "prettier --check \"src/**/*.{js,jsx,json,css,scss,md}\"",
+        "validate": "npm run lint:check && npm run format:check",
+        "validate:fix": "npm run lint && npm run format"
     },
     "keywords": [
         "wordpress",
@@ -23,12 +31,44 @@
     ],
     "author": "nftushar",
     "license": "GPL-2.0-or-later",
+    "main": "blockxpert.php",
+    "homepage": "https://github.com/nftushar/blockXpert",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nftushar/blockXpert.git"
+    },
+    "bugs": {
+        "url": "https://github.com/nftushar/blockXpert/issues"
+    },
+    "engines": {
+        "node": ">=14.0.0",
+        "npm": ">=6.0.0"
+    },
+    "files": [
+        "build/",
+        "includes/",
+        "src/",
+        "languages/",
+        "vendor/",
+        "blockxpert.php",
+        "composer.json",
+        "license.txt",
+        "README.md"
+    ],
     "devDependencies": {
         "@wordpress/scripts": "^27.0.0",
         "baseline-browser-mapping": "^2.9.19",
+        "chokidar": "^3.5.3",
+        "compression-webpack-plugin": "^9.2.0",
+        "cross-env": "^7.0.3",
         "mini-css-extract-plugin": "^2.9.2",
         "prettier": "^3.0.0",
-        "rimraf": "^5.0.0"
+        "rimraf": "^5.0.0",
+        "webpack": "^5.90.0",
+        "webpack-bundle-analyzer": "^4.10.0",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.1",
+        "typescript": "^5.0.0"
     },
     "dependencies": {
         "@wordpress/block-editor": "^12.0.0",

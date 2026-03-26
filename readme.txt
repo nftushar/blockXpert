@@ -93,7 +93,7 @@ Your data is sent to OpenAI's secure API endpoints. We do not store your API key
 
 
 = 1.0.0 =
-*   Initial release.
+ Initial release.
 
 == Upgrade Notice ==
 

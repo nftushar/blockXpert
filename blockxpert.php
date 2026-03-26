@@ -22,9 +22,19 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
     require_once __DIR__ . '/vendor/autoload.php';
 }
 
+// Load interfaces
+require_once __DIR__ . '/includes/interfaces/BlockManagerInterface.php';
+require_once __DIR__ . '/includes/interfaces/CacheInterface.php';
+require_once __DIR__ . '/includes/interfaces/AIProviderInterface.php';
+require_once __DIR__ . '/includes/interfaces/LoggerInterface.php';
+require_once __DIR__ . '/includes/interfaces/ServiceInterface.php';
+
 // Load core classes
-require_once __DIR__ . '/includes/classes/class-blockxpert-service.php';
+require_once __DIR__ . '/includes/classes/class-service-container.php';
+require_once __DIR__ . '/includes/classes/class-blockxpert-logger.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-cache.php';
+require_once __DIR__ . '/includes/classes/class-blockxpert-service.php';
+require_once __DIR__ . '/includes/classes/class-blockxpert-openai-provider.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-blocks.php';
 require_once __DIR__ . '/includes/classes/class-blockxpert-rest.php';
 require_once __DIR__ . '/includes/admin/class-settings.php';
