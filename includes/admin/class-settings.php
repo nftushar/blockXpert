@@ -36,7 +36,8 @@ class BlockXpert_Admin_Settings {
      * Register plugin settings
      */
     public function register_settings() {
-        $default_active = ['product-slider'];
+        // Get all available blocks as default
+        $default_active = BlockXpert::get_all_blocks();
         
         // Ensure option exists and is not autoloaded to avoid DB bloat
         if (false === get_option('blockxpert_blocks_active', false)) {
@@ -75,7 +76,7 @@ class BlockXpert_Admin_Settings {
         if (!current_user_can('manage_options')) return;
 
         $all_blocks = BlockXpert::get_all_blocks();
-        $active_blocks = get_option('blockxpert_blocks_active', ['product-slider']);
+        $active_blocks = get_option('blockxpert_blocks_active', $all_blocks);
 
         // Icon map for blocks (dashicons)
         $icons = [
@@ -86,6 +87,7 @@ class BlockXpert_Admin_Settings {
             'ai-recommendations' => 'dashicons-heart',
             'post-grid' => 'dashicons-table',
             'product-carousel' => 'dashicons-images-alt',
+            'text-animation' => 'dashicons-edit',
         ];
         ?>
         <div class="wrap">
