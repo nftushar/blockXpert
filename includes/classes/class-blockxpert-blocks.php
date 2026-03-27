@@ -23,28 +23,26 @@ class BlockXpert_Blocks {
      * Private constructor - prevents direct instantiation
      */
     private function __construct() {
-        // Discovery all available blocks
+        // Discovery all available blocks from build directory
         $all_blocks = [];
-        $blocks_dir = BLOCKXPERT_PATH . 'src/blocks';
+        $blocks_dir = BLOCKXPERT_PATH . 'build/blocks';
         if (is_dir($blocks_dir)) {
             $items = scandir($blocks_dir);
             if ($items !== false) {
                 foreach ($items as $item) {
                     if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . '/' . $item)) {
-                        $all_blocks[] = sanitize_key($item);
+                        // Only add if block.json exists
+                        if (file_exists($blocks_dir . '/' . $item . '/block.json')) {
+                            $all_blocks[] = sanitize_key($item);
+                        }
                     }
                 }
             }
         }
         
-        // Get currently active blocks
-        $active_blocks = get_option('blockxpert_blocks_active', []);
-        
-        // If no active blocks or if new blocks are available, update the option
-        if (empty($active_blocks) || count($active_blocks) !== count($all_blocks)) {
-            if (!empty($all_blocks)) {
-                update_option('blockxpert_blocks_active', $all_blocks);
-            }
+        // Always sync with available blocks - ensures no blocks are lost
+        if (!empty($all_blocks)) {
+            update_option('blockxpert_blocks_active', $all_blocks);
         }
         
         add_action( 'init', [ $this, 'register_blocks' ] );
