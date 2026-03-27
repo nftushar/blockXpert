@@ -1,5 +1,11 @@
-// Deprecated: This folder duplicated the `ai-product-recommendations` block. It has been retained for history but does not register a block.
-// If you want to resurrect or refactor it, please move the files into `src/blocks/ai-product-recommendations/` and update `block.json` accordingly.
+import { registerBlockType } from '@wordpress/blocks';
+import Edit from './edit';
+import metadata from './block.json';
+import './style.scss';
 
-/* eslint-disable no-console */
-console.warn('ai-recommendations folder is deprecated; using ai-product-recommendations instead.'); 
+registerBlockType(metadata.name, {
+  ...metadata,
+  icon: '💡',
+  edit: Edit,
+  save: () => null, // Dynamic block, rendered server-side
+}); 
