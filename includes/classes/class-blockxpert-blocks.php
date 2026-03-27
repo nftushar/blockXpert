@@ -23,6 +23,25 @@ class BlockXpert_Blocks {
      * Private constructor - prevents direct instantiation
      */
     private function __construct() {
+        // Initialize blocks_active option if not set
+        if (!get_option('blockxpert_blocks_active')) {
+            $all_blocks = [];
+            $blocks_dir = BLOCKXPERT_PATH . 'src/blocks';
+            if (is_dir($blocks_dir)) {
+                $items = scandir($blocks_dir);
+                if ($items !== false) {
+                    foreach ($items as $item) {
+                        if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . '/' . $item)) {
+                            $all_blocks[] = sanitize_key($item);
+                        }
+                    }
+                }
+            }
+            if (!empty($all_blocks)) {
+                update_option('blockxpert_blocks_active', $all_blocks);
+            }
+        }
+        
         add_action( 'init', [ $this, 'register_blocks' ] );
         add_filter( 'block_categories_all', [ $this, 'add_block_category' ], 10, 1 );
         add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
@@ -32,7 +51,7 @@ class BlockXpert_Blocks {
     }
 
     public function register_blocks() {
-        $blocks_root = trailingslashit( BLOCKXPERT_PATH . 'src/blocks' );
+        $blocks_root = trailingslashit( BLOCKXPERT_PATH . 'build/blocks' );
         $active_blocks = get_option( 'blockxpert_blocks_active', BlockXpert::get_all_blocks() );
 
         foreach ( (array) $active_blocks as $block ) {
@@ -65,7 +84,7 @@ class BlockXpert_Blocks {
     }
 
      public function enqueue_editor_assets() {
-        $blocks_root = BLOCKXPERT_PATH . 'build/';
+        $blocks_root = BLOCKXPERT_PATH . 'build/blocks/';
         $blocks = get_option( 'blockxpert_blocks_active', BlockXpert::get_all_blocks() );
 
         foreach ( (array) $blocks as $block ) {
@@ -80,7 +99,7 @@ class BlockXpert_Blocks {
 
                 wp_enqueue_script(
                     "blockxpert-{$block}-editor",
-                    BLOCKXPERT_URL . "build/{$block}/index.js",
+                    BLOCKXPERT_URL . "build/blocks/{$block}/index.js",
                     $asset['dependencies'] ?? [],
                     $asset['version'] ?? false,
                     true
@@ -95,7 +114,7 @@ class BlockXpert_Blocks {
                     
                     wp_enqueue_script(
                         "blockxpert-{$block}-editor",
-                        BLOCKXPERT_URL . "build/{$block}/editor.js",
+                        BLOCKXPERT_URL . "build/blocks/{$block}/editor.js",
                         $asset['dependencies'] ?? [],
                         $asset['version'] ?? false,
                         true
@@ -108,7 +127,7 @@ class BlockXpert_Blocks {
             if ( file_exists( $editor_css ) ) {
                 wp_enqueue_style(
                     "blockxpert-{$block}-editor-css",
-                    BLOCKXPERT_URL . "build/{$block}/editor.css",
+                    BLOCKXPERT_URL . "build/blocks/{$block}/editor.css",
                     [],
                     filemtime( $editor_css )
                 );
@@ -119,7 +138,7 @@ class BlockXpert_Blocks {
             if ( file_exists( $index_css ) ) {
                 wp_enqueue_style(
                     "blockxpert-{$block}-index-css",
-                    BLOCKXPERT_URL . "build/{$block}/index.css",
+                    BLOCKXPERT_URL . "build/blocks/{$block}/index.css",
                     [],
                     filemtime( $index_css )
                 );
@@ -129,7 +148,7 @@ class BlockXpert_Blocks {
 
 
     public function enqueue_frontend_assets() {
-        $blocks_root = BLOCKXPERT_PATH . 'build/';
+        $blocks_root = BLOCKXPERT_PATH . 'build/blocks/';
         $blocks = get_option( 'blockxpert_blocks_active', BlockXpert::get_all_blocks() );
 
         foreach ( (array) $blocks as $block ) {
@@ -139,7 +158,7 @@ class BlockXpert_Blocks {
             if ( file_exists($js_file) ) {
                 wp_enqueue_script(
                     "blockxpert-{$block}-frontend",
-                    BLOCKXPERT_URL."build/{$block}/view.js",
+                    BLOCKXPERT_URL."build/blocks/{$block}/view.js",
                     ['jquery', 'gsap'],
                     filemtime($js_file),
                     true
@@ -150,7 +169,7 @@ class BlockXpert_Blocks {
             if ( file_exists($css_file) ) {
                 wp_enqueue_style(
                     "blockxpert-{$block}-frontend",
-                    BLOCKXPERT_URL."build/{$block}/style-index.css",
+                    BLOCKXPERT_URL."build/blocks/{$block}/style-index.css",
                     [],
                     filemtime($css_file)
                 );

@@ -1,13 +1,12 @@
 {
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "blockxpert/ai-faq",
   "title": "AI FAQ",
   "category": "custom-blocks",
   "icon": "faq",
-  "editorScript": "file:../../build/ai-faq/index.js",
-  "editorStyle": "file:../../build/ai-faq/index.css",
-  "style": "file:../../build/ai-faq/style-index.css",
-  "script": "file:../../build/ai-faq/view.js",
+  "editorScript": "file:./index.js",
+  "style": "file:./style.scss",
+  "script": "file:./view.js",
   "attributes": {
     "title": {
       "type": "string",

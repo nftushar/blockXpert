@@ -1,0 +1,77 @@
+/* Editor-specific styles for Text Animation block */
+
+.wp-block-blockxpert-text-animation {
+  .blockxpert-text-animation-wrapper {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.3) 0%, rgba(26, 26, 26, 0.3) 100%);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.15) 0%, rgba(26, 26, 26, 0.5) 100%);
+    }
+  }
+
+  &.is-selected {
+    .blockxpert-text-animation-wrapper {
+      background: linear-gradient(135deg, rgba(108, 92, 231, 0.2) 0%, rgba(26, 26, 26, 0.6) 100%);
+      border: 2px solid rgba(108, 92, 231, 0.3);
+    }
+  }
+}
+
+/* Inspector Panel Styles */
+.wp-block-blockxpert-text-animation {
+  .components-panel__body {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .components-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  .components-color-palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+    gap: 8px;
+  }
+}
+
+/* Text Control Styles */
+.wp-block-blockxpert-text-animation {
+  .components-text-control__input,
+  .components-range-control__input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+
+    &:focus {
+      border-color: #6c5ce7;
+      box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.1);
+    }
+  }
+}
+
+/* Preview Info Box */
+.blockxpert-text-animation-wrapper {
+  > div:last-child {
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(108, 92, 231, 0.15);
+    }
+  }
+}
+
+/* Responsive Editor */
+@media (max-width: 782px) {
+  .wp-block-blockxpert-text-animation {
+    .blockxpert-text-animation-wrapper {
+      padding: 30px 15px;
+    }
+  }
+}

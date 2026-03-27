@@ -45,5 +45,30 @@ add_action('init', function() {
     load_plugin_textdomain('BlockXpert', false, dirname(plugin_basename(__FILE__)) . '/languages');
 });
 
+// On plugin activation, initialize all blocks as active
+register_activation_hook(__FILE__, function() {
+    /** Get all blocks from src/blocks directory */
+    $blocks_dir = BLOCKXPERT_PATH . 'src/blocks';
+    $all_blocks = [];
+    if (is_dir($blocks_dir)) {
+        $items = scandir($blocks_dir);
+        if ($items !== false) {
+            foreach ($items as $item) {
+                if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . '/' . $item)) {
+                    $all_blocks[] = sanitize_key($item);
+                }
+            }
+        }
+    }
+    
+    // Set all blocks as active by default
+    if (!empty($all_blocks)) {
+        update_option('blockxpert_blocks_active', $all_blocks);
+    }
+    
+    // Flush rewrite rules
+    flush_rewrite_rules();
+});
+
 // Initialize the plugin
 $blockxpert = new BlockXpert();

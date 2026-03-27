@@ -1,15 +1,14 @@
 {
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "blockxpert/ai-recommendations",
   "title": "AI Recommendations",
   "category": "blockxpert",
   "icon": "heart",
   "description": "AI-powered recommendations block",
   "keywords": ["ai", "recommendations", "suggestions"],
-  "editorScript": "file:../../build/ai-recommendations/index.js",
-  "editorStyle": "file:../../build/ai-recommendations/editor.css",
-  "style": "file:../../build/ai-recommendations/style-index.css",
-  "script": "file:../../build/ai-recommendations/view.js",
+  "editorScript": "file:./index.js",
+  "style": "file:./style.scss",
+  "script": "file:./view.js",
   "attributes": {
     "title": {
       "type": "string",

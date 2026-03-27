@@ -1,0 +1,79 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "blockxpert/text-animation",
+  "title": "Text Animation with GSAP",
+  "category": "design",
+  "description": "Create incredible text animations using GSAP with character and word splitting effects",
+  "keywords": ["animation", "gsap", "text", "headline"],
+  "version": "1.0.0",
+  "textdomain": "blockxpert",
+  "attributes": {
+    "headline": {
+      "type": "string",
+      "default": "Web Developer"
+    },
+    "headlineColor": {
+      "type": "string",
+      "default": "#FFFFFF"
+    },
+    "headlineAnimColor": {
+      "type": "string",
+      "default": "#6C5CE7"
+    },
+    "tagline": {
+      "type": "string",
+      "default": "Clean code. Smooth design."
+    },
+    "taglineColor": {
+      "type": "string",
+      "default": "#FFFFFF"
+    },
+    "animationType": {
+      "type": "string",
+      "enum": ["characters", "words", "lines"],
+      "default": "characters"
+    },
+    "duration": {
+      "type": "number",
+      "default": 0.8
+    },
+    "stagger": {
+      "type": "number",
+      "default": 0.03
+    },
+    "ease": {
+      "type": "string",
+      "enum": ["expo.out", "power2.out", "power3.out", "back.out", "elastic.out"],
+      "default": "expo.out"
+    },
+    "minHeight": {
+      "type": "number",
+      "default": 400
+    },
+    "alignment": {
+      "type": "string",
+      "enum": ["left", "center", "right"],
+      "default": "center"
+    },
+    "enableBlur": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "spacing": {
+      "padding": true,
+      "margin": true
+    },
+    "color": {
+      "background": true,
+      "text": true
+    }
+  },
+  "editorScript": "file:./index.js",
+  "script": "file:./view.js",
+  "style": "file:./style.scss"
+}

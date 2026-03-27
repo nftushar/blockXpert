@@ -1,13 +1,12 @@
 {
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "blockxpert/product-slider",
   "title": "Product Slider",
   "category": "blockxpert",
   "icon": "slides",
-  "editorScript": "file:../../build/product-slider/index.js",
-  "editorStyle": "file:../../build/product-slider/editor.css",
-  "script": "file:../../build/product-slider/view.js",
-  "style": "file:../../build/product-slider/style-index.css", 
+  "editorScript": "file:./index.js",
+  "script": "file:./view.js",
+  "style": "file:./style.scss", 
   "attributes": {
     "title": { "type": "string", "default": "Featured Products" },
     "productsPerSlide": { "type": "number", "default": 3 },

@@ -1,0 +1,12 @@
+{
+  "entry": {
+    "advanced-post-block": "./src/blocks/advanced-post-block/index.js",
+    "ai-faq": "./src/blocks/ai-faq/index.js",
+    "ai-product-recommendations": "./src/blocks/ai-product-recommendations/index.js",
+    "ai-recommendations": "./src/blocks/ai-recommendations/index.js",
+    "post-grid": "./src/blocks/post-grid/index.js",
+    "product-carousel": "./src/blocks/product-carousel/index.js",
+    "product-slider": "./src/blocks/product-slider/index.js",
+    "text-animation": "./src/blocks/text-animation/index.js"
+  }
+}

@@ -1,16 +1,14 @@
 {
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "blockxpert/post-grid",
   "title": "Post Grid",
   "category": "blockxpert",
   "icon": "table",
   "description": "Display posts in a beautiful grid layout",
   "keywords": ["posts", "grid", "layout", "blog"],
-  "editorScript": "file:../../build/post-grid/index.js",
-  "editorStyle": "file:../../build/post-grid/index.css",
-  "style": "file:../../build/post-grid/style-index.css",
-  "script": "file:../../build/post-grid/view.js",
-  "viewScript": "file:../../build/post-grid/view.js",
+  "editorScript": "file:./index.js",
+  "style": "file:./style.scss",
+  "script": "file:./view.js",
   "attributes": {
     "columns": {
       "type": "number",
