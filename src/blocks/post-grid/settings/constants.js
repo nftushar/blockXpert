@@ -3,11 +3,11 @@
  * Centralized constants for the Advanced Post Block
  */
 
-export const BLOCK_NAME = 'blockxpert/advanced-post-block';
-export const BLOCK_TITLE = 'Advanced Post Block';
+export const BLOCK_NAME = 'blockxpert/post-grid';
+export const BLOCK_TITLE = 'Post Grid';
 export const BLOCK_DESCRIPTION = 'Display posts with advanced layout options and customization';
 export const BLOCK_ICON = 'grid-view';
-export const BLOCK_CATEGORY = 'blockxpert-blocks';
+export const BLOCK_CATEGORY = 'blockxpert';
 
 export const DEFAULT_SETTINGS = {
     layout: 'grid',
