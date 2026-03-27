@@ -61,13 +61,19 @@ class BlockXpert_Blocks {
             $block = sanitize_key( $block );
             $dir   = $blocks_root . $block;
 
-            if ( ! file_exists($dir.'/block.json') ) continue;
+            // Verify block.json exists
+            if ( ! file_exists($dir.'/block.json') ) {
+                continue;
+            }
 
+            // Check if this block has a custom render callback
             $callback = 'render_dynamic_block_'.str_replace('-','_',$block);
 
             if ( method_exists($this, $callback) ) {
+                // Block has render callback for server-side rendering
                 register_block_type($dir, ['render_callback'=>[$this,$callback]]);
             } else {
+                // Block is client-side only
                 register_block_type($dir);
             }
         }
