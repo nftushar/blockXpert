@@ -23,20 +23,25 @@ class BlockXpert_Blocks {
      * Private constructor - prevents direct instantiation
      */
     private function __construct() {
-        // Initialize blocks_active option if not set
-        if (!get_option('blockxpert_blocks_active')) {
-            $all_blocks = [];
-            $blocks_dir = BLOCKXPERT_PATH . 'src/blocks';
-            if (is_dir($blocks_dir)) {
-                $items = scandir($blocks_dir);
-                if ($items !== false) {
-                    foreach ($items as $item) {
-                        if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . '/' . $item)) {
-                            $all_blocks[] = sanitize_key($item);
-                        }
+        // Discovery all available blocks
+        $all_blocks = [];
+        $blocks_dir = BLOCKXPERT_PATH . 'src/blocks';
+        if (is_dir($blocks_dir)) {
+            $items = scandir($blocks_dir);
+            if ($items !== false) {
+                foreach ($items as $item) {
+                    if ($item !== '.' && $item !== '..' && is_dir($blocks_dir . '/' . $item)) {
+                        $all_blocks[] = sanitize_key($item);
                     }
                 }
             }
+        }
+        
+        // Get currently active blocks
+        $active_blocks = get_option('blockxpert_blocks_active', []);
+        
+        // If no active blocks or if new blocks are available, update the option
+        if (empty($active_blocks) || count($active_blocks) !== count($all_blocks)) {
             if (!empty($all_blocks)) {
                 update_option('blockxpert_blocks_active', $all_blocks);
             }
