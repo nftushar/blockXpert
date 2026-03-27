@@ -3,7 +3,7 @@
   "apiVersion": 3,
   "name": "blockxpert/text-animation",
   "title": "Text Animation with GSAP",
-  "category": "design",
+  "category": "blockxpert",
   "description": "Create incredible text animations using GSAP with character and word splitting effects",
   "keywords": ["animation", "gsap", "text", "headline"],
   "version": "1.0.0",

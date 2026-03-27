@@ -2,7 +2,7 @@
   "apiVersion": 3,
   "name": "blockxpert/ai-product-recommendations",
   "title": "AI Product Recommendations",
-  "category": "custom-blocks",
+  "category": "blockxpert",
   "icon": "products",
   "editorScript": "file:./index.js",
   "style": "file:./style.scss",

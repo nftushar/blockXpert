@@ -2,7 +2,7 @@
   "apiVersion": 3,
   "name": "blockxpert/advanced-post-block",
   "title": "Advanced Post Block",
-  "category": "custom-blocks",
+  "category": "blockxpert",
   "icon": "admin-post",
   "editorScript": "file:./index.js",
   "style": "file:./style.scss",
