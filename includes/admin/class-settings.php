@@ -98,8 +98,8 @@ class BlockXpert_Admin_Settings {
 
             <!-- Blocks section -->
             <div id="blocks-section" class="blockxpert-section active">
-                <form method="post" action="options.php">
-                    <?php settings_fields('blockxpert_settings'); ?>
+                <form method="post" action="options.php" id="blockxpert-settings-form">
+                    <?php wp_nonce_field('wp_rest'); ?>
 
                     <!-- Search and filter -->
                     <div class="blockxpert-tabs" id="blockxpert-tabs">

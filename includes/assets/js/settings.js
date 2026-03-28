@@ -1,6 +1,6 @@
 /**
  * Admin settings JS for BlockXpert
- * (Renamed from admin-settings.js)
+ * Handles AJAX form submission with toast notifications
  */
 (function($){
     'use strict';
@@ -9,8 +9,114 @@
         // Wait a bit to ensure DOM is fully ready
         setTimeout(function() {
             initBlockXpertSettings();
+            initFormSubmission();
         }, 100);
     });
+
+    /**
+     * Toast notification helper
+     */
+    function showToast(message, type) {
+        type = type || 'success'; // success, error, info, warning
+        var $toast = $('<div class="blockxpert-toast blockxpert-toast-' + type + '"><span class="blockxpert-toast-icon"></span><span class="blockxpert-toast-message">' + message + '</span><button type="button" class="blockxpert-toast-close">&times;</button></div>');
+        
+        $('body').append($toast);
+        
+        // Animate in
+        setTimeout(function() {
+            $toast.addClass('blockxpert-toast-show');
+        }, 10);
+        
+        // Close button
+        $toast.on('click', '.blockxpert-toast-close', function(e) {
+            e.preventDefault();
+            $toast.removeClass('blockxpert-toast-show');
+            setTimeout(function() {
+                $toast.remove();
+            }, 300);
+        });
+        
+        // Auto-remove after 5 seconds
+        setTimeout(function() {
+            if ($toast.parent().length) {
+                $toast.removeClass('blockxpert-toast-show');
+                setTimeout(function() {
+                    $toast.remove();
+                }, 300);
+            }
+        }, 5000);
+    }
+
+    /**
+     * Initialize form submission handler
+     */
+    function initFormSubmission() {
+        var $form = $('form[action="options.php"]');
+        var $submitButton = $form.find('input[type="submit"], button[type="submit"]');
+        
+        if ($form.length === 0) {
+            console.warn('⚠️ No settings form found');
+            return;
+        }
+
+        // Disable traditional form submission
+        $form.on('submit', function(e) {
+            e.preventDefault();
+            
+            // Disable submit button to prevent multiple submissions
+            $submitButton.prop('disabled', true);
+            var originalText = $submitButton.val() || $submitButton.text();
+            $submitButton.val('Saving...').text('Saving...');
+            
+            // Get checked blocks
+            var blocks = [];
+            $form.find('input[name="blockxpert_blocks_active[]"]:checked').each(function() {
+                blocks.push($(this).val());
+            });
+            
+            // Prepare data
+            var data = {
+                blocks: blocks,
+            };
+            
+            console.log('💾 Saving blocks:', blocks);
+            
+            // Get nonce from form
+            var nonce = $form.find('input[name="_wpnonce"]').val();
+            
+            // Send AJAX request
+            $.ajax({
+                url: '/wp-json/blockxpert/v1/save-settings',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                headers: {
+                    'X-WP-Nonce': nonce,
+                },
+                success: function(response) {
+                    console.log('✅ Success:', response);
+                    showToast(response.message || 'Settings saved successfully!', 'success');
+                    $submitButton.prop('disabled', false).val(originalText).text(originalText);
+                },
+                error: function(xhr) {
+                    console.error('❌ Error:', xhr);
+                    var errorMsg = 'Failed to save settings';
+                    
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    } else if (xhr.statusText) {
+                        errorMsg = xhr.statusText;
+                    }
+                    
+                    showToast(errorMsg, 'error');
+                    $submitButton.prop('disabled', false).val(originalText).text(originalText);
+                },
+                complete: function() {
+                    $submitButton.prop('disabled', false).val(originalText).text(originalText);
+                }
+            });
+        });
+    }
 
     function initBlockXpertSettings() {
         var $searchInput = $('#blockxpert-search');

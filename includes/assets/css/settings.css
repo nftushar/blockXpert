@@ -197,4 +197,127 @@
         min-width: 0; 
         width: 100%; 
     } 
-} 
+}
+
+/* Toast Notifications */
+.blockxpert-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    transform: translateX(400px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+}
+
+.blockxpert-toast.blockxpert-toast-show {
+    transform: translateX(0);
+}
+
+/* Success Toast */
+.blockxpert-toast-success {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: #fff;
+    border-left: 4px solid #27ae60;
+}
+
+.blockxpert-toast-success .blockxpert-toast-icon::before {
+    content: "✓";
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Error Toast */
+.blockxpert-toast-error {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: #fff;
+    border-left: 4px solid #c0392b;
+}
+
+.blockxpert-toast-error .blockxpert-toast-icon::before {
+    content: "✕";
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Warning Toast */
+.blockxpert-toast-warning {
+    background: linear-gradient(135deg, #f39c12, #d68910);
+    color: #fff;
+    border-left: 4px solid #d68910;
+}
+
+.blockxpert-toast-warning .blockxpert-toast-icon::before {
+    content: "⚠";
+    font-size: 16px;
+}
+
+/* Info Toast */
+.blockxpert-toast-info {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: #fff;
+    border-left: 4px solid #2980b9;
+}
+
+.blockxpert-toast-info .blockxpert-toast-icon::before {
+    content: "ℹ";
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.blockxpert-toast-icon {
+    flex-shrink: 0;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blockxpert-toast-message {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.blockxpert-toast-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.blockxpert-toast-close:hover {
+    opacity: 1;
+}
+
+/* Responsive - mobile */
+@media (max-width: 600px) {
+    .blockxpert-toast {
+        min-width: auto;
+        width: calc(100% - 40px);
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
+}

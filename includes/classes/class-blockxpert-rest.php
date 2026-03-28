@@ -31,6 +31,14 @@ class BlockXpert_REST
 
     public function register_rest_routes()
     {
+        register_rest_route('blockxpert/v1', '/save-settings', [
+            'methods' => 'POST',
+            'callback' => [$this, 'save_settings'],
+            'permission_callback' => function () {
+                return current_user_can('manage_options');
+            },
+        ]);
+
         register_rest_route('blockxpert/v1', '/generate-faq', [
             'methods' => 'POST',
             'callback' => [$this, 'generate_faq_questions'],
@@ -45,6 +53,50 @@ class BlockXpert_REST
                 return current_user_can('edit_posts') && wp_verify_nonce(sanitize_text_field(wp_unslash($_REQUEST['_wpnonce'] ?? '')), 'wp_rest');
             },
         ]);
+    }
+
+    /**
+     * Save settings via AJAX
+     */
+    public function save_settings($request)
+    {
+        // Verify user permissions
+        if (!current_user_can('manage_options')) {
+            return new WP_Error('insufficient_permissions', esc_html__('You do not have permission to perform this action.', 'blockxpert'), ['status' => 403]);
+        }
+
+        $params = $request->get_json_params();
+        $blocks = isset($params['blocks']) ? $params['blocks'] : [];
+
+        // Sanitize and validate the blocks array
+        if (!is_array($blocks)) {
+            return new WP_Error('invalid_blocks', esc_html__('Blocks must be an array.', 'blockxpert'), ['status' => 400]);
+        }
+
+        // Get all available blocks for validation
+        $all_blocks = BlockXpert::get_all_blocks();
+
+        // Sanitize blocks - validate against allowed blocks
+        $sanitized_blocks = [];
+        foreach ($blocks as $block) {
+            $block = preg_replace('/[^a-z0-9_-]/', '', strtolower($block));
+            if (in_array($block, $all_blocks, true)) {
+                $sanitized_blocks[] = $block;
+            }
+        }
+
+        // Save the settings
+        $updated = update_option('blockxpert_blocks_active', $sanitized_blocks);
+
+        if ($updated || get_option('blockxpert_blocks_active') === $sanitized_blocks) {
+            return [
+                'success' => true,
+                'message' => esc_html__('Settings saved successfully!', 'blockxpert'),
+                'blocks' => $sanitized_blocks,
+            ];
+        } else {
+            return new WP_Error('save_failed', esc_html__('Failed to save settings.', 'blockxpert'), ['status' => 500]);
+        }
     }
 
     public function generate_faq_questions($request)
